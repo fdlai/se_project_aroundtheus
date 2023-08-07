@@ -1,0 +1,35 @@
+.cards {
+  display: grid;
+}
+
+.card {
+  background: white;
+  width: 282px;
+  height: 361px;
+  border-radius: 10px;
+}
+
+.card__image {
+  height: 282px;
+}
+
+.card__content {
+  height: calc(361px - 282px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  color: black;
+}
+
+.card__title {
+  margin: 0 28px 0 0;
+}
+
+.card__heart-logo {
+  border: none;
+  width: 21px;
+  height: 18px;
+  padding: 0;
+  background: transparent url(../images/heart-logo.svg) center no-repeat;
+}
