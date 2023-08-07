@@ -1,3 +1,9 @@
+.header {
+  max-width: 880px;
+  height: 74px;
+  margin: 0 auto 40px auto;
+}
+
 .header__image {
   width: 173px;
   height: 33px;
