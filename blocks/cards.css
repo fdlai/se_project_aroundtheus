@@ -1,5 +1,14 @@
 .cards {
+}
+
+.card__list {
   display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  justify-content: center;
+  align-items: center;
+  grid-gap: 20px 17px;
+  margin: 0;
+  padding: 0;
 }
 
 .card {
@@ -7,6 +16,7 @@
   width: 282px;
   height: 361px;
   border-radius: 10px;
+  list-style: none;
 }
 
 .card__image {
@@ -14,19 +24,26 @@
 }
 
 .card__content {
-  height: calc(361px - 282px);
+  padding: 25px 20px 25px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: white;
   color: black;
+  border-radius: 10px;
 }
 
 .card__title {
-  margin: 0 28px 0 0;
+  margin: 0;
+  color: #000;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
 }
 
 .card__heart-logo {
+  margin-left: auto;
   border: none;
   width: 21px;
   height: 18px;
