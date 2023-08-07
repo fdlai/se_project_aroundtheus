@@ -3,15 +3,50 @@
 }
 
 .profile__image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
 }
 
 .profile__info {
   display: grid;
+  grid-template-areas:
+    "title button"
+    "description .";
 }
 
 .profile__title {
+  margin: 0;
+  grid-area: title;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-size: 42px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 48px; /* 114.286% */
 }
 
 .profile__edit-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  grid-area: button;
   background: transparent url(../images/Edit\ Button.svg) center no-repeat;
+}
+
+.profile__description {
+  margin: 0;
+  grid-area: description;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.profile__add-button {
+  width: 150px;
+  height: 50px;
+  padding: 0;
+  background: transparent url(../images/Add\ Button.svg) center no-repeat;
+  margin-left: auto;
 }

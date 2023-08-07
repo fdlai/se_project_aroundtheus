@@ -4,3 +4,8 @@
   font-family: Inter, Arial, Helvetica, sans-serif;
   padding: 45px 17px 60px 17px;
 }
+
+.page__content {
+  max-width: 880px;
+  margin: 0 auto;
+}
