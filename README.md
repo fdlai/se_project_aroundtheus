@@ -5,6 +5,7 @@ Project name: SE_PROJECT_AROUNDTHEUS
 ## Project features
 
 - Semantic HTML5
+- Figma design
 - Flexbox
 - Grid
 - Flat BEM
@@ -20,6 +21,10 @@ Plans to add:
 - User created profiles
 - The ability for a user to upload their own photos
 - The ability to like and comment on photos
+
+**Figma**
+
+- [Link to the project on Figma](https://www.figma.com/file/ii4xxsJ0ghevUOcssTlHZv/Sprint-3%3A-Around-the-US?node-id=0%3A1)
 
 **Github pages**
 
