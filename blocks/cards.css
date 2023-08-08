@@ -1,5 +1,5 @@
-.cards {
-}
+/*.cards {
+}*/
 
 .card__list {
   display: grid;
@@ -40,6 +40,9 @@
   font-style: normal;
   font-weight: 900;
   line-height: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .card__heart-logo {
