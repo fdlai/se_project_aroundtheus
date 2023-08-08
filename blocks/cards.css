@@ -50,7 +50,7 @@
   border: none;
   width: 21px;
   height: 18px;
-  padding: 0;
+  padding: 0 0 0 20px;
   background: transparent url(../images/heart-logo.svg) center no-repeat;
   transition: opacity 1s;
 }
