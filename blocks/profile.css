@@ -65,13 +65,12 @@
 
 .profile__add-button {
   width: 150px;
-  transition: width 0.25s ease;
+  transition: width 0.25s ease, opacity 1s;
   height: 50px;
   padding: 0;
   background: transparent url(../images/add-button.svg) center no-repeat;
   margin-left: auto;
   border: 2px solid white;
-  transition: opacity 1s;
 }
 
 .profile__add-button:hover {
