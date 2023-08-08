@@ -11,51 +11,8 @@
   padding: 0;
 }
 
-.card {
-  background: white;
-  width: 282px;
-  height: 361px;
-  border-radius: 10px;
-  list-style: none;
-}
-
-.card__image {
-  height: 282px;
-}
-
-.card__content {
-  padding: 25px 20px 25px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  color: black;
-  border-radius: 10px;
-}
-
-.card__title {
-  margin: 0;
-  color: #000;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 900;
-  line-height: normal;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.card__heart-logo {
-  margin-left: auto;
-  border: none;
-  width: 21px;
-  height: 18px;
-  padding: 0 0 0 20px;
-  background: transparent url(../images/heart-logo.svg) center no-repeat;
-  transition: opacity 1s;
-}
-
-.card__heart-logo:hover {
-  opacity: 0.5;
-  cursor: pointer;
+@media screen and (max-width: 615px) {
+  .cards {
+    padding: 0 17px 0 17px;
+  }
 }

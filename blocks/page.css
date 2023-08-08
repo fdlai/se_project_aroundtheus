@@ -9,3 +9,9 @@
   max-width: 880px;
   margin: 0 auto;
 }
+
+@media screen and (max-width: 615px) {
+  .page {
+    padding: 28px 0 36px 0;
+  }
+}
