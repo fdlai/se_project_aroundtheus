@@ -3,15 +3,19 @@
   color: white;
   font-family: Inter, Arial, Helvetica, sans-serif;
   padding: 45px 17px 60px 17px;
-  max-width: 880px;
+  max-width: calc(
+    880px + (2 * 17px)
+  ); /* 2*17 comes from the left and right padding */
   margin: 0 auto;
+  /*create sticky footer*/
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .page__content {
-  flex: 1 0 auto;
+  flex: 1 0 auto; /*create sticky footer*/
 }
 
 @media screen and (max-width: 615px) {
