@@ -44,7 +44,7 @@
   grid-area: button;
   background: transparent url(../images/Edit\ Button.svg) center no-repeat;
   border: 1px solid white;
-  transition: opacity 1s;
+  transition: opacity 0.25s;
 }
 
 .profile__edit-button:hover {
@@ -69,7 +69,7 @@
 
 .profile__add-button {
   width: 150px;
-  transition: width 0.25s ease, opacity 1s;
+  transition: width 0.25s ease, opacity 0.25s;
   height: 50px;
   padding: 0;
   background: transparent url(../images/add-button.svg) center no-repeat;

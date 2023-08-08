@@ -41,7 +41,7 @@
   height: 18px;
   padding: 0 0 0 20px;
   background: transparent url(../images/heart-logo.svg) center no-repeat;
-  transition: opacity 1s;
+  transition: opacity;
 }
 
 .card__heart-logo:hover {
