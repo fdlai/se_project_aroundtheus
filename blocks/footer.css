@@ -14,9 +14,10 @@
 
 @media screen and (max-width: 615px) {
   .footer {
-    margin: 48px auto 0 auto;
-    max-width: 282px;
+    /*modified the design from the figma so that the footer stays aligned with the cards*/
     width: 100%;
+    margin-top: 48px;
+    padding: 0 17px 0 17px;
   }
   .footer__copyright {
     font-size: 14px;
