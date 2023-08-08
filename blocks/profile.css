@@ -117,6 +117,7 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    max-width: 250px;
   }
   .profile__edit-button {
     width: 18px;
