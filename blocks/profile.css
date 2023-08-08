@@ -64,7 +64,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 282px;
+  max-width: 350px;
 }
 
 .profile__add-button {
@@ -92,7 +92,7 @@
   }
   .profile__description {
     font-size: 16px;
-    max-width: 100px;
+    max-width: 250px;
   }
   .profile__image {
     margin-right: 15px;
@@ -130,6 +130,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    max-width: 150px;
   }
   .profile__add-button {
     margin: 0 0 36px 0;
