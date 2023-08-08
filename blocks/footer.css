@@ -1,5 +1,6 @@
 .footer {
   margin: 67px 0 0 0;
+  flex-shrink: 0;
 }
 
 .footer__copyright {
@@ -15,6 +16,7 @@
   .footer {
     margin: 48px auto 0 auto;
     max-width: 282px;
+    width: 100%;
   }
   .footer__copyright {
     font-size: 14px;

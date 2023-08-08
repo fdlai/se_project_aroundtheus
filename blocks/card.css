@@ -1,7 +1,6 @@
 .card {
   background: white;
   width: 282px;
-  height: 361px;
   border-radius: 10px;
   list-style: none;
 }
@@ -18,8 +17,6 @@
   background: white;
   color: black;
   border-radius: 10px;
-  height: 79px;
-  box-sizing: border-box;
 }
 
 .card__title {
