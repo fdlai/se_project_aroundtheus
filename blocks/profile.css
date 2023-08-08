@@ -40,6 +40,12 @@
   grid-area: button;
   background: transparent url(../images/Edit\ Button.svg) center no-repeat;
   border: 1px solid white;
+  transition: opacity 1s;
+}
+
+.profile__edit-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }
 
 .profile__description {
@@ -65,4 +71,10 @@
   background: transparent url(../images/add-button.svg) center no-repeat;
   margin-left: auto;
   border: 2px solid white;
+  transition: opacity 1s;
+}
+
+.profile__add-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }

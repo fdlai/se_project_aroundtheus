@@ -52,4 +52,10 @@
   height: 18px;
   padding: 0;
   background: transparent url(../images/heart-logo.svg) center no-repeat;
+  transition: opacity 1s;
+}
+
+.card__heart-logo:hover {
+  opacity: 0.5;
+  cursor: pointer;
 }
