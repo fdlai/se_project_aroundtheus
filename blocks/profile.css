@@ -20,6 +20,7 @@
   grid-template-areas:
     "title button"
     "description description";
+  padding-right: 18px;
 }
 
 .profile__title {
@@ -31,6 +32,9 @@
   font-style: normal;
   font-weight: 500;
   line-height: 1.14; /* 114.286% */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .profile__edit-button {
@@ -71,6 +75,7 @@
   background: transparent url(../images/add-button.svg) center no-repeat;
   margin-left: auto;
   border: 2px solid white;
+  flex-shrink: 0;
 }
 
 .profile__add-button:hover {
@@ -101,6 +106,9 @@
   }
   .profile__image {
     margin: 0 0 30px 0;
+  }
+  .profile__info {
+    padding-left: 18px;
   }
   .profile__title {
     margin: 0 10px 14px 0;
