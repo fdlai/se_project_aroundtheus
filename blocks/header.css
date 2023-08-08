@@ -1,6 +1,7 @@
 .header {
   height: 74px;
   margin: 0 auto 40px auto;
+  border-bottom: 1px solid #545454;
 }
 
 .header__image {
