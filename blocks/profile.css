@@ -30,7 +30,7 @@
   transition: font-size 0.25s ease;
   font-style: normal;
   font-weight: 500;
-  line-height: 48px; /* 114.286% */
+  line-height: 1.14; /* 114.286% */
 }
 
 .profile__edit-button {
