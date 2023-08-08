@@ -110,6 +110,10 @@
     font-weight: 500;
     line-height: normal;
   }
+  .profile__edit-button {
+    width: 18px;
+    height: 18px;
+  }
   .profile__description {
     margin: 0 auto 36px auto;
     text-align: center;
