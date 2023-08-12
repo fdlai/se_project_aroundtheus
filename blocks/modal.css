@@ -1,0 +1,121 @@
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+  display: none;
+}
+
+.modal__opened {
+  display: flex;
+}
+
+.modal__container {
+  margin: auto; /* why is display flex needed for this to work*/
+  width: 430px;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 36px;
+  border-radius: 10px;
+  position: relative;
+  transition: width 0.25s;
+}
+
+.modal__close-button {
+  background-image: url(../images/Close-Icon.svg);
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: calc(100% + 5px);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.modal__heading {
+  margin: 0 calc(64px - 36px) 54px 0;
+  color: #000;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+}
+
+/*.modal__form {
+}*/
+
+.modal__input {
+  margin: 0 0 30px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+  width: 100%;
+  padding: 0;
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-bottom: 13px;
+}
+
+.modal__input:last-of-type {
+  /*why doesn't last-child work*/
+  margin: 0;
+}
+
+.modal__input::placeholder {
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.modal__save-button {
+  margin: 48px 0 0 0;
+  padding: 0;
+  width: 100%;
+  height: 50px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  border-radius: 2px;
+  border: none;
+}
+
+@media screen and (max-width: 615px) {
+  .modal__container {
+    width: 282px;
+    padding: 25px 22px 25px 22px;
+  }
+  .modal__close-button {
+    width: 26px;
+    height: 26px;
+    bottom: calc(100% + 20px);
+    left: inherit;
+    right: 0;
+  }
+  .modal__heading {
+    font-size: 18px;
+    margin: 0 0 75px 0;
+  }
+  .modal__save-button {
+    margin-top: 45px;
+    font-size: 14px;
+  }
+}

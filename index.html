@@ -147,11 +147,24 @@
     </footer>
     <div class="modal">
       <div class="modal__container">
+        <button class="modal__close-button"></button>
         <p class="modal__heading">Edit profile</p>
         <form class="modal__form">
-          <input class="modal__input" type="text" name="title" />
-          <input class="modal__input" type="text" name="description" />
-          <button class="modal__button">Save</button>
+          <input
+            class="modal__input"
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Name"
+          />
+          <input
+            class="modal__input"
+            type="text"
+            name="description"
+            id="description"
+            placeholder="About me"
+          />
+          <button class="modal__save-button">Save</button>
         </form>
       </div>
     </div>
