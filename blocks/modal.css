@@ -6,15 +6,19 @@
   bottom: 0;
   right: 0;
   z-index: 999;
-  display: none;
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-out;
 }
 
 .modal__opened {
-  display: flex;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .modal__container {
-  margin: auto; /* why is display flex needed for this to work*/
+  margin: auto; /*display flex needed on parent container*/
   width: 430px;
   box-sizing: border-box;
   background-color: white;
@@ -57,7 +61,6 @@
   border-top: none;
   border-left: none;
   border-right: none;
-  cursor: pointer;
   width: 100%;
   padding: 0;
   color: #000;
@@ -69,7 +72,7 @@
 }
 
 .modal__input:last-of-type {
-  /*why doesn't last-child work*/
+  /*last-child doesn't work here*/
   margin: 0;
 }
 

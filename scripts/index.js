@@ -18,3 +18,17 @@ const initialCards = [
     link: "https://unsplash.com/photos/St08jKkPVHw",
   },
 ];
+
+const modal = document.querySelector(".modal");
+const profileEditButton = document.querySelector(".profile__edit-button");
+const modalCloseButton = document.querySelector(".modal__close-button");
+
+//allow edit profile button to bring up the modal
+profileEditButton.addEventListener("click", function () {
+  modal.classList.add("modal__opened");
+});
+
+//allow x button on the modal to close the modal
+modalCloseButton.addEventListener("click", function () {
+  modal.classList.remove("modal__opened");
+});

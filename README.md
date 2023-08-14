@@ -12,6 +12,7 @@ Project name: SE_PROJECT_AROUNDTHEUS
 - A custom form
 - Responsive design
 - Media Queries
+- Sticky footer
 
 ## Plan on improving the project
 
