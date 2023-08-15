@@ -109,7 +109,7 @@
   .modal__close-button {
     width: 26px;
     height: 26px;
-    bottom: calc(100% + 20px);
+    bottom: calc(100% + 13px);
     left: inherit;
     right: 0;
   }
