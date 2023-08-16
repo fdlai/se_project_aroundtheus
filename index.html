@@ -32,14 +32,16 @@
             class="profile__image"
           />
           <div class="profile__info">
-            <h1 class="profile__title">Jacques Cousteau</h1>
+            <h1 class="profile__title" id="profile-title">Jacques Cousteau</h1>
             <button
               class="profile__edit-button"
-              id="profile__edit-button"
+              id="profile-edit-button"
               type="button"
               aria-label="Edit"
             ></button>
-            <p class="profile__description">Explorer</p>
+            <p class="profile__description" id="profile-description">
+              Explorer
+            </p>
           </div>
           <button
             class="profile__add-button"
@@ -48,98 +50,7 @@
           ></button>
         </section>
         <section class="cards">
-          <ul class="cards__list">
-            <li class="card">
-              <img
-                src="./images/yosemite-valley.png"
-                alt="scenic image of a river through evergreen trees"
-                class="card__image"
-              />
-              <div class="card__content">
-                <h2 class="card__title">Yosemite Valley</h2>
-                <button
-                  class="card__heart-logo"
-                  type="button"
-                  aria-label="Like"
-                ></button>
-              </div>
-            </li>
-            <li class="card">
-              <img
-                src="./images/lake-louise.png"
-                alt="scenic image of a blue pristine lake with mountains in the background"
-                class="card__image"
-              />
-              <div class="card__content">
-                <h2 class="card__title">Lake Louise</h2>
-                <button
-                  class="card__heart-logo"
-                  type="button"
-                  aria-label="Like"
-                ></button>
-              </div>
-            </li>
-            <li class="card">
-              <img
-                src="./images/bald-mountains.png"
-                alt="scenic image of the warm sun peaking over the horizon of distant mountains"
-                class="card__image"
-              />
-              <div class="card__content">
-                <h2 class="card__title">Bald Mountains</h2>
-                <button
-                  class="card__heart-logo"
-                  type="button"
-                  aria-label="Like"
-                ></button>
-              </div>
-            </li>
-            <li class="card">
-              <img
-                src="./images/latemar.png"
-                alt="scenic image of stars in the night sky over craggy greyish-brown mountains"
-                class="card__image"
-              />
-              <div class="card__content">
-                <h2 class="card__title">Latemar</h2>
-                <button
-                  class="card__heart-logo"
-                  type="button"
-                  aria-label="Like"
-                ></button>
-              </div>
-            </li>
-            <li class="card">
-              <img
-                src="./images/vanoise-national-park.png"
-                alt="under a blue sky, a snowy mountain reflects into a clear lake"
-                class="card__image"
-              />
-              <div class="card__content">
-                <h2 class="card__title">Vanoise National Park</h2>
-                <button
-                  class="card__heart-logo"
-                  type="button"
-                  aria-label="Like"
-                ></button>
-              </div>
-            </li>
-            <li class="card">
-              <img
-                src="./images/lago-di-braies.png"
-                alt="scenic image of small wooden boats in the forefront, resting on a clear reflective lake, with mountains looming in the background"
-                class="card__image"
-              />
-              <div class="card__content">
-                <h2 class="card__title">Lago Di Braies</h2>
-                <button
-                  class="card__heart-logo"
-                  type="button"
-                  aria-label="Like"
-                ></button>
-              </div>
-            </li>
-          </ul>
+          <ul class="cards__list"></ul>
         </section>
       </main>
     </div>
@@ -148,27 +59,51 @@
     </footer>
     <div class="modal" id="modal-edit-profile">
       <div class="modal__container">
-        <button class="modal__close-button" id="modal__close-button"></button>
+        <button
+          class="modal__close-button"
+          id="modal-close-button"
+          type="button"
+          aria-label="close"
+        ></button>
         <p class="modal__heading">Edit profile</p>
         <form class="modal__form">
           <input
             class="modal__input"
             type="text"
             name="title"
-            id="title"
+            id="profile-title-input"
             placeholder="Name"
           />
           <input
             class="modal__input"
             type="text"
             name="description"
-            id="description"
+            id="profile-description-input"
             placeholder="About me"
           />
-          <button class="modal__save-button">Save</button>
+          <button
+            class="modal__save-button"
+            id="modal-save-button"
+            type="submit"
+            aria-label="save"
+          >
+            Save
+          </button>
         </form>
       </div>
     </div>
+    <template id="card-template"
+      ><li class="card">
+        <img src="" alt="" class="card__image" />
+        <div class="card__content">
+          <h2 class="card__title"></h2>
+          <button
+            class="card__heart-logo"
+            type="button"
+            aria-label="Like"
+          ></button>
+        </div></li
+    ></template>
     <script src="./scripts/index.js"></script>
   </body>
 </html>
