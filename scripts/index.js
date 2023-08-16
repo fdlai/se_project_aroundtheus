@@ -63,55 +63,7 @@ function getCardElement(data) {
   cardElementImage.setAttribute("alt", `${data.name}`);
   cardsList.append(cardElement);
 }
-/*
-function createProfileTitleTooltip() {
-  //create tooltip for profile to show full text if it has an ellipsis
-  const checkIfTooltipExists = document.querySelector(
-    ".profile__tooltip-title"
-  );
-  if (profileTitle.scrollWidth > profileTitle.offsetWidth) {
-    console.log(checkIfTooltipExists);
-    if (checkIfTooltipExists === null) {
-      console.log("it is null");
-      const profileTooltip = document.createElement("div");
-      profileTooltip.classList.add("profile__tooltip-title");
-      profileTooltip.textContent = profileTitle.textContent;
-      profileTitle.after(profileTooltip);
-    } else {
-      const profileTooltip = checkIfTooltipExists;
-      profileTooltip.textContent = profileTitle.textContent;
-      console.log(profileTooltip.textContent);
-    }
-  } else {
-    checkIfTooltipExists.classList.remove("profile__tooltip-title");
-  }
-}*/
-/*
-function createProfileTitleTooltip() {
-  const ellipsisExists = profileTitle.scrollWidth > profileTitle.offsetWidth;
-  const tooltipIsOpen =
-    document.querySelector(".profile__tooltip-title") !== null;
-  console.log(ellipsisExists);
-  console.log(tooltipIsOpen);
-  switch (true) {
-    case ellipsisExists && !tooltipIsOpen:
-      console.log("case 1");
-      const profileTooltip = document.createElement("div");
-      profileTooltip.classList.add("profile__tooltip-title");
-      profileTooltip.textContent = profileTitle.textContent;
-      profileTitle.after(profileTooltip);
-      break;
-    case ellipsisExists && tooltipIsOpen:
-      console.log("case 2");
-      const profileTooltip1 = document.querySelector(".profile__tooltip-title");
-      profileTooltip1.textContent = profileTitleInput.value;
-      break;
-    case !ellipsisExists && tooltipIsOpen:
-      console.log("case 3");
-      const profileTooltip2 = document.querySelector(".profile__tooltip-title");
-      profileTooltip2.remove();
-  }
-}*/
+
 function createProfileTitleTooltip() {
   const ellipsisExists = profileTitle.scrollWidth > profileTitle.offsetWidth;
   const tooltipIsOpen =

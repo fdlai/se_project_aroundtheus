@@ -57,7 +57,7 @@
   text-wrap: wrap;
 }
 
-.profile__title:hover .profile__tooltip-title {
+.profile__title:hover + .profile__tooltip-title {
   opacity: 0.8;
   pointer-events: auto;
 }
