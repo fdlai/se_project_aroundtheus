@@ -65,14 +65,22 @@ function getCardElement(data) {
   cardsList.append(cardElement);
 }
 
-function createCardTooltip(elt) {
+function createCardTooltip() {
   //create a tooltip for card__title that displays when text is long enough to cause ellipsis
-  if (elt.scrollWidth > elt.offsetWidth) {
-    const cardTooltip = document.createElement("div");
-    cardTooltip.classList.add("card__tooltip");
-    cardTooltip.textContent = elt.textContent;
-    elt.appendChild(cardTooltip);
-  }
+  cardTitles.forEach(function (elt) {
+    ellipsisExists = elt.scrollWidth > elt.offsetWidth;
+    const tooltipIsOpen =
+      elt.nextElementSibling.classList.contains("card__tooltip");
+    if (ellipsisExists && !tooltipIsOpen) {
+      const cardTooltip = document.createElement("p");
+      cardTooltip.classList.add("card__tooltip");
+      cardTooltip.textContent = elt.textContent;
+      elt.after(cardTooltip);
+    } else if (!ellipsisExists && tooltipIsOpen) {
+      const cardTooltip = elt.nextElementSibling;
+      cardTooltip.remove();
+    }
+  });
 }
 
 function createProfileTitleTooltip() {
@@ -81,7 +89,7 @@ function createProfileTitleTooltip() {
   const tooltipIsOpen =
     document.querySelector(".profile__tooltip-title") !== null;
   if (ellipsisExists && !tooltipIsOpen) {
-    const profileTooltip = document.createElement("div");
+    const profileTooltip = document.createElement("p");
     profileTooltip.classList.add("profile__tooltip-title");
     profileTooltip.textContent = profileTitle.textContent;
     profileTitle.after(profileTooltip);
@@ -101,7 +109,7 @@ function createProfileDescriptionTooltip() {
   const tooltipIsOpen =
     document.querySelector(".profile__tooltip-description") !== null;
   if (ellipsisExists && !tooltipIsOpen) {
-    const profileTooltip = document.createElement("div");
+    const profileTooltip = document.createElement("p");
     profileTooltip.classList.add("profile__tooltip-description");
     profileTooltip.textContent = profileDescription.textContent;
     profileDescription.after(profileTooltip);
@@ -162,6 +170,11 @@ modalForm.addEventListener("submit", handleProfileEditSubmit);
 //update image heights when the window is resized
 window.addEventListener("resize", setImageHeight);
 
+//check if ellipsis is still there after resizing
+window.addEventListener("resize", createCardTooltip);
+window.addEventListener("resize", createProfileTitleTooltip);
+window.addEventListener("resize", createProfileDescriptionTooltip);
+
 /* -------------------------------------------------------------------------- */
 /*                                    Code                                    */
 /* -------------------------------------------------------------------------- */
@@ -176,4 +189,4 @@ setImageHeight();
 createProfileTitleTooltip();
 createProfileDescriptionTooltip();
 cardTitles = document.querySelectorAll(".card__title"); //must be put after initialCards has populated the page
-cardTitles.forEach(createCardTooltip);
+createCardTooltip(); //refactor later and check on browser resize

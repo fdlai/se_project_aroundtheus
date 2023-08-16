@@ -23,7 +23,6 @@ Plans to add:
 - ability for a user to upload their own photos
 - ability to like and comment on photos
 - ability to click on a photo and have it enlarge to see the full aspect ratio
-- ability to hover over truncated text, to see the full text
 
 **Figma**
 
