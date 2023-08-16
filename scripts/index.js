@@ -45,6 +45,7 @@ const modalForm = modalEditProfile.querySelector(".modal__form");
 const cardsList = document.querySelector(".cards__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
+let cardTitles;
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -64,25 +65,55 @@ function getCardElement(data) {
   cardsList.append(cardElement);
 }
 
+function createCardTooltip(elt) {
+  //create a tooltip for card__title that displays when text is long enough to cause ellipsis
+  if (elt.scrollWidth > elt.offsetWidth) {
+    const cardTooltip = document.createElement("div");
+    cardTooltip.classList.add("card__tooltip");
+    cardTooltip.textContent = elt.textContent;
+    elt.appendChild(cardTooltip);
+  }
+}
+
 function createProfileTitleTooltip() {
+  //manage a tooltip for profile__title that displays when text is long enough to cause ellipsis
   const ellipsisExists = profileTitle.scrollWidth > profileTitle.offsetWidth;
   const tooltipIsOpen =
     document.querySelector(".profile__tooltip-title") !== null;
-  console.log(ellipsisExists);
-  console.log(tooltipIsOpen);
   if (ellipsisExists && !tooltipIsOpen) {
-    console.log("case 1");
     const profileTooltip = document.createElement("div");
     profileTooltip.classList.add("profile__tooltip-title");
     profileTooltip.textContent = profileTitle.textContent;
     profileTitle.after(profileTooltip);
   } else if (ellipsisExists && tooltipIsOpen) {
-    console.log("case 2");
     const profileTooltip = document.querySelector(".profile__tooltip-title");
     profileTooltip.textContent = profileTitleInput.value;
   } else if (!ellipsisExists && tooltipIsOpen) {
-    console.log("case 3");
     const profileTooltip = document.querySelector(".profile__tooltip-title");
+    profileTooltip.remove();
+  }
+}
+
+function createProfileDescriptionTooltip() {
+  //manage a tooltip for profile__description that displays when text is long enough to cause ellipsis
+  const ellipsisExists =
+    profileDescription.scrollWidth > profileDescription.offsetWidth;
+  const tooltipIsOpen =
+    document.querySelector(".profile__tooltip-description") !== null;
+  if (ellipsisExists && !tooltipIsOpen) {
+    const profileTooltip = document.createElement("div");
+    profileTooltip.classList.add("profile__tooltip-description");
+    profileTooltip.textContent = profileDescription.textContent;
+    profileDescription.after(profileTooltip);
+  } else if (ellipsisExists && tooltipIsOpen) {
+    const profileTooltip = document.querySelector(
+      ".profile__tooltip-description"
+    );
+    profileTooltip.textContent = profileDescriptionInput.value;
+  } else if (!ellipsisExists && tooltipIsOpen) {
+    const profileTooltip = document.querySelector(
+      ".profile__tooltip-description"
+    );
     profileTooltip.remove();
   }
 }
@@ -96,6 +127,7 @@ function handleProfileEditSubmit(e) {
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
   createProfileTitleTooltip();
+  createProfileDescriptionTooltip();
   closeModalEditProfile();
 }
 
@@ -140,18 +172,8 @@ initialCards.forEach(getCardElement);
 //set initial heights of images
 setImageHeight();
 
-//create initial tooltip on page load
+//create initial tooltips on page load
 createProfileTitleTooltip();
-
-//create tooltip to show full text in ellipsis for cards
-//remember to update on submit
-const cardTitles = document.querySelectorAll(".card__title");
-cardTitles.forEach(function createCardTooltip(elt) {
-  if (elt.scrollWidth > elt.offsetWidth) {
-    const cardTooltip = document.createElement("div");
-    cardTooltip.classList.add("card__tooltip");
-    cardTooltip.textContent = elt.textContent;
-    elt.appendChild(cardTooltip);
-    console.log(elt.scrollWidth);
-  }
-});
+createProfileDescriptionTooltip();
+cardTitles = document.querySelectorAll(".card__title"); //must be put after initialCards has populated the page
+cardTitles.forEach(createCardTooltip);
