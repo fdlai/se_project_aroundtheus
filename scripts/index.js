@@ -1,21 +1,27 @@
 const initialCards = [
-  { name: "El Capitan", link: "https://unsplash.com/photos/ndN00KmbJ1c" },
+  {
+    name: "El Capitan",
+    link: "https://www.socwall.com/images/wallpapers/6967-2560x1600.jpg",
+  },
   {
     name: "Lake Atitl\u00E1n",
-    link: "https://unsplash.com/photos/K2s_YE031CA",
-  },
-  { name: "Banff, Canada", link: "https://unsplash.com/photos/pp_oXEb2H48" },
-  {
-    name: "Ventura, United States",
-    link: "https://unsplash.com/photos/FO7bKvgETgQ",
+    link: "https://www.roadaffair.com/wp-content/uploads/2017/10/lake-atitlan-guatemala-shutterstock_189649244.jpg",
   },
   {
-    name: "Waimea State Recreation Pier",
-    link: "https://unsplash.com/photos/fsJB3KT2rj8",
+    name: "Banff, Canada",
+    link: "https://i2.wp.com/www.erikastravels.com/wp-content/uploads/2015/11/P1170327.jpg",
+  },
+  {
+    name: "Grand Canyon",
+    link: "https://www.wallpaperflare.com/static/15/193/266/arches-national-park-utah-rock-nature-wallpaper.jpg",
+  },
+  {
+    name: "Amazon Rainforest",
+    link: "https://foundtheworld.com/wp-content/uploads/2015/12/Amazon-Rainforest-9.jpg",
   },
   {
     name: "Wanaka, New Zealand",
-    link: "https://unsplash.com/photos/St08jKkPVHw",
+    link: "https://www.wallpaperup.com/uploads/wallpapers/2013/09/25/151365/348f3c49b5e5d78bae772578dc1e9d36.jpg",
   },
 ];
 
@@ -45,6 +51,16 @@ function closeModalEditProfile() {
   modalEditProfile.classList.remove("modal__opened");
 }
 
+function getCardElement(data) {
+  const cardElement = cardTemplate.cloneNode(true);
+  const cardElementTitle = cardElement.querySelector(".card__title");
+  const cardElementImage = cardElement.querySelector(".card__image");
+  cardElementTitle.textContent = data.name;
+  cardElementImage.setAttribute("src", `${data.link}`);
+  cardElementImage.setAttribute("alt", `${data.name}`);
+  cardsList.append(cardElement);
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
@@ -62,6 +78,15 @@ function handleProfileEditOpen() {
   modalEditProfile.classList.add("modal__opened");
 }
 
+function setImageHeight() {
+  //makes all images square, in order to handle images of different aspect ratios
+  const cardImages = document.querySelectorAll(".card__image");
+  cardImages.forEach(function (image) {
+    const width = image.offsetWidth;
+    image.style.height = width + "px";
+  });
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               Event Listeners                              */
 /* -------------------------------------------------------------------------- */
@@ -75,12 +100,15 @@ modalCloseButton.addEventListener("click", closeModalEditProfile);
 //transfer modal input values to title and description
 modalForm.addEventListener("submit", handleProfileEditSubmit);
 
+//update image heights when the window is resized
+window.addEventListener("resize", setImageHeight);
+
+/* -------------------------------------------------------------------------- */
+/*                                    Code                                    */
+/* -------------------------------------------------------------------------- */
+
 //have initialCards populate the page
-initialCards.forEach(function getCardElement(data) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardElementTitle = cardElement.querySelector(".card__title");
-  const cardElementImage = cardElement.querySelector(".card__image");
-  cardElementTitle.textContent = data.name;
-  cardElementImage.setAttribute("src", `${data.link}`);
-  cardsList.append(cardElement);
-});
+initialCards.forEach(getCardElement);
+
+//set initial heights of images
+setImageHeight();
