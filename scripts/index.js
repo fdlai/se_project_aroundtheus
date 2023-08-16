@@ -65,6 +65,32 @@ function getCardElement(data) {
   cardsList.append(cardElement);
 }
 
+/* -------------------------------------------------------------------------- */
+/*                               Event Handlers                               */
+/* -------------------------------------------------------------------------- */
+
+function handleProfileEditSubmit(e) {
+  e.preventDefault();
+  profileTitle.textContent = profileTitleInput.value;
+  profileDescription.textContent = profileDescriptionInput.value;
+  closeModalEditProfile();
+}
+
+function handleProfileEditOpen() {
+  profileTitleInput.value = profileTitle.textContent.trim();
+  profileDescriptionInput.value = profileDescription.textContent.trim();
+  modalEditProfile.classList.add("modal__opened");
+}
+
+function setImageHeight() {
+  //makes all images square, in order to handle images of different aspect ratios
+  const cardImages = document.querySelectorAll(".card__image");
+  cardImages.forEach(function (image) {
+    const width = image.offsetWidth;
+    image.style.height = width + "px";
+  });
+}
+
 function createCardTooltip() {
   //create a tooltip for card__title that displays when text is long enough to cause ellipsis
   cardTitles.forEach(function (elt) {
@@ -127,34 +153,6 @@ function createProfileDescriptionTooltip() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                               Event Handlers                               */
-/* -------------------------------------------------------------------------- */
-
-function handleProfileEditSubmit(e) {
-  e.preventDefault();
-  profileTitle.textContent = profileTitleInput.value;
-  profileDescription.textContent = profileDescriptionInput.value;
-  createProfileTitleTooltip();
-  createProfileDescriptionTooltip();
-  closeModalEditProfile();
-}
-
-function handleProfileEditOpen() {
-  profileTitleInput.value = profileTitle.textContent.trimStart();
-  profileDescriptionInput.value = profileDescription.textContent.trimStart();
-  modalEditProfile.classList.add("modal__opened");
-}
-
-function setImageHeight() {
-  //makes all images square, in order to handle images of different aspect ratios
-  const cardImages = document.querySelectorAll(".card__image");
-  cardImages.forEach(function (image) {
-    const width = image.offsetWidth;
-    image.style.height = width + "px";
-  });
-}
-
-/* -------------------------------------------------------------------------- */
 /*                               Event Listeners                              */
 /* -------------------------------------------------------------------------- */
 
@@ -166,6 +164,10 @@ modalCloseButton.addEventListener("click", closeModalEditProfile);
 
 //transfer modal input values to title and description
 modalForm.addEventListener("submit", handleProfileEditSubmit);
+
+//check for text ellipsis after changing profile info
+modalForm.addEventListener("submit", createProfileTitleTooltip);
+modalForm.addEventListener("submit", createProfileDescriptionTooltip);
 
 //update image heights when the window is resized
 window.addEventListener("resize", setImageHeight);
@@ -189,4 +191,4 @@ setImageHeight();
 createProfileTitleTooltip();
 createProfileDescriptionTooltip();
 cardTitles = document.querySelectorAll(".card__title"); //must be put after initialCards has populated the page
-createCardTooltip(); //refactor later and check on browser resize
+createCardTooltip();
