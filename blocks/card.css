@@ -24,7 +24,8 @@
 }
 
 .card__title {
-  margin: 0 5px 0 0;
+  margin: 0;
+  padding-right: 6px;
   color: #000;
   font-size: 24px;
   font-style: normal;

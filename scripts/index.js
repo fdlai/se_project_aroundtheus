@@ -83,7 +83,7 @@ function handleProfileEditOpen() {
 }
 
 function setImageHeight() {
-  //makes all images square, in order to handle images of different aspect ratios
+  //make all images square, in order to handle images of different aspect ratios
   const cardImages = document.querySelectorAll(".card__image");
   cardImages.forEach(function (image) {
     const width = image.offsetWidth;
@@ -94,7 +94,7 @@ function setImageHeight() {
 function createCardTooltip() {
   //create a tooltip for card__title that displays when text is long enough to cause ellipsis
   cardTitles.forEach(function (elt) {
-    ellipsisExists = elt.scrollWidth > elt.offsetWidth;
+    ellipsisExists = elt.scrollWidth > elt.clientWidth;
     const tooltipIsOpen =
       elt.nextElementSibling.classList.contains("card__tooltip");
     if (ellipsisExists && !tooltipIsOpen) {

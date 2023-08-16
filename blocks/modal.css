@@ -22,7 +22,7 @@
   width: 430px;
   box-sizing: border-box;
   background-color: white;
-  padding: 36px;
+  padding: 34px 36px 36px;
   border-radius: 10px;
   position: relative;
   transition: width 0.25s;
@@ -50,6 +50,7 @@
   font-style: normal;
   font-weight: 900;
   line-height: normal;
+  height: 23px;
 }
 
 /*.modal__form {
@@ -69,6 +70,7 @@
   font-weight: 400;
   line-height: normal;
   padding-bottom: 13px;
+  height: 14px;
 }
 
 .modal__input:last-of-type {
@@ -109,13 +111,14 @@
   .modal__close-button {
     width: 26px;
     height: 26px;
-    bottom: calc(100% + 13px);
+    bottom: calc(100% + 20px);
     left: inherit;
     right: 0;
   }
   .modal__heading {
     font-size: 18px;
     margin: 0 0 75px 0;
+    height: 18px;
   }
   .modal__save-button {
     margin-top: 45px;
