@@ -20,10 +20,11 @@
   background: white;
   color: black;
   border-radius: 10px;
+  position: relative;
 }
 
 .card__title {
-  margin: 0;
+  margin: 0 5px 0 0;
   color: #000;
   font-size: 24px;
   font-style: normal;
@@ -32,6 +33,30 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.card__tooltip {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 1);
+  color: black;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 15px;
+  border: 1px solid black;
+  border-radius: 20px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+  pointer-events: none;
+  top: -20px;
+  left: 2px;
+  min-width: 245px;
+  text-wrap: wrap;
+}
+
+.card__title:hover .card__tooltip {
+  opacity: 0.8;
+  pointer-events: auto;
 }
 
 .card__heart-logo {

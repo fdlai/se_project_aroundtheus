@@ -19,9 +19,11 @@ Project name: SE_PROJECT_AROUNDTHEUS
 Plans to add:
 
 - User interactivity:
-- User created profiles
-- The ability for a user to upload their own photos
-- The ability to like and comment on photos
+- user created profiles
+- ability for a user to upload their own photos
+- ability to like and comment on photos
+- ability to click on a photo and have it enlarge to see the full aspect ratio
+- ability to hover over truncated text, to see the full text
 
 **Figma**
 

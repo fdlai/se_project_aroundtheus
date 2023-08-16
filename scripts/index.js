@@ -4,6 +4,10 @@ const initialCards = [
     link: "https://www.socwall.com/images/wallpapers/6967-2560x1600.jpg",
   },
   {
+    name: "Wanaka, New Zealand",
+    link: "https://www.wallpaperup.com/uploads/wallpapers/2013/09/25/151365/348f3c49b5e5d78bae772578dc1e9d36.jpg",
+  },
+  {
     name: "Lake Atitl\u00E1n",
     link: "https://www.roadaffair.com/wp-content/uploads/2017/10/lake-atitlan-guatemala-shutterstock_189649244.jpg",
   },
@@ -19,10 +23,6 @@ const initialCards = [
     name: "Amazon Rainforest",
     link: "https://foundtheworld.com/wp-content/uploads/2015/12/Amazon-Rainforest-9.jpg",
   },
-  {
-    name: "Wanaka, New Zealand",
-    link: "https://www.wallpaperup.com/uploads/wallpapers/2013/09/25/151365/348f3c49b5e5d78bae772578dc1e9d36.jpg",
-  },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -34,6 +34,9 @@ const profileEditButton = document.querySelector("#profile-edit-button");
 const modalCloseButton = document.querySelector("#modal-close-button");
 const profileTitle = document.querySelector("#profile-title");
 const profileDescription = document.querySelector("#profile-description");
+const profileTitleAndDescription = document.querySelectorAll(
+  "#profile-title, #profile-description"
+);
 const profileTitleInput = document.querySelector("#profile-title-input");
 const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
@@ -60,6 +63,77 @@ function getCardElement(data) {
   cardElementImage.setAttribute("alt", `${data.name}`);
   cardsList.append(cardElement);
 }
+/*
+function createProfileTitleTooltip() {
+  //create tooltip for profile to show full text if it has an ellipsis
+  const checkIfTooltipExists = document.querySelector(
+    ".profile__tooltip-title"
+  );
+  if (profileTitle.scrollWidth > profileTitle.offsetWidth) {
+    console.log(checkIfTooltipExists);
+    if (checkIfTooltipExists === null) {
+      console.log("it is null");
+      const profileTooltip = document.createElement("div");
+      profileTooltip.classList.add("profile__tooltip-title");
+      profileTooltip.textContent = profileTitle.textContent;
+      profileTitle.after(profileTooltip);
+    } else {
+      const profileTooltip = checkIfTooltipExists;
+      profileTooltip.textContent = profileTitle.textContent;
+      console.log(profileTooltip.textContent);
+    }
+  } else {
+    checkIfTooltipExists.classList.remove("profile__tooltip-title");
+  }
+}*/
+/*
+function createProfileTitleTooltip() {
+  const ellipsisExists = profileTitle.scrollWidth > profileTitle.offsetWidth;
+  const tooltipIsOpen =
+    document.querySelector(".profile__tooltip-title") !== null;
+  console.log(ellipsisExists);
+  console.log(tooltipIsOpen);
+  switch (true) {
+    case ellipsisExists && !tooltipIsOpen:
+      console.log("case 1");
+      const profileTooltip = document.createElement("div");
+      profileTooltip.classList.add("profile__tooltip-title");
+      profileTooltip.textContent = profileTitle.textContent;
+      profileTitle.after(profileTooltip);
+      break;
+    case ellipsisExists && tooltipIsOpen:
+      console.log("case 2");
+      const profileTooltip1 = document.querySelector(".profile__tooltip-title");
+      profileTooltip1.textContent = profileTitleInput.value;
+      break;
+    case !ellipsisExists && tooltipIsOpen:
+      console.log("case 3");
+      const profileTooltip2 = document.querySelector(".profile__tooltip-title");
+      profileTooltip2.remove();
+  }
+}*/
+function createProfileTitleTooltip() {
+  const ellipsisExists = profileTitle.scrollWidth > profileTitle.offsetWidth;
+  const tooltipIsOpen =
+    document.querySelector(".profile__tooltip-title") !== null;
+  console.log(ellipsisExists);
+  console.log(tooltipIsOpen);
+  if (ellipsisExists && !tooltipIsOpen) {
+    console.log("case 1");
+    const profileTooltip = document.createElement("div");
+    profileTooltip.classList.add("profile__tooltip-title");
+    profileTooltip.textContent = profileTitle.textContent;
+    profileTitle.after(profileTooltip);
+  } else if (ellipsisExists && tooltipIsOpen) {
+    console.log("case 2");
+    const profileTooltip = document.querySelector(".profile__tooltip-title");
+    profileTooltip.textContent = profileTitleInput.value;
+  } else if (!ellipsisExists && tooltipIsOpen) {
+    console.log("case 3");
+    const profileTooltip = document.querySelector(".profile__tooltip-title");
+    profileTooltip.remove();
+  }
+}
 
 /* -------------------------------------------------------------------------- */
 /*                               Event Handlers                               */
@@ -69,6 +143,7 @@ function handleProfileEditSubmit(e) {
   e.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
+  createProfileTitleTooltip();
   closeModalEditProfile();
 }
 
@@ -112,3 +187,19 @@ initialCards.forEach(getCardElement);
 
 //set initial heights of images
 setImageHeight();
+
+//create initial tooltip on page load
+createProfileTitleTooltip();
+
+//create tooltip to show full text in ellipsis for cards
+//remember to update on submit
+const cardTitles = document.querySelectorAll(".card__title");
+cardTitles.forEach(function createCardTooltip(elt) {
+  if (elt.scrollWidth > elt.offsetWidth) {
+    const cardTooltip = document.createElement("div");
+    cardTooltip.classList.add("card__tooltip");
+    cardTooltip.textContent = elt.textContent;
+    elt.appendChild(cardTooltip);
+    console.log(elt.scrollWidth);
+  }
+});
