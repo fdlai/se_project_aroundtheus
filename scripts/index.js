@@ -1,7 +1,7 @@
 const initialCards = [
   {
     name: "El Capitan",
-    link: "https://www.socwall.com/images/wallpapers/6967-2560x1600.jpg",
+    link: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
   },
   {
     name: "Wanaka, New Zealand",
