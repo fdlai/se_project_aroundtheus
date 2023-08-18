@@ -12,7 +12,7 @@
   transition: opacity 0.25s ease-out;
 }
 
-.modal__opened {
+.modal_opened {
   opacity: 1;
   pointer-events: auto;
 }

@@ -6,7 +6,7 @@
   grid-template-columns: repeat(
     auto-fit,
     minmax(282px, 1fr)
-  ); /*allow cards to grow as grid columns go down*/
+  ); /*allow cards to adapt to size of grid-columns*/
   justify-content: center;
   align-items: center;
   grid-gap: 20px 17px;

@@ -1,3 +1,9 @@
+/* ---------------------------------------------------------------------------- */
+/* @tutor Kevin said that I might be allowed to keep the code that creates      */
+/* tooltips to display full-text, for text that has been truncated by ellipsis. */
+/* So I've left that code in for the time being. But I can delete it if needed. */
+/* ---------------------------------------------------------------------------- */
+
 const initialCards = [
   {
     name: "El Capitan",
@@ -41,7 +47,7 @@ const profileTitleInput = document.querySelector("#profile-title-input");
 const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
-const modalForm = modalEditProfile.querySelector(".modal__form");
+const modalForm = document.forms["modal-form"];
 const cardsList = document.querySelector(".cards__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
@@ -50,10 +56,6 @@ let cardTitles;
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
-
-function closeModalEditProfile() {
-  modalEditProfile.classList.remove("modal__opened");
-}
 
 function getCardElement(data) {
   const cardElement = cardTemplate.cloneNode(true);
@@ -69,6 +71,10 @@ function getCardElement(data) {
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
+function closeModalEditProfile() {
+  modalEditProfile.classList.remove("modal_opened");
+}
+
 function handleProfileEditSubmit(e) {
   e.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
@@ -79,16 +85,7 @@ function handleProfileEditSubmit(e) {
 function handleProfileEditOpen() {
   profileTitleInput.value = profileTitle.textContent.trim();
   profileDescriptionInput.value = profileDescription.textContent.trim();
-  modalEditProfile.classList.add("modal__opened");
-}
-
-function setImageHeight() {
-  //make all images square, in order to handle images of different aspect ratios
-  const cardImages = document.querySelectorAll(".card__image");
-  cardImages.forEach(function (image) {
-    const width = image.offsetWidth;
-    image.style.height = width + "px";
-  });
+  modalEditProfile.classList.add("modal_opened");
 }
 
 function createCardTooltip() {
@@ -163,19 +160,19 @@ profileEditButton.addEventListener("click", handleProfileEditOpen);
 modalCloseButton.addEventListener("click", closeModalEditProfile);
 
 //transfer modal input values to title and description
-modalForm.addEventListener("submit", handleProfileEditSubmit);
-
-//check for text ellipsis after changing profile info
-modalForm.addEventListener("submit", createProfileTitleTooltip);
-modalForm.addEventListener("submit", createProfileDescriptionTooltip);
-
-//update image heights when the window is resized
-window.addEventListener("resize", setImageHeight);
+//and check for text ellipsis after changing profile info
+modalForm.addEventListener("submit", function (e) {
+  handleProfileEditSubmit(e);
+  createProfileTitleTooltip(e);
+  createProfileDescriptionTooltip(e);
+});
 
 //check if ellipsis is still there after resizing
-window.addEventListener("resize", createCardTooltip);
-window.addEventListener("resize", createProfileTitleTooltip);
-window.addEventListener("resize", createProfileDescriptionTooltip);
+window.addEventListener("resize", function (e) {
+  createCardTooltip(e);
+  createProfileTitleTooltip(e);
+  createProfileDescriptionTooltip(e);
+});
 
 /* -------------------------------------------------------------------------- */
 /*                                    Code                                    */
@@ -183,9 +180,6 @@ window.addEventListener("resize", createProfileDescriptionTooltip);
 
 //have initialCards populate the page
 initialCards.forEach(getCardElement);
-
-//set initial heights of images
-setImageHeight();
 
 //create initial tooltips on page load
 createProfileTitleTooltip();

@@ -54,7 +54,6 @@
   pointer-events: none;
   top: -49px;
   left: -8px;
-  /* min-width: 245px; */
   word-wrap: break-word;
   white-space: normal;
 }
@@ -110,7 +109,6 @@
   pointer-events: none;
   top: 60px;
   left: -12px;
-  /* min-width: 245px; */
   word-wrap: break-word;
   white-space: normal;
 }

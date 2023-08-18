@@ -6,8 +6,8 @@
 }
 
 .card__image {
-  /*height: 282px*/
   width: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: 10px 10px 0 0;
   object-fit: cover;
 }

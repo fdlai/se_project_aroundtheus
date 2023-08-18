@@ -13,6 +13,7 @@ Project name: SE_PROJECT_AROUNDTHEUS
 - Responsive design
 - Media Queries
 - Sticky footer
+- Tooltips for truncated text
 
 ## Plan on improving the project
 
@@ -22,7 +23,7 @@ Plans to add:
 - user created profiles
 - ability for a user to upload their own photos
 - ability to like and comment on photos
-- ability to click on a photo and have it enlarge to see the full aspect ratio
+- ability to click on a photo and have it enlarge to see the original aspect ratio
 
 **Figma**
 
