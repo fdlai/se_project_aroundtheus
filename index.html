@@ -45,6 +45,7 @@
           </div>
           <button
             class="profile__add-button"
+            id="profile-add-button"
             type="button"
             aria-label="Add"
           ></button>
@@ -88,6 +89,41 @@
             aria-label="save"
           >
             Save
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="modal" id="modal-add-card">
+      <div class="modal__container">
+        <button
+          class="modal__close-button"
+          id="modal-close-button"
+          type="button"
+          aria-label="close"
+        ></button>
+        <p class="modal__heading">New place</p>
+        <form class="modal__form" id="modal-form">
+          <input
+            class="modal__input"
+            type="text"
+            name="title"
+            id="add-card-title-input"
+            placeholder="Title"
+          />
+          <input
+            class="modal__input"
+            type="text"
+            name="image-link"
+            id="add-card-image-link-input"
+            placeholder="Image link"
+          />
+          <button
+            class="modal__create-button"
+            id="modal-create-button"
+            type="submit"
+            aria-label="save"
+          >
+            Create
           </button>
         </form>
       </div>

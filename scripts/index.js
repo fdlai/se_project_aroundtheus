@@ -1,9 +1,3 @@
-/* ---------------------------------------------------------------------------- */
-/* @tutor Kevin said that I might be allowed to keep the code that creates      */
-/* tooltips to display full-text, for text that has been truncated by ellipsis. */
-/* So I've left that code in for the time being. But I can delete it if needed. */
-/* ---------------------------------------------------------------------------- */
-
 const initialCards = [
   {
     name: "El Capitan",
@@ -35,9 +29,12 @@ const initialCards = [
 /*                                  Elements                                  */
 /* -------------------------------------------------------------------------- */
 
+//modal profile elements
 const modalEditProfile = document.querySelector("#modal-edit-profile");
 const profileEditButton = document.querySelector("#profile-edit-button");
-const modalCloseButton = document.querySelector("#modal-close-button");
+const modalProfileCloseButton = modalEditProfile.querySelector(
+  "#modal-close-button"
+);
 const profileTitle = document.querySelector("#profile-title");
 const profileDescription = document.querySelector("#profile-description");
 const profileTitleAndDescription = document.querySelectorAll(
@@ -47,11 +44,25 @@ const profileTitleInput = document.querySelector("#profile-title-input");
 const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
-const modalForm = document.forms["modal-form"];
+const modalProfileForm = modalEditProfile.querySelector("#modal-form");
+
+//card elements
 const cardsList = document.querySelector(".cards__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 let cardTitles;
+
+//modal add-card elements
+const modalAddCard = document.querySelector("#modal-add-card");
+const profileAddButton = document.querySelector("#profile-add-button");
+const modalAddCardCloseButton = modalAddCard.querySelector(
+  "#modal-close-button"
+);
+const addCardTitleInput = modalAddCard.querySelector("#add-card-title-input");
+const addCardImageLinkInput = modalAddCard.querySelector(
+  "#add-card-image-link-input"
+);
+const modalAddCardForm = modalAddCard.querySelector("#modal-form");
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -75,6 +86,10 @@ function closeModalEditProfile() {
   modalEditProfile.classList.remove("modal_opened");
 }
 
+function closeModalAddCard() {
+  modalAddCard.classList.remove("modal_opened");
+}
+
 function handleProfileEditSubmit(e) {
   e.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
@@ -86,6 +101,10 @@ function handleProfileEditOpen() {
   profileTitleInput.value = profileTitle.textContent.trim();
   profileDescriptionInput.value = profileDescription.textContent.trim();
   modalEditProfile.classList.add("modal_opened");
+}
+
+function handleProfileAddOpen() {
+  modalAddCard.classList.add("modal_opened");
 }
 
 function createCardTooltip() {
@@ -156,12 +175,16 @@ function createProfileDescriptionTooltip() {
 //edit profile button populates the inputs and brings up the modal.
 profileEditButton.addEventListener("click", handleProfileEditOpen);
 
+//profile add button brings up modal
+profileAddButton.addEventListener("click", handleProfileAddOpen);
+
 //allow x button on the modal to close the modal
-modalCloseButton.addEventListener("click", closeModalEditProfile);
+modalProfileCloseButton.addEventListener("click", closeModalEditProfile);
+modalAddCardCloseButton.addEventListener("click", closeModalAddCard);
 
 //transfer modal input values to title and description
 //and check for text ellipsis after changing profile info
-modalForm.addEventListener("submit", function (e) {
+modalProfileForm.addEventListener("submit", function (e) {
   handleProfileEditSubmit(e);
   createProfileTitleTooltip(e);
   createProfileDescriptionTooltip(e);
