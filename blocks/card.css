@@ -64,11 +64,6 @@
   position: relative;
 }
 
-.card__empty-box {
-  height: 81px;
-  border-radius: 0 0 10px 10px;
-}
-
 .card__title {
   margin: 0;
   padding-right: 6px;

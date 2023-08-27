@@ -77,6 +77,12 @@ const modalPictureCloseButton = modalPicture.querySelector(
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
 
+function addDeleteButton(button, elt) {
+  button.addEventListener("click", () => {
+    elt.remove();
+  });
+}
+
 function getCardElement(data) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardElementTitle = cardElement.querySelector(".card__title");
@@ -93,9 +99,7 @@ function getCardElement(data) {
 
   //delete-button functionality
   const deleteButton = cardElement.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", () => {
-    cardElement.remove();
-  });
+  addDeleteButton(deleteButton, cardElement);
 
   //open picture modal functionality
   cardElementImage.addEventListener("click", () => {
@@ -129,9 +133,9 @@ function renderCard(cardData, placement = "append", wrapper = cardsList) {
   image.onerror = () => {
     const errorCard = errorCardTemplate.cloneNode(true);
     const deleteButton = errorCard.querySelector(".card__delete-button");
-    deleteButton.addEventListener("click", () => {
-      errorCard.remove();
-    });
+    const errorCardTitle = errorCard.querySelector(".card__title");
+    errorCardTitle.textContent = cardData.name ? cardData.name : "...";
+    addDeleteButton(deleteButton, errorCard);
     cardsList.replaceChild(errorCard, cardElement);
   };
 }
