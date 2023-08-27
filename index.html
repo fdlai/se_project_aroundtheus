@@ -134,12 +134,20 @@
         <div class="card__content">
           <h2 class="card__title"></h2>
           <button
-            class="card__heart-logo"
+            class="card__like-button"
             type="button"
             aria-label="Like"
           ></button>
         </div></li
     ></template>
+    <template id="error-card-template">
+      <div class="card">
+        <div class="card__error-message">
+          <h2 class="card__error-title">Image has failed to load</h2>
+        </div>
+        <div class="card__empty-box"></div>
+      </div>
+    </template>
     <script src="./scripts/index.js"></script>
   </body>
 </html>

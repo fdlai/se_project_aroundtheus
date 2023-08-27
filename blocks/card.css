@@ -12,6 +12,30 @@
   object-fit: cover;
 }
 
+.card__error-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px 10px 0 0;
+  background-image: url(../images/technical-difficulties.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.card__error-title {
+  color: #000;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+  text-align: center;
+  width: 100%;
+  background-color: white;
+  padding: 15px 0;
+}
+
 .card__content {
   padding: 25px 20px 25px 20px;
   display: flex;
@@ -21,6 +45,11 @@
   color: black;
   border-radius: 10px;
   position: relative;
+}
+
+.card__empty-box {
+  height: 81px;
+  border-radius: 0 0 10px 10px;
 }
 
 .card__title {
@@ -62,17 +91,18 @@
   pointer-events: auto;
 }
 
-.card__heart-logo {
+.card__like-button {
   margin-left: auto;
   border: none;
   width: 21px;
   height: 18px;
   padding: 0 0 0 20px;
-  background: transparent url(../images/heart-logo.svg) center no-repeat;
+  background: transparent url(../images/like-button-inactive.svg) center
+    no-repeat;
   transition: opacity;
 }
 
-.card__heart-logo:hover {
+.card__like-button:hover {
   opacity: 0.5;
   cursor: pointer;
 }

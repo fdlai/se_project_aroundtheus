@@ -50,6 +50,8 @@ const modalProfileForm = modalEditProfile.querySelector("#modal-form");
 const cardsList = document.querySelector(".cards__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
+const errorCardTemplate = document.querySelector("#error-card-template").content
+  .firstElementChild;
 
 //modal add-card elements
 const modalAddCard = document.querySelector("#modal-add-card");
@@ -77,8 +79,24 @@ function getCardElement(data) {
   return cardElement;
 }
 
-function addCard(data) {
-  const cardElement = cardTemplate.cloneNode(true);
+function renderCard(cardData, placement = "append", wrapper = cardsList) {
+  const cardElement = getCardElement(cardData);
+  switch (placement) {
+    case "append":
+      wrapper.append(cardElement);
+      break;
+    case "prepend":
+      wrapper.prepend(cardElement);
+      break;
+    default:
+      console.log("error");
+  }
+  image = cardElement.querySelector(".card__image");
+  image.onerror = () => {
+    // Code to execute if the image fails to load
+    const errorCard = errorCardTemplate.cloneNode(true);
+    cardsList.replaceChild(errorCard, cardElement);
+  };
 }
 
 /* -------------------------------------------------------------------------- */
@@ -98,12 +116,16 @@ function handleProfileEditSubmit(e) {
 
 function handleAddCardSubmit(e) {
   e.preventDefault();
-  data = {
+  cardData = {
     name: addCardTitleInput.value,
     link: addCardImageLinkInput.value,
   };
-  cardsList.prepend(getCardElement(data));
+  renderCard(cardData, "prepend");
   closeModal(modalAddCard);
+}
+
+function openModal(modal) {
+  modal.classList.add("modal_opened");
 }
 
 function handleProfileEditOpen() {
@@ -183,16 +205,22 @@ function createProfileDescriptionTooltip() {
 /* -------------------------------------------------------------------------- */
 
 //edit profile button populates the inputs and brings up the modal.
-profileEditButton.addEventListener("click", handleProfileEditOpen);
+profileEditButton.addEventListener("click", () => {
+  profileTitleInput.value = profileTitle.textContent.trim();
+  profileDescriptionInput.value = profileDescription.textContent.trim();
+  openModal(modalEditProfile);
+});
 
 //profile add button brings up modal
-profileAddButton.addEventListener("click", handleProfileAddOpen);
+profileAddButton.addEventListener("click", () => {
+  openModal(modalAddCard);
+});
 
 //allow x button on the modal to close the modal
-modalProfileCloseButton.addEventListener("click", (e) => {
+modalProfileCloseButton.addEventListener("click", () => {
   closeModal(modalEditProfile);
 });
-modalAddCardCloseButton.addEventListener("click", (e) => {
+modalAddCardCloseButton.addEventListener("click", () => {
   closeModal(modalAddCard);
 });
 
@@ -222,8 +250,8 @@ window.addEventListener("resize", function (e) {
 /* -------------------------------------------------------------------------- */
 
 //have initialCards populate the page
-initialCards.forEach((data) => {
-  cardsList.append(getCardElement(data));
+initialCards.forEach((cardData) => {
+  renderCard(cardData, "append");
 });
 
 //create initial tooltips on page load
