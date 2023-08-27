@@ -76,6 +76,19 @@ function getCardElement(data) {
   cardElementTitle.textContent = data.name;
   cardElementImage.setAttribute("src", `${data.link}`);
   cardElementImage.setAttribute("alt", `${data.name}`);
+
+  //like-button functionality
+  const likeButton = cardElement.querySelector(".card__like-button");
+  likeButton.addEventListener("click", () => {
+    likeButton.classList.toggle("card__like-button_active");
+  });
+
+  //delete-button functionality
+  const deleteButton = cardElement.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", () => {
+    cardElement.remove();
+  });
+
   return cardElement;
 }
 
@@ -95,6 +108,10 @@ function renderCard(cardData, placement = "append", wrapper = cardsList) {
   image.onerror = () => {
     // Code to execute if the image fails to load
     const errorCard = errorCardTemplate.cloneNode(true);
+    const deleteButton = errorCard.querySelector(".card__delete-button");
+    deleteButton.addEventListener("click", () => {
+      errorCard.remove();
+    });
     cardsList.replaceChild(errorCard, cardElement);
   };
 }
