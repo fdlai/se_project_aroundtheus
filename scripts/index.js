@@ -65,6 +65,14 @@ const addCardImageLinkInput = modalAddCard.querySelector(
 );
 const modalAddCardForm = modalAddCard.querySelector("#modal-form");
 
+//modal picture elements
+const modalPicture = document.querySelector("#modal-picture");
+const modalPictureImage = modalPicture.querySelector(".modal__image");
+const modalPictureSubtitle = modalPicture.querySelector(".modal__subtitle");
+const modalPictureCloseButton = modalPicture.querySelector(
+  "#modal-close-button"
+);
+
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
@@ -89,6 +97,17 @@ function getCardElement(data) {
     cardElement.remove();
   });
 
+  //open picture modal functionality
+  cardElementImage.addEventListener("click", () => {
+    modalPictureImage.setAttribute("src", `${data.link}`);
+    modalPictureImage.setAttribute("alt", `${data.name}`);
+    modalPictureSubtitle.textContent = data.name;
+    //make sure image loads before opening modal
+    modalPictureImage.onload = () => {
+      openModal(modalPicture);
+    };
+  });
+
   return cardElement;
 }
 
@@ -104,9 +123,10 @@ function renderCard(cardData, placement = "append", wrapper = cardsList) {
     default:
       console.log("error");
   }
+
+  //Add an error-card if the image fails to load
   image = cardElement.querySelector(".card__image");
   image.onerror = () => {
-    // Code to execute if the image fails to load
     const errorCard = errorCardTemplate.cloneNode(true);
     const deleteButton = errorCard.querySelector(".card__delete-button");
     deleteButton.addEventListener("click", () => {
@@ -239,6 +259,9 @@ modalProfileCloseButton.addEventListener("click", () => {
 });
 modalAddCardCloseButton.addEventListener("click", () => {
   closeModal(modalAddCard);
+});
+modalPictureCloseButton.addEventListener("click", () => {
+  closeModal(modalPicture);
 });
 
 //transfer profile modal input values to title and description

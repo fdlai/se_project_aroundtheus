@@ -17,6 +17,7 @@
   </head>
   <body class="page">
     <div class="page__content">
+      <!-- ------------------------------- header -------------------------------- -->
       <header class="header">
         <img
           class="header__image"
@@ -24,6 +25,7 @@
           alt="Around the US logo"
         />
       </header>
+      <!-- -------------------------------- main --------------------------------- -->
       <main class="content">
         <section class="profile">
           <img
@@ -55,9 +57,11 @@
         </section>
       </main>
     </div>
+    <!-- ------------------------------- footer -------------------------------- -->
     <footer class="footer">
       <p class="footer__copyright">© 2023 Around The U.S.</p>
     </footer>
+    <!-- ------------------------- modal-edit-profile -------------------------- -->
     <div class="modal" id="modal-edit-profile">
       <div class="modal__container">
         <button
@@ -83,8 +87,8 @@
             placeholder="About me"
           />
           <button
-            class="modal__save-button"
-            id="modal-save-button"
+            class="modal__submit-button"
+            id="modal-submit-button"
             type="submit"
             aria-label="save"
           >
@@ -93,6 +97,7 @@
         </form>
       </div>
     </div>
+    <!-- --------------------------- modal-add-card ---------------------------- -->
     <div class="modal" id="modal-add-card">
       <div class="modal__container">
         <button
@@ -118,8 +123,8 @@
             placeholder="Image link"
           />
           <button
-            class="modal__create-button"
-            id="modal-create-button"
+            class="modal__submit-button"
+            id="modal-submit-button"
             type="submit"
             aria-label="save"
           >
@@ -128,6 +133,20 @@
         </form>
       </div>
     </div>
+    <!-- ---------------------------- modal-picture ---------------------------- -->
+    <div class="modal" id="modal-picture">
+      <div class="modal__picture-container">
+        <button
+          class="modal__close-button"
+          id="modal-close-button"
+          type="button"
+          aria-label="close"
+        ></button>
+        <img src="" alt="" class="modal__image" />
+        <p class="modal__subtitle"></p>
+      </div>
+    </div>
+    <!-- ---------------------------- card-template ---------------------------- -->
     <template id="card-template"
       ><li class="card">
         <button
@@ -145,6 +164,7 @@
           ></button>
         </div></li
     ></template>
+    <!-- ------------------------- error-card-template ------------------------- -->
     <template id="error-card-template">
       <div class="card">
         <button

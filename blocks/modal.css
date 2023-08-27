@@ -28,6 +28,11 @@
   transition: width 0.25s;
 }
 
+.modal__picture-container {
+  margin: auto;
+  position: relative;
+}
+
 .modal__close-button {
   background-image: url(../images/Close-Icon.svg);
   width: 40px;
@@ -41,6 +46,23 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+
+.modal__image {
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+.modal__subtitle {
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background: transparent;
+  position: absolute;
+  bottom: -25px;
+  margin: 0;
 }
 
 .modal__heading {
@@ -86,7 +108,7 @@
   line-height: normal;
 }
 
-.modal__save-button {
+.modal__submit-button {
   margin: 48px 0 0 0;
   padding: 0;
   width: 100%;
@@ -120,7 +142,7 @@
     margin: 0 0 75px 0;
     height: 18px;
   }
-  .modal__save-button {
+  .modal__submit-button {
     margin-top: 45px;
     font-size: 14px;
   }
