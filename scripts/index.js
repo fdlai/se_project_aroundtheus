@@ -50,7 +50,6 @@ const modalProfileForm = modalEditProfile.querySelector("#modal-form");
 const cardsList = document.querySelector(".cards__list");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
-let cardTitles;
 
 //modal add-card elements
 const modalAddCard = document.querySelector("#modal-add-card");
@@ -75,26 +74,36 @@ function getCardElement(data) {
   cardElementTitle.textContent = data.name;
   cardElementImage.setAttribute("src", `${data.link}`);
   cardElementImage.setAttribute("alt", `${data.name}`);
-  cardsList.append(cardElement);
+  return cardElement;
+}
+
+function addCard(data) {
+  const cardElement = cardTemplate.cloneNode(true);
 }
 
 /* -------------------------------------------------------------------------- */
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
-function closeModalEditProfile() {
-  modalEditProfile.classList.remove("modal_opened");
-}
-
-function closeModalAddCard() {
-  modalAddCard.classList.remove("modal_opened");
+function closeModal(modal) {
+  modal.classList.remove("modal_opened");
 }
 
 function handleProfileEditSubmit(e) {
   e.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
-  closeModalEditProfile();
+  closeModal(modalEditProfile);
+}
+
+function handleAddCardSubmit(e) {
+  e.preventDefault();
+  data = {
+    name: addCardTitleInput.value,
+    link: addCardImageLinkInput.value,
+  };
+  cardsList.prepend(getCardElement(data));
+  closeModal(modalAddCard);
 }
 
 function handleProfileEditOpen() {
@@ -109,6 +118,7 @@ function handleProfileAddOpen() {
 
 function createCardTooltip() {
   //create a tooltip for card__title that displays when text is long enough to cause ellipsis
+  const cardTitles = document.querySelectorAll(".card__title");
   cardTitles.forEach(function (elt) {
     ellipsisExists = elt.scrollWidth > elt.clientWidth;
     const tooltipIsOpen =
@@ -179,15 +189,25 @@ profileEditButton.addEventListener("click", handleProfileEditOpen);
 profileAddButton.addEventListener("click", handleProfileAddOpen);
 
 //allow x button on the modal to close the modal
-modalProfileCloseButton.addEventListener("click", closeModalEditProfile);
-modalAddCardCloseButton.addEventListener("click", closeModalAddCard);
+modalProfileCloseButton.addEventListener("click", (e) => {
+  closeModal(modalEditProfile);
+});
+modalAddCardCloseButton.addEventListener("click", (e) => {
+  closeModal(modalAddCard);
+});
 
-//transfer modal input values to title and description
+//transfer profile modal input values to title and description
 //and check for text ellipsis after changing profile info
 modalProfileForm.addEventListener("submit", function (e) {
   handleProfileEditSubmit(e);
   createProfileTitleTooltip(e);
   createProfileDescriptionTooltip(e);
+});
+
+//create card and prepend it to card list
+modalAddCardForm.addEventListener("submit", (e) => {
+  handleAddCardSubmit(e);
+  createCardTooltip(e);
 });
 
 //check if ellipsis is still there after resizing
@@ -202,10 +222,11 @@ window.addEventListener("resize", function (e) {
 /* -------------------------------------------------------------------------- */
 
 //have initialCards populate the page
-initialCards.forEach(getCardElement);
+initialCards.forEach((data) => {
+  cardsList.append(getCardElement(data));
+});
 
 //create initial tooltips on page load
 createProfileTitleTooltip();
 createProfileDescriptionTooltip();
-cardTitles = document.querySelectorAll(".card__title"); //must be put after initialCards has populated the page
 createCardTooltip();
