@@ -14,16 +14,19 @@ Project name: SE_PROJECT_AROUNDTHEUS
 - Media Queries
 - Sticky footer
 - Tooltips for truncated text
+- Working like-buttons
+- User ability to add cards
+- Ability to enlarge photos and show original aspect ratio
+- Custom card with error message to account for images that fail to load
 
 ## Plan on improving the project
 
 Plans to add:
 
-- User interactivity:
+- More user interactivity:
 - user created profiles
-- ability for a user to upload their own photos
-- ability to like and comment on photos
-- ability to click on a photo and have it enlarge to see the original aspect ratio
+- ability to comment on photos
+- track and display the number of likes on photos
 
 **Figma**
 

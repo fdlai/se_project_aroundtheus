@@ -49,18 +49,20 @@
   border: 1px solid black;
   border-radius: 20px;
   z-index: 1;
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.5s ease-in;
-  pointer-events: none;
+  transition: visibility 0s linear 0.5s, opacity 0.5s linear;
   top: -49px;
   left: -8px;
   word-wrap: break-word;
   white-space: normal;
+  pointer-events: none;
 }
 
 .profile__title:hover + .profile__tooltip-title {
   opacity: 0.8;
-  pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .profile__edit-button {
@@ -104,8 +106,9 @@
   border: 1px solid black;
   border-radius: 20px;
   z-index: 1;
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.5s ease-in;
+  transition: visibility 0s linear 0.5s, opacity 0.5s linear;
   pointer-events: none;
   top: 60px;
   left: -12px;
@@ -115,7 +118,8 @@
 
 .profile__description:hover + .profile__tooltip-description {
   opacity: 0.8;
-  pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .profile__add-button {

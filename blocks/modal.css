@@ -46,6 +46,11 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+  transition: opacity 0.25s;
+}
+
+.modal__close-button:hover {
+  opacity: 0.6;
 }
 
 .modal__image {
@@ -123,6 +128,11 @@
   cursor: pointer;
   border-radius: 2px;
   border: none;
+  transition: opacity 0.25s;
+}
+
+.modal__submit-button:hover {
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 615px) {
@@ -135,7 +145,13 @@
     height: 26px;
     bottom: calc(100% + 20px);
     left: inherit;
-    right: 0;
+    right: 7px;
+  }
+  .modal-close-button_picture {
+    width: 30px;
+    height: 30px;
+    bottom: calc(100% + 5px);
+    left: calc(100% + 5px);
   }
   .modal__heading {
     font-size: 18px;
