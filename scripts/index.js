@@ -44,7 +44,7 @@ const initialCards = [
 const modalEditProfile = document.querySelector("#modal-edit-profile");
 const profileEditButton = document.querySelector("#profile-edit-button");
 const modalProfileCloseButton = modalEditProfile.querySelector(
-  "#modal-close-button"
+  ".modal__close-button"
 );
 const profileTitle = document.querySelector("#profile-title");
 const profileDescription = document.querySelector("#profile-description");
@@ -52,7 +52,7 @@ const profileTitleInput = document.querySelector("#profile-title-input");
 const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
-const modalProfileForm = modalEditProfile.querySelector("#modal-form");
+const modalProfileForm = modalEditProfile.querySelector("#modal-profile-form");
 
 //card elements
 const cardsList = document.querySelector(".cards__list");
@@ -65,20 +65,20 @@ const errorCardTemplate = document.querySelector("#error-card-template").content
 const modalAddCard = document.querySelector("#modal-add-card");
 const profileAddButton = document.querySelector("#profile-add-button");
 const modalAddCardCloseButton = modalAddCard.querySelector(
-  "#modal-close-button"
+  ".modal__close-button"
 );
 const addCardTitleInput = modalAddCard.querySelector("#add-card-title-input");
 const addCardImageLinkInput = modalAddCard.querySelector(
   "#add-card-image-link-input"
 );
-const modalAddCardForm = modalAddCard.querySelector("#modal-form");
+const modalAddCardForm = modalAddCard.querySelector("#modal-add-card-form");
 
 //modal picture elements
 const modalPicture = document.querySelector("#modal-picture");
 const modalPictureImage = modalPicture.querySelector(".modal__image");
 const modalPictureSubtitle = modalPicture.querySelector(".modal__subtitle");
 const modalPictureCloseButton = modalPicture.querySelector(
-  "#modal-close-button"
+  ".modal__close-button"
 );
 
 /* -------------------------------------------------------------------------- */
