@@ -1,12 +1,6 @@
 /*
 To the reviewer:
-Hi! Last time I submitted my project (during sprint 4), I added tooltips, as an extra feature,
-that display on truncated text. It got approved. This time I've attempted an extra feature where if
-when adding a new card, if the image url fails to load, it displays an "error-card". I hope it's ok
-that I keep attempting to add extra features to the project. I'd love any input you have on it.
-ie: if there's something wrong with it, maybe you have suggestions on how I can fix or improve it in
-some way, which I would be glad to implement. Or worst case scenario, I can delete it all.
-Thank you!
+Thanks for all the great suggestions!
 */
 
 const initialCards = [
@@ -128,6 +122,10 @@ function getCardElement(cardData) {
   //picture-modal functionality
   addPictureModalFunctionality(cardElementImage, cardData);
 
+  //use error-card if the image fails to load
+  cardElementImage.onerror = () =>
+    replaceWithErrorCard(cardElement, "Image has failed to load");
+
   return cardElement;
 }
 
@@ -156,11 +154,6 @@ function renderCard(cardData, placement = "append", wrapper = cardsList) {
     default:
       console.log("Error. Please use only 'append' or 'prepend'.");
   }
-
-  //use error-card if the image fails to load
-  image = cardElement.querySelector(".card__image");
-  image.onerror = () =>
-    replaceWithErrorCard(cardElement, "Image has failed to load");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -173,16 +166,6 @@ function openModal(modal) {
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
-}
-
-function handleProfileEditOpen() {
-  profileTitleInput.value = profileTitle.textContent.trim();
-  profileDescriptionInput.value = profileDescription.textContent.trim();
-  modalEditProfile.classList.add("modal_opened");
-}
-
-function handleProfileAddOpen() {
-  modalAddCard.classList.add("modal_opened");
 }
 
 function handleProfileEditSubmit(e) {
@@ -206,7 +189,7 @@ function handleAddCardSubmit(e) {
 function createCardTooltip() {
   const cardTitles = document.querySelectorAll(".card__title");
   cardTitles.forEach((elt) => {
-    ellipsisExists = elt.scrollWidth > elt.clientWidth;
+    const ellipsisExists = elt.scrollWidth > elt.clientWidth;
     const tooltipIsOpen = elt.parentNode.querySelector(".card__tooltip");
     if (ellipsisExists && !tooltipIsOpen) {
       const cardTooltip = document.createElement("p");
@@ -279,15 +262,11 @@ profileAddButton.addEventListener("click", () => {
   openModal(modalAddCard);
 });
 
-//x button closes the modal
-modalProfileCloseButton.addEventListener("click", () => {
-  closeModal(modalEditProfile);
-});
-modalAddCardCloseButton.addEventListener("click", () => {
-  closeModal(modalAddCard);
-});
-modalPictureCloseButton.addEventListener("click", () => {
-  closeModal(modalPicture);
+//each x button closes its modal
+const modalCloseButtons = document.querySelectorAll(".modal__close-button");
+modalCloseButtons.forEach((button) => {
+  const modal = button.closest(".modal");
+  button.addEventListener("click", () => closeModal(modal));
 });
 
 //allow user input of profile name and description.
