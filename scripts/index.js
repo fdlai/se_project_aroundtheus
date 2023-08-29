@@ -1,3 +1,14 @@
+/*
+To the reviewer:
+Hi! Last time I submitted my project (during sprint 4), I added tooltips, as an extra feature,
+that display on truncated text. It got approved. This time I've attempted an extra feature where if
+when adding a new card, if the image url fails to load, it displays an "error-card". I hope it's ok
+that I keep attempting to add extra features to the project. I'd love any input you have on it.
+ie: if there's something wrong with it, maybe you have suggestions on how I can fix or improve it in
+some way, which I would be glad to implement. Or worst case scenario, I can delete it all.
+Thank you!
+*/
+
 const initialCards = [
   {
     name: "El Capitan",
@@ -37,9 +48,6 @@ const modalProfileCloseButton = modalEditProfile.querySelector(
 );
 const profileTitle = document.querySelector("#profile-title");
 const profileDescription = document.querySelector("#profile-description");
-const profileTitleAndDescription = document.querySelectorAll(
-  "#profile-title, #profile-description"
-);
 const profileTitleInput = document.querySelector("#profile-title-input");
 const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
@@ -77,19 +85,35 @@ const modalPictureCloseButton = modalPicture.querySelector(
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
 
-function addDeleteButton(button, elt) {
+//click button to delete element
+function addDeleteFunctionality(button, element) {
   button.addEventListener("click", () => {
-    elt.remove();
+    element.remove();
   });
 }
 
-function getCardElement(data) {
+//click button to display image in picture-modal
+function addPictureModalFunctionality(button, image) {
+  //note: image parameter is an object with image.name and image.link
+  button.addEventListener("click", () => {
+    modalPictureImage.setAttribute("src", `${image.link}`);
+    modalPictureImage.setAttribute("alt", `${image.name}`);
+    modalPictureSubtitle.textContent = image.name;
+    //make sure image loads before opening modal
+    modalPictureImage.onload = () => {
+      openModal(modalPicture);
+    };
+  });
+}
+
+function getCardElement(cardData) {
+  //create card, give it its name and image
   const cardElement = cardTemplate.cloneNode(true);
   const cardElementTitle = cardElement.querySelector(".card__title");
   const cardElementImage = cardElement.querySelector(".card__image");
-  cardElementTitle.textContent = data.name;
-  cardElementImage.setAttribute("src", `${data.link}`);
-  cardElementImage.setAttribute("alt", `${data.name}`);
+  cardElementTitle.textContent = cardData.name;
+  cardElementImage.setAttribute("src", `${cardData.link}`);
+  cardElementImage.setAttribute("alt", `${cardData.name}`);
 
   //like-button functionality
   const likeButton = cardElement.querySelector(".card__like-button");
@@ -99,22 +123,27 @@ function getCardElement(data) {
 
   //delete-button functionality
   const deleteButton = cardElement.querySelector(".card__delete-button");
-  addDeleteButton(deleteButton, cardElement);
+  addDeleteFunctionality(deleteButton, cardElement);
 
-  //open picture modal functionality
-  cardElementImage.addEventListener("click", () => {
-    modalPictureImage.setAttribute("src", `${data.link}`);
-    modalPictureImage.setAttribute("alt", `${data.name}`);
-    modalPictureSubtitle.textContent = data.name;
-    //make sure image loads before opening modal
-    modalPictureImage.onload = () => {
-      openModal(modalPicture);
-    };
-  });
+  //picture-modal functionality
+  addPictureModalFunctionality(cardElementImage, cardData);
 
   return cardElement;
 }
 
+//replaces card with error-card
+function replaceWithErrorCard(card, errorMessage = "Error") {
+  const errorCard = errorCardTemplate.cloneNode(true);
+  const errorCardMessage = errorCard.querySelector(".card__error-message");
+  const deleteButton = errorCard.querySelector(".card__delete-button");
+  const errorCardTitle = errorCard.querySelector(".card__title");
+  errorCardMessage.textContent = errorMessage;
+  errorCardTitle.textContent = card.innerText ? card.textContent : "...";
+  addDeleteFunctionality(deleteButton, errorCard);
+  card.replaceWith(errorCard);
+}
+
+//appends or prepends card to wrapper
 function renderCard(cardData, placement = "append", wrapper = cardsList) {
   const cardElement = getCardElement(cardData);
   switch (placement) {
@@ -125,27 +154,35 @@ function renderCard(cardData, placement = "append", wrapper = cardsList) {
       wrapper.prepend(cardElement);
       break;
     default:
-      console.log("error");
+      console.log("Error. Please use only 'append' or 'prepend'.");
   }
 
-  //Add an error-card if the image fails to load
+  //use error-card if the image fails to load
   image = cardElement.querySelector(".card__image");
-  image.onerror = () => {
-    const errorCard = errorCardTemplate.cloneNode(true);
-    const deleteButton = errorCard.querySelector(".card__delete-button");
-    const errorCardTitle = errorCard.querySelector(".card__title");
-    errorCardTitle.textContent = cardData.name ? cardData.name : "...";
-    addDeleteButton(deleteButton, errorCard);
-    cardsList.replaceChild(errorCard, cardElement);
-  };
+  image.onerror = () =>
+    replaceWithErrorCard(cardElement, "Image has failed to load");
 }
 
 /* -------------------------------------------------------------------------- */
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
+function openModal(modal) {
+  modal.classList.add("modal_opened");
+}
+
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
+}
+
+function handleProfileEditOpen() {
+  profileTitleInput.value = profileTitle.textContent.trim();
+  profileDescriptionInput.value = profileDescription.textContent.trim();
+  modalEditProfile.classList.add("modal_opened");
+}
+
+function handleProfileAddOpen() {
+  modalAddCard.classList.add("modal_opened");
 }
 
 function handleProfileEditSubmit(e) {
@@ -165,27 +202,12 @@ function handleAddCardSubmit(e) {
   closeModal(modalAddCard);
 }
 
-function openModal(modal) {
-  modal.classList.add("modal_opened");
-}
-
-function handleProfileEditOpen() {
-  profileTitleInput.value = profileTitle.textContent.trim();
-  profileDescriptionInput.value = profileDescription.textContent.trim();
-  modalEditProfile.classList.add("modal_opened");
-}
-
-function handleProfileAddOpen() {
-  modalAddCard.classList.add("modal_opened");
-}
-
+//create a tooltip for card__title that displays when text is long enough to cause ellipsis
 function createCardTooltip() {
-  //create a tooltip for card__title that displays when text is long enough to cause ellipsis
   const cardTitles = document.querySelectorAll(".card__title");
-  cardTitles.forEach(function (elt) {
+  cardTitles.forEach((elt) => {
     ellipsisExists = elt.scrollWidth > elt.clientWidth;
-    const tooltipIsOpen =
-      elt.nextElementSibling.classList.contains("card__tooltip");
+    const tooltipIsOpen = elt.parentNode.querySelector(".card__tooltip");
     if (ellipsisExists && !tooltipIsOpen) {
       const cardTooltip = document.createElement("p");
       cardTooltip.classList.add("card__tooltip");
@@ -198,8 +220,8 @@ function createCardTooltip() {
   });
 }
 
+//manage a tooltip for profile__title that displays when text is long enough to cause ellipsis
 function createProfileTitleTooltip() {
-  //manage a tooltip for profile__title that displays when text is long enough to cause ellipsis
   const ellipsisExists = profileTitle.scrollWidth > profileTitle.offsetWidth;
   const tooltipIsOpen =
     document.querySelector(".profile__tooltip-title") !== null;
@@ -217,8 +239,8 @@ function createProfileTitleTooltip() {
   }
 }
 
+//manage a tooltip for profile__description that displays when text is long enough to cause ellipsis
 function createProfileDescriptionTooltip() {
-  //manage a tooltip for profile__description that displays when text is long enough to cause ellipsis
   const ellipsisExists =
     profileDescription.scrollWidth > profileDescription.offsetWidth;
   const tooltipIsOpen =
@@ -257,7 +279,7 @@ profileAddButton.addEventListener("click", () => {
   openModal(modalAddCard);
 });
 
-//allow x button on the modal to close the modal
+//x button closes the modal
 modalProfileCloseButton.addEventListener("click", () => {
   closeModal(modalEditProfile);
 });
@@ -268,9 +290,9 @@ modalPictureCloseButton.addEventListener("click", () => {
   closeModal(modalPicture);
 });
 
-//transfer profile modal input values to title and description
-//and check for text ellipsis after changing profile info
-modalProfileForm.addEventListener("submit", function (e) {
+//allow user input of profile name and description.
+//also check for text ellipsis after changing profile info
+modalProfileForm.addEventListener("submit", (e) => {
   handleProfileEditSubmit(e);
   createProfileTitleTooltip(e);
   createProfileDescriptionTooltip(e);
@@ -282,8 +304,8 @@ modalAddCardForm.addEventListener("submit", (e) => {
   createCardTooltip(e);
 });
 
-//check if ellipsis is still there after resizing
-window.addEventListener("resize", function (e) {
+//check if text ellipsis is there after resizing
+window.addEventListener("resize", (e) => {
   createCardTooltip(e);
   createProfileTitleTooltip(e);
   createProfileDescriptionTooltip(e);
@@ -293,7 +315,7 @@ window.addEventListener("resize", function (e) {
 /*                                    Code                                    */
 /* -------------------------------------------------------------------------- */
 
-//have initialCards populate the page
+//have initialCards render
 initialCards.forEach((cardData) => {
   renderCard(cardData, "append");
 });

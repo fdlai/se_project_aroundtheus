@@ -150,8 +150,8 @@
   .modal-close-button_picture {
     width: 30px;
     height: 30px;
-    bottom: calc(100% + 5px);
-    left: calc(100% + 5px);
+    bottom: calc(100% + 2px);
+    left: calc(100% + 2px);
   }
   .modal__heading {
     font-size: 18px;

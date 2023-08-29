@@ -27,6 +27,7 @@ Plans to add:
 - user created profiles
 - ability to comment on photos
 - track and display the number of likes on photos
+- ability to drag cards and change their placement
 
 **Figma**
 

@@ -57,6 +57,7 @@
   word-wrap: break-word;
   white-space: normal;
   pointer-events: none;
+  max-width: 95%;
 }
 
 .profile__title:hover + .profile__tooltip-title {
@@ -114,6 +115,7 @@
   left: -12px;
   word-wrap: break-word;
   white-space: normal;
+  max-width: 100%;
 }
 
 .profile__description:hover + .profile__tooltip-description {
@@ -178,6 +180,7 @@
     left: 0;
     font-size: 18px;
     padding: 18px;
+    max-width: 88%;
   }
   .profile__edit-button {
     width: 18px;
