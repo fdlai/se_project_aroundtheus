@@ -147,7 +147,7 @@
     left: inherit;
     right: 7px;
   }
-  .modal-close-button_picture {
+  .modal__close-button_picture {
     width: 30px;
     height: 30px;
     bottom: calc(100% + 2px);
