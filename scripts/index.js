@@ -155,6 +155,13 @@ function renderCard(cardData, placement = "append", wrapper = cardsList) {
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
+function resetForm(modal) {
+  const form = modal.querySelector(".modal__form");
+  if (form) {
+    form.reset();
+  }
+}
+
 function clickToCloseModal(e) {
   if (
     e.target.classList.contains("modal_opened") ||
@@ -175,6 +182,15 @@ function escapeToCloseModal(e) {
 function openModal(modal) {
   modal.addEventListener("click", clickToCloseModal);
   document.addEventListener("keydown", escapeToCloseModal);
+  const form = modal.querySelector(".modal__form");
+  const inputs = [...modal.querySelectorAll(".modal__input")];
+  inputs.forEach((input) => {
+    const errorMessage = document.querySelector(`#${input.id}-error`);
+    errorMessage.classList.remove("modal__error_visible");
+  });
+  if (form) {
+    toggleSubmitButton(configObject, form);
+  }
   modal.classList.add("modal_opened");
 }
 
@@ -198,7 +214,6 @@ function handleAddCardSubmit(e) {
     link: addCardImageLinkInput.value,
   };
   renderCard(cardData, "prepend");
-  modalAddCardForm.reset();
   closeModal(modalAddCard);
 }
 
@@ -276,6 +291,7 @@ profileEditButton.addEventListener("click", () => {
 
 //profile add button brings up modal
 profileAddButton.addEventListener("click", () => {
+  resetForm(modalAddCard);
   openModal(modalAddCard);
 });
 
