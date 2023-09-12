@@ -1,8 +1,3 @@
-/*
-To the reviewer:
-Thanks for all the great suggestions!
-*/
-
 const initialCards = [
   {
     name: "El Capitan",
@@ -160,11 +155,32 @@ function renderCard(cardData, placement = "append", wrapper = cardsList) {
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
+function clickToCloseModal(e) {
+  if (
+    e.target.classList.contains("modal_opened") ||
+    e.target.classList.contains("modal__close-button")
+  ) {
+    const modal = e.target.closest(".modal");
+    closeModal(modal);
+  }
+}
+
+function escapeToCloseModal(e) {
+  if (e.key === "Escape") {
+    const modal = document.querySelector(".modal_opened");
+    closeModal(modal);
+  }
+}
+
 function openModal(modal) {
+  modal.addEventListener("click", clickToCloseModal);
+  document.addEventListener("keydown", escapeToCloseModal);
   modal.classList.add("modal_opened");
 }
 
 function closeModal(modal) {
+  modal.removeEventListener("click", clickToCloseModal);
+  document.removeEventListener("keydown", escapeToCloseModal);
   modal.classList.remove("modal_opened");
 }
 
@@ -182,6 +198,7 @@ function handleAddCardSubmit(e) {
     link: addCardImageLinkInput.value,
   };
   renderCard(cardData, "prepend");
+  modalAddCardForm.reset();
   closeModal(modalAddCard);
 }
 
@@ -262,32 +279,25 @@ profileAddButton.addEventListener("click", () => {
   openModal(modalAddCard);
 });
 
-//each x button closes its modal
-const modalCloseButtons = document.querySelectorAll(".modal__close-button");
-modalCloseButtons.forEach((button) => {
-  const modal = button.closest(".modal");
-  button.addEventListener("click", () => closeModal(modal));
-});
-
 //allow user input of profile name and description.
 //also check for text ellipsis after changing profile info
 modalProfileForm.addEventListener("submit", (e) => {
   handleProfileEditSubmit(e);
-  createProfileTitleTooltip(e);
-  createProfileDescriptionTooltip(e);
+  createProfileTitleTooltip();
+  createProfileDescriptionTooltip();
 });
 
 //create card and prepend it to card list
 modalAddCardForm.addEventListener("submit", (e) => {
   handleAddCardSubmit(e);
-  createCardTooltip(e);
+  createCardTooltip();
 });
 
 //check if text ellipsis is there after resizing
-window.addEventListener("resize", (e) => {
-  createCardTooltip(e);
-  createProfileTitleTooltip(e);
-  createProfileDescriptionTooltip(e);
+window.addEventListener("resize", () => {
+  createCardTooltip();
+  createProfileTitleTooltip();
+  createProfileDescriptionTooltip();
 });
 
 /* -------------------------------------------------------------------------- */

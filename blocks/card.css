@@ -26,7 +26,8 @@
   aspect-ratio: 1 / 1;
   border-radius: 10px 10px 0 0;
   object-fit: cover;
-  cursor: pointer;
+  cursor: zoom-in;
+  display: block; /*removes that bit of space below the element*/
 }
 
 .card__error-container {
@@ -60,7 +61,7 @@
   align-items: center;
   background: white;
   color: black;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   position: relative;
 }
 
@@ -97,6 +98,7 @@
   min-width: 245px;
   word-wrap: break-word;
   white-space: normal;
+  max-width: 90%;
 }
 
 .card__title:hover + .card__tooltip {
