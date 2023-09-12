@@ -1,3 +1,7 @@
+/* -------------------------------------------------------------------------- */
+/*                                  Elements                                  */
+/* -------------------------------------------------------------------------- */
+
 const configObject = {
   formSelector: ".modal__form",
   inputSelector: ".modal__input",
@@ -7,24 +11,8 @@ const configObject = {
   errorClass: "modal__error_visible",
 };
 
-//modal profile elements
-// const modalProfileTitleSpan = modalEditProfile.querySelector(
-//   `#${profileTitleInput.id}-error`
-// );
-// const modalProfileDescriptionSpan = modalEditProfile.querySelector(
-//   `#${profileDescriptionInput.id}-error`
-// );
-
-// const profileSubmitButton = modalEditProfile.querySelector(
-//   ".modal__submit-button"
-// );
-// const addCardSubmitButton = modalAddCard.querySelector(".modal__submit-button");
-
-//modal add-card elements
-//const modalAddCardSpan = modalAddCard.querySelector(".modal__span");
-
 /* -------------------------------------------------------------------------- */
-/*                                  functions                                 */
+/*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
 
 //returns true if all inputs in a specified form are valid
@@ -32,10 +20,9 @@ function allFormInputsAreValid(config, form) {
   const inputs = [...form.querySelectorAll(config.inputSelector)];
   return inputs.every((input) => input.validity.valid);
 }
-console.log(allFormInputsAreValid(configObject, modalEditProfile));
 
+//check if the input is valid. If not, grey-out the button
 function toggleSubmitButton(config, form) {
-  //check if the input is valid. If not, lighten the button
   const submitButton = form.querySelector(config.submitButtonSelector);
   if (allFormInputsAreValid(configObject, form)) {
     submitButton.classList.remove(config.inactiveButtonClass);
@@ -44,6 +31,7 @@ function toggleSubmitButton(config, form) {
   }
 }
 
+//display or remove error messages from an input element
 function handleErrorVisibility(config, inputElement) {
   const errorMessage = document.querySelector(`#${inputElement.id}-error`);
   if (inputElement.validity.valid) {
@@ -65,30 +53,9 @@ function setValidationEventListeners(config) {
     });
   });
 }
+
+/* -------------------------------------------------------------------------- */
+/*                               Initialization                               */
+/* -------------------------------------------------------------------------- */
+
 setValidationEventListeners(configObject);
-
-/* -------------------------------------------------------------------------- */
-/*                               event listeners                              */
-/* -------------------------------------------------------------------------- */
-
-// profileTitleInput.addEventListener("input", (e) => {
-//   modalProfileTitleSpan.textContent = profileTitleInput.validationMessage;
-//   toggleSubmitButton(configObject, modalProfileForm);
-//   handleErrorVisibility(configObject, profileTitleInput);
-// });
-
-// profileDescriptionInput.addEventListener("input", (e) => {
-//   modalProfileDescriptionSpan.textContent =
-//     profileDescriptionInput.validationMessage;
-//   toggleSubmitButton(configObject, modalProfileForm);
-//   handleErrorVisibility(configObject, profileDescriptionInput);
-// });
-
-// enabling validation by calling enableValidation()
-// pass all the settings on call
-
-function enableValidation(configObject) {
-  const modalForms = document.querySelectorAll(configObject.formSelector);
-}
-
-enableValidation(configObject);

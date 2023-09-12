@@ -182,12 +182,14 @@ function escapeToCloseModal(e) {
 function openModal(modal) {
   modal.addEventListener("click", clickToCloseModal);
   document.addEventListener("keydown", escapeToCloseModal);
-  const form = modal.querySelector(".modal__form");
   const inputs = [...modal.querySelectorAll(".modal__input")];
+  //remove error messages upon first opening of the modal
   inputs.forEach((input) => {
     const errorMessage = document.querySelector(`#${input.id}-error`);
     errorMessage.classList.remove("modal__error_visible");
   });
+  //correctly display the button upon first opening of the modal
+  const form = modal.querySelector(".modal__form");
   if (form) {
     toggleSubmitButton(configObject, form);
   }
@@ -317,7 +319,7 @@ window.addEventListener("resize", () => {
 });
 
 /* -------------------------------------------------------------------------- */
-/*                                    Code                                    */
+/*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
 
 //have initialCards render
