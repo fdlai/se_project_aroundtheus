@@ -18,6 +18,7 @@ Project name: SE_PROJECT_AROUNDTHEUS
 - User ability to add cards
 - Ability to enlarge photos and show original aspect ratio
 - Custom card with error message to account for images that fail to load
+- Form input validation
 
 ## Plan on improving the project
 

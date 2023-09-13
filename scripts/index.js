@@ -182,8 +182,8 @@ function escapeToCloseModal(e) {
 function openModal(modal) {
   modal.addEventListener("click", clickToCloseModal);
   document.addEventListener("keydown", escapeToCloseModal);
-  const inputs = [...modal.querySelectorAll(".modal__input")];
   //remove error messages upon first opening of the modal
+  const inputs = [...modal.querySelectorAll(".modal__input")];
   inputs.forEach((input) => {
     const errorMessage = document.querySelector(`#${input.id}-error`);
     errorMessage.classList.remove("modal__error_visible");

@@ -110,7 +110,7 @@
 }
 
 .modal__input::placeholder {
-  color: #000;
+  color: rgba(0, 0, 0, 0.2);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
