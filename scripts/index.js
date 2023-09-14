@@ -162,36 +162,33 @@ function resetForm(modal) {
   }
 }
 
-function clickToCloseModal(e) {
+function clickToCloseModal(event, modal) {
   if (
-    e.target.classList.contains("modal_opened") ||
-    e.target.classList.contains("modal__close-button")
+    event.target.classList.contains("modal_opened") ||
+    event.target.classList.contains("modal__close-button")
   ) {
-    const modal = e.target.closest(".modal");
     closeModal(modal);
   }
 }
 
-function escapeToCloseModal(e) {
-  if (e.key === "Escape") {
-    const modal = document.querySelector(".modal_opened");
+function escapeToCloseModal(event, modal) {
+  if (event.key === "Escape") {
     closeModal(modal);
   }
 }
 
 function openModal(modal) {
-  modal.addEventListener("click", clickToCloseModal);
-  document.addEventListener("keydown", escapeToCloseModal);
-  //remove error messages upon first opening of the modal
-  const inputs = [...modal.querySelectorAll(".modal__input")];
-  inputs.forEach((input) => {
-    const errorMessage = document.querySelector(`#${input.id}-error`);
-    errorMessage.classList.remove("modal__error_visible");
-  });
-  //correctly display the button upon first opening of the modal
+  modal.addEventListener("click", (e) => clickToCloseModal(e, modal));
+  document.addEventListener("keydown", (e) => escapeToCloseModal(e, modal));
+  //correctly display the button state upon first opening of the modal
   const form = modal.querySelector(".modal__form");
   if (form) {
     toggleSubmitButton(configObject, form);
+    //remove error messages upon first opening of the modal
+    const inputs = [...form.querySelectorAll(".modal__input")];
+    inputs.forEach((input) => {
+      hideErrorMessage(configObject, input);
+    });
   }
   modal.classList.add("modal_opened");
 }

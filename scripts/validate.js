@@ -1,3 +1,14 @@
+/*
+To the reviewer:
+Hi! I noticed that a user can input two spaces in a row or even two punctuation marks in
+a row, and the validation will allow it. So I attempted to add some extra code to address
+that. I added a regex pattern in the input attributes and a custom error message, if a
+user enters their first character as a non-letter. I hope it’s ok to experiment and try
+to add extra features in. If you have any advice or thoughts on it, I’d love to hear it.
+Or if you just think I should remove it, I can do that as well.
+Thank You!
+*/
+
 /* -------------------------------------------------------------------------- */
 /*                                  Elements                                  */
 /* -------------------------------------------------------------------------- */
@@ -21,15 +32,13 @@ function customErrorMessageForTextInputs(inputElement) {
   if (inputElement.value.length === 0) {
     return "Please fill out this field.";
   }
-  if (inputElement.value.match(/^[^\.,;:?!@#$%^&*()_+=\[\]{}|\\\/<>'"~`-\s]/)) {
+  if (inputElement.value.match(/^[a-zA-Z]$/)) {
     return "Please lengthen this text to 2 characters or more (you are currently using 1 character).";
   }
-  if (inputElement.value.match(/^[\.,;:?!@#$%^&*()_+=\[\]{}|\\\/<>'"~`-\s]$/)) {
+  if (inputElement.value.match(/^[^a-zA-Z]$/)) {
     return "Please use alphabet characters.";
   }
-  if (
-    inputElement.value.match(/^[\.,;:?!@#$%^&*()_+=\[\]{}|\\\/<>'"~`-\s]+.+/)
-  ) {
+  if (inputElement.value.match(/^[^a-zA-Z]+.+/)) {
     return "Please start with alphabet characters.";
   }
 }
@@ -50,13 +59,26 @@ function toggleSubmitButton(config, form) {
   }
 }
 
+//display error messages on a particular input element
+function showErrorMessage(config, inputElement) {
+  const errorMessage = document.querySelector(`#${inputElement.id}-error`);
+  errorMessage.classList.add(config.errorClass);
+  inputElement.classList.add(config.inputErrorClass);
+}
+
+//remove error messages on a particular input element
+function hideErrorMessage(config, inputElement) {
+  const errorMessage = document.querySelector(`#${inputElement.id}-error`);
+  errorMessage.classList.remove(config.errorClass);
+  inputElement.classList.remove(config.inputErrorClass);
+}
+
 //display or remove error messages from an input element
 function handleErrorVisibility(config, inputElement) {
-  const errorMessage = document.querySelector(`#${inputElement.id}-error`);
   if (inputElement.validity.valid) {
-    errorMessage.classList.remove(config.errorClass);
+    hideErrorMessage(configObject, inputElement);
   } else {
-    errorMessage.classList.add(config.errorClass);
+    showErrorMessage(configObject, inputElement);
   }
 }
 
