@@ -155,14 +155,8 @@ function renderCard(cardData, placement = "append", wrapper = cardsList) {
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
-function resetForm(modal) {
-  const form = modal.querySelector(".modal__form");
-  if (form) {
-    form.reset();
-  }
-}
-
-function clickToCloseModal(event, modal) {
+function clickToCloseModal(event) {
+  const modal = document.querySelector(".modal_opened");
   if (
     event.target.classList.contains("modal_opened") ||
     event.target.classList.contains("modal__close-button")
@@ -171,30 +165,21 @@ function clickToCloseModal(event, modal) {
   }
 }
 
-function escapeToCloseModal(event, modal) {
+function escapeToCloseModal(event) {
+  const modal = document.querySelector(".modal_opened");
   if (event.key === "Escape") {
     closeModal(modal);
   }
 }
 
 function openModal(modal) {
-  modal.addEventListener("click", (e) => clickToCloseModal(e, modal));
-  document.addEventListener("keydown", (e) => escapeToCloseModal(e, modal));
-  //correctly display the button state upon first opening of the modal
-  const form = modal.querySelector(".modal__form");
-  if (form) {
-    toggleSubmitButton(configObject, form);
-    //remove error messages upon first opening of the modal
-    const inputs = [...form.querySelectorAll(".modal__input")];
-    inputs.forEach((input) => {
-      hideErrorMessage(configObject, input);
-    });
-  }
+  modal.addEventListener("mousedown", clickToCloseModal);
+  document.addEventListener("keydown", escapeToCloseModal);
   modal.classList.add("modal_opened");
 }
 
 function closeModal(modal) {
-  modal.removeEventListener("click", clickToCloseModal);
+  modal.removeEventListener("mousedown", clickToCloseModal);
   document.removeEventListener("keydown", escapeToCloseModal);
   modal.classList.remove("modal_opened");
 }
@@ -285,12 +270,12 @@ function createProfileDescriptionTooltip() {
 profileEditButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent.trim();
   profileDescriptionInput.value = profileDescription.textContent.trim();
+  resetFormValidation(configObject, modalProfileForm, false);
   openModal(modalEditProfile);
 });
 
 //profile add button brings up modal
 profileAddButton.addEventListener("click", () => {
-  resetForm(modalAddCard);
   openModal(modalAddCard);
 });
 
@@ -306,6 +291,7 @@ modalProfileForm.addEventListener("submit", (e) => {
 modalAddCardForm.addEventListener("submit", (e) => {
   handleAddCardSubmit(e);
   createCardTooltip();
+  resetFormValidation(configObject, modalAddCardForm, true);
 });
 
 //check if text ellipsis is there after resizing

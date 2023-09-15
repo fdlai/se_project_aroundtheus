@@ -81,7 +81,6 @@
               required
               minlength="2"
               maxlength="40"
-              pattern="[a-zA-Z]+.*[a-zA-Z]+.*"
             />
             <span class="modal__span" id="profile-title-input-error"></span>
           </label>
@@ -95,7 +94,6 @@
               required
               minlength="2"
               maxlength="200"
-              pattern="[a-zA-Z]+.*[a-zA-Z]+.*"
             />
             <span
               class="modal__span"
@@ -128,7 +126,6 @@
               required
               minlength="1"
               maxlength="30"
-              pattern="[a-zA-Z]+.*"
             />
             <span class="modal__span" id="add-card-title-input-error"></span>
           </label>
@@ -146,7 +143,12 @@
               id="add-card-image-link-input-error"
             ></span>
           </label>
-          <button class="modal__submit-button" type="submit" aria-label="save">
+          <button
+            class="modal__submit-button modal__submit-button_disabled"
+            type="submit"
+            aria-label="save"
+            disabled
+          >
             Create
           </button>
         </form>
