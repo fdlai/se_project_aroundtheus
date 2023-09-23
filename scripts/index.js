@@ -1,3 +1,5 @@
+// import sayHello from "../components/card.js";
+
 const initialCards = [
   {
     name: "El Capitan",
@@ -45,8 +47,8 @@ const modalProfileForm = modalEditProfile.querySelector("#modal-profile-form");
 
 //card elements
 const cardsList = document.querySelector(".cards__list");
-const cardTemplate =
-  document.querySelector("#card-template").content.firstElementChild;
+const template = document.querySelector("#card-template").content;
+const cardTemplate = template.querySelector(".card");
 const errorCardTemplate = document.querySelector("#error-card-template").content
   .firstElementChild;
 
