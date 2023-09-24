@@ -1,4 +1,9 @@
-// import sayHello from "../components/card.js";
+import Card from "../components/card.js";
+const obj1 = {
+  name: "El Capitan",
+  link: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+};
+const card1 = new Card(obj1, "#card-template", addPictureModalFunctionality);
 
 const initialCards = [
   {
@@ -307,12 +312,24 @@ window.addEventListener("resize", () => {
 /*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
 
-//have initialCards render
-initialCards.forEach((cardData) => {
-  renderCard(cardData, "append");
-});
+// //have initialCards render
+// initialCards.forEach((cardData) => {
+//   renderCard(cardData, "append");
+// });
 
 //create initial tooltips on page load
 createProfileTitleTooltip();
 createProfileDescriptionTooltip();
 createCardTooltip();
+
+//module related code:
+//have initialCards render
+
+initialCards.forEach((cardData) => {
+  const card = new Card(
+    cardData,
+    "#card-template",
+    addPictureModalFunctionality
+  );
+  card.renderCard("append", cardsList);
+});
