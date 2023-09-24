@@ -97,16 +97,18 @@ const profileEditFormValidator = new FormValidator(
 );
 const addCardFormValidator = new FormValidator(configObject, modalAddCardForm);
 
-const cardTooltipHandler = new TooltipHandler(".card__title", ".card__tooltip");
+const cardTooltipHandler = new TooltipHandler(
+  ".card__title",
+  ".card__tooltip",
+  false
+);
 const profileTitleTooltipHandler = new TooltipHandler(
   "#profile-title",
-  ".profile__tooltip-title",
-  profileTitleInput
+  ".profile__tooltip-title"
 );
 const profileDescriptionTooltipHandler = new TooltipHandler(
   "#profile-description",
-  ".profile__tooltip-description",
-  profileDescriptionInput
+  ".profile__tooltip-description"
 );
 
 /* -------------------------------------------------------------------------- */

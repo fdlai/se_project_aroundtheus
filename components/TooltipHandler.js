@@ -1,18 +1,20 @@
 export default class TooltipHandler {
   // ".card__title";
   // ".card__tooltip";
+
   // "#profile-title";
   // ".profile__tooltip-title";
   //"#profile-title-input";
+
   // "#profile-description";
   // ".profile__tooltip-description";
   //"#profile-description-input"
 
   //both selectors should include their . or #
-  constructor(textSelector, tooltipSelector, inputElement = null) {
+  constructor(textSelector, tooltipSelector, updateText = true) {
     this._textSelector = textSelector;
     this._tooltipSelector = tooltipSelector;
-    this._inputElement = inputElement; //inputElement is the element that we're updating the tooltip text from
+    this._updateText = updateText;
   }
 
   handleTooltip() {
@@ -25,9 +27,9 @@ export default class TooltipHandler {
         tooltip.classList.add(this._tooltipSelector.slice(1));
         tooltip.textContent = elt.textContent;
         elt.after(tooltip);
-      } else if (ellipsisExists && tooltipIsOpen && this._inputElement) {
-        const tooltip = document.querySelector(this._tooltipSelector);
-        tooltip.textContent = this._inputElement.value;
+      } else if (ellipsisExists && tooltipIsOpen && this._updateText) {
+        const tooltip = elt.nextElementSibling;
+        tooltip.textContent = elt.innerText;
       } else if (!ellipsisExists && tooltipIsOpen) {
         const tooltip = elt.nextElementSibling;
         tooltip.remove();
