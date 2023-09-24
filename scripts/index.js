@@ -200,7 +200,7 @@ function handleProfileEditSubmit(e) {
 
 function handleAddCardSubmit(e) {
   e.preventDefault();
-  cardData = {
+  const cardData = {
     name: addCardTitleInput.value,
     link: addCardImageLinkInput.value,
   };
