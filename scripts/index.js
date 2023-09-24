@@ -1,5 +1,6 @@
 import Card from "../components/card.js";
 import FormValidator from "../components/FormValidator.js";
+import TooltipHandler from "../components/TooltipHandler.js";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Variables                                 */
@@ -95,6 +96,18 @@ const profileEditFormValidator = new FormValidator(
   modalProfileForm
 );
 const addCardFormValidator = new FormValidator(configObject, modalAddCardForm);
+
+const cardTooltipHandler = new TooltipHandler(".card__title", ".card__tooltip");
+const profileTitleTooltipHandler = new TooltipHandler(
+  "#profile-title",
+  ".profile__tooltip-title",
+  profileTitleInput
+);
+const profileDescriptionTooltipHandler = new TooltipHandler(
+  "#profile-description",
+  ".profile__tooltip-description",
+  profileDescriptionInput
+);
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -251,22 +264,22 @@ profileAddButton.addEventListener("click", () => {
 //also check for text ellipsis after changing profile info
 modalProfileForm.addEventListener("submit", (e) => {
   handleProfileEditSubmit(e);
-  createProfileTitleTooltip();
-  createProfileDescriptionTooltip();
+  profileTitleTooltipHandler.handleTooltip();
+  profileDescriptionTooltipHandler.handleTooltip();
 });
 
 //create card and prepend it to card list
 modalAddCardForm.addEventListener("submit", (e) => {
   handleAddCardSubmit(e);
-  createCardTooltip();
+  cardTooltipHandler.handleTooltip();
   addCardFormValidator.resetFormValidation(true);
 });
 
 //check if text ellipsis is there after resizing
 window.addEventListener("resize", () => {
-  createCardTooltip();
-  createProfileTitleTooltip();
-  createProfileDescriptionTooltip();
+  cardTooltipHandler.handleTooltip();
+  profileTitleTooltipHandler.handleTooltip();
+  profileDescriptionTooltipHandler.handleTooltip();
 });
 
 /* -------------------------------------------------------------------------- */
@@ -291,6 +304,6 @@ forms.forEach((form) => {
 });
 
 //create initial tooltips on page load
-createProfileTitleTooltip();
-createProfileDescriptionTooltip();
-createCardTooltip();
+cardTooltipHandler.handleTooltip();
+profileTitleTooltipHandler.handleTooltip();
+profileDescriptionTooltipHandler.handleTooltip();
