@@ -5,10 +5,16 @@ export default class Card {
     this._link = data.link;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
+    this._template = document.querySelector(this._cardSelector).content;
+    this._cardTemplate = this._template.querySelector(".card");
+    this._cardElement = this._cardTemplate.cloneNode(true);
+    this._deleteButton = this._cardElement.querySelector(
+      ".card__delete-button"
+    );
   }
 
+  //like-button functionality
   _addLikeFunctionality() {
-    //like-button functionality
     this._likeButton = this._cardElement.querySelector(".card__like-button");
     this._likeButton.addEventListener("click", () => {
       this._likeButton.classList.toggle("card__like-button_active");
@@ -17,39 +23,15 @@ export default class Card {
 
   //click button to delete element
   _addDeleteFunctionality(button, element) {
-    this._deleteButton = this._cardElement.querySelector(
-      ".card__delete-button"
-    );
-    this._deleteButton.addEventListener("click", () => {
-      this._cardElement.remove();
+    button.addEventListener("click", () => {
+      element.remove();
     });
   }
 
   __setEventListeners() {
     this._addLikeFunctionality();
-    this._addDeleteFunctionality();
-  }
-
-  _getCardElement() {
-    //create card, give it its name and image
-    this._template = document.querySelector(this._cardSelector).content;
-    this._cardTemplate = this._template.querySelector(".card");
-    this._cardElement = this._cardTemplate.cloneNode(true);
-    this._cardElementTitle = this._cardElement.querySelector(".card__title");
-    this._cardElementImage = this._cardElement.querySelector(".card__image");
-    this._cardElementTitle.textContent = this._name;
-    this._cardElementImage.setAttribute("src", `${this._link}`);
-    this._cardElementImage.setAttribute("alt", `${this._name}`);
-
-    //add like and delete functionality
-    this.__setEventListeners();
-
-    //picture-modal functionality
+    this._addDeleteFunctionality(this._deleteButton, this._cardElement);
     this._handleImageClick(this._cardElementImage, this._data);
-
-    //use error-card if the image fails to load
-    this._cardElementImage.onerror = () =>
-      this._replaceWithErrorCard("Image has failed to load");
   }
 
   //replaces card with error-card
@@ -69,8 +51,24 @@ export default class Card {
     this._errorCardTitle.textContent = this._cardElement.innerText
       ? this._cardElement.textContent
       : "...";
-    addDeleteFunctionality(this._errorDeleteButton, this._errorCard);
+    this._addDeleteFunctionality(this._errorDeleteButton, this._errorCard);
     this._cardElement.replaceWith(this._errorCard);
+  }
+
+  //create card, give it its name and image
+  _getCardElement() {
+    this._cardElementTitle = this._cardElement.querySelector(".card__title");
+    this._cardElementImage = this._cardElement.querySelector(".card__image");
+    this._cardElementTitle.textContent = this._name;
+    this._cardElementImage.setAttribute("src", `${this._link}`);
+    this._cardElementImage.setAttribute("alt", `${this._name}`);
+
+    //add like, delete and picture-modal functionality
+    this.__setEventListeners();
+
+    //use error-card if the image fails to load
+    this._cardElementImage.onerror = () =>
+      this._replaceWithErrorCard("Image has failed to load");
   }
 
   //appends or prepends card to wrapper

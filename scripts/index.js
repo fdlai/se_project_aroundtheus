@@ -1,9 +1,9 @@
 import Card from "../components/card.js";
-const obj1 = {
-  name: "El Capitan",
-  link: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-};
-const card1 = new Card(obj1, "#card-template", addPictureModalFunctionality);
+import FormValidator from "../components/FormValidator.js";
+
+/* -------------------------------------------------------------------------- */
+/*                                  Variables                                 */
+/* -------------------------------------------------------------------------- */
 
 const initialCards = [
   {
@@ -78,15 +78,27 @@ const modalPictureCloseButton = modalPicture.querySelector(
 );
 
 /* -------------------------------------------------------------------------- */
-/*                                  Functions                                 */
+/*                                   Objects                                  */
 /* -------------------------------------------------------------------------- */
 
-//click button to delete element
-function addDeleteFunctionality(button, element) {
-  button.addEventListener("click", () => {
-    element.remove();
-  });
-}
+const configObject = {
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__submit-button",
+  inactiveButtonClass: "modal__submit-button_disabled",
+  inputErrorClass: "modal__input_type_error",
+  errorClass: "modal__error_visible",
+};
+
+const profileEditFormValidator = new FormValidator(
+  configObject,
+  modalProfileForm
+);
+const addCardFormValidator = new FormValidator(configObject, modalAddCardForm);
+
+/* -------------------------------------------------------------------------- */
+/*                                  Functions                                 */
+/* -------------------------------------------------------------------------- */
 
 //click button to display image in picture-modal
 function addPictureModalFunctionality(button, image) {
@@ -100,62 +112,6 @@ function addPictureModalFunctionality(button, image) {
       openModal(modalPicture);
     };
   });
-}
-
-function getCardElement(cardData) {
-  //create card, give it its name and image
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardElementTitle = cardElement.querySelector(".card__title");
-  const cardElementImage = cardElement.querySelector(".card__image");
-  cardElementTitle.textContent = cardData.name;
-  cardElementImage.setAttribute("src", `${cardData.link}`);
-  cardElementImage.setAttribute("alt", `${cardData.name}`);
-
-  //like-button functionality
-  const likeButton = cardElement.querySelector(".card__like-button");
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("card__like-button_active");
-  });
-
-  //delete-button functionality
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  addDeleteFunctionality(deleteButton, cardElement);
-
-  //picture-modal functionality
-  addPictureModalFunctionality(cardElementImage, cardData);
-
-  //use error-card if the image fails to load
-  cardElementImage.onerror = () =>
-    replaceWithErrorCard(cardElement, "Image has failed to load");
-
-  return cardElement;
-}
-
-//replaces card with error-card
-function replaceWithErrorCard(card, errorMessage = "Error") {
-  const errorCard = errorCardTemplate.cloneNode(true);
-  const errorCardMessage = errorCard.querySelector(".card__error-message");
-  const deleteButton = errorCard.querySelector(".card__delete-button");
-  const errorCardTitle = errorCard.querySelector(".card__title");
-  errorCardMessage.textContent = errorMessage;
-  errorCardTitle.textContent = card.innerText ? card.textContent : "...";
-  addDeleteFunctionality(deleteButton, errorCard);
-  card.replaceWith(errorCard);
-}
-
-//appends or prepends card to wrapper
-function renderCard(cardData, placement = "append", wrapper = cardsList) {
-  const cardElement = getCardElement(cardData);
-  switch (placement) {
-    case "append":
-      wrapper.append(cardElement);
-      break;
-    case "prepend":
-      wrapper.prepend(cardElement);
-      break;
-    default:
-      console.log("Error. Please use only 'append' or 'prepend'.");
-  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -204,7 +160,12 @@ function handleAddCardSubmit(e) {
     name: addCardTitleInput.value,
     link: addCardImageLinkInput.value,
   };
-  renderCard(cardData, "prepend");
+  const card = new Card(
+    cardData,
+    "#card-template",
+    addPictureModalFunctionality
+  );
+  card.renderCard("prepend", cardsList);
   closeModal(modalAddCard);
 }
 
@@ -277,7 +238,7 @@ function createProfileDescriptionTooltip() {
 profileEditButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent.trim();
   profileDescriptionInput.value = profileDescription.textContent.trim();
-  resetFormValidation(configObject, modalProfileForm, false);
+  profileEditFormValidator.resetFormValidation(false);
   openModal(modalEditProfile);
 });
 
@@ -298,7 +259,7 @@ modalProfileForm.addEventListener("submit", (e) => {
 modalAddCardForm.addEventListener("submit", (e) => {
   handleAddCardSubmit(e);
   createCardTooltip();
-  resetFormValidation(configObject, modalAddCardForm, true);
+  addCardFormValidator.resetFormValidation(true);
 });
 
 //check if text ellipsis is there after resizing
@@ -312,19 +273,7 @@ window.addEventListener("resize", () => {
 /*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
 
-// //have initialCards render
-// initialCards.forEach((cardData) => {
-//   renderCard(cardData, "append");
-// });
-
-//create initial tooltips on page load
-createProfileTitleTooltip();
-createProfileDescriptionTooltip();
-createCardTooltip();
-
-//module related code:
 //have initialCards render
-
 initialCards.forEach((cardData) => {
   const card = new Card(
     cardData,
@@ -333,3 +282,15 @@ initialCards.forEach((cardData) => {
   );
   card.renderCard("append", cardsList);
 });
+
+//enable form validation
+const forms = [...document.querySelectorAll(configObject.formSelector)];
+forms.forEach((form) => {
+  const formValidator = new FormValidator(configObject, form);
+  formValidator._enableValidation();
+});
+
+//create initial tooltips on page load
+createProfileTitleTooltip();
+createProfileDescriptionTooltip();
+createCardTooltip();
