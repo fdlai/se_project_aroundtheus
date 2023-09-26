@@ -90,12 +90,24 @@ const configObject = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__error_visible",
 };
-
 const profileEditFormValidator = new FormValidator(
   configObject,
   modalProfileForm
 );
 const addCardFormValidator = new FormValidator(configObject, modalAddCardForm);
+const cardTooltipHandler = new TooltipHandler(
+  ".card__title",
+  ".card__tooltip",
+  false
+);
+const profileTitleTooltipHandler = new TooltipHandler(
+  "#profile-title",
+  ".profile__tooltip-title"
+);
+const profileDescriptionTooltipHandler = new TooltipHandler(
+  "#profile-description",
+  ".profile__tooltip-description"
+);
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -170,67 +182,6 @@ function handleAddCardSubmit(e) {
   closeModal(modalAddCard);
 }
 
-//create a tooltip for card__title that displays when text is long enough to cause ellipsis
-function createCardTooltip() {
-  const cardTitles = document.querySelectorAll(".card__title");
-  cardTitles.forEach((elt) => {
-    const ellipsisExists = elt.scrollWidth > elt.clientWidth;
-    const tooltipIsOpen = elt.parentNode.querySelector(".card__tooltip");
-    if (ellipsisExists && !tooltipIsOpen) {
-      const cardTooltip = document.createElement("p");
-      cardTooltip.classList.add("card__tooltip");
-      cardTooltip.textContent = elt.textContent;
-      elt.after(cardTooltip);
-    } else if (!ellipsisExists && tooltipIsOpen) {
-      const cardTooltip = elt.nextElementSibling;
-      cardTooltip.remove();
-    }
-  });
-}
-
-//manage a tooltip for profile__title that displays when text is long enough to cause ellipsis
-function createProfileTitleTooltip() {
-  const ellipsisExists = profileTitle.scrollWidth > profileTitle.offsetWidth;
-  const tooltipIsOpen =
-    document.querySelector(".profile__tooltip-title") !== null;
-  if (ellipsisExists && !tooltipIsOpen) {
-    const profileTooltip = document.createElement("p");
-    profileTooltip.classList.add("profile__tooltip-title");
-    profileTooltip.textContent = profileTitle.textContent;
-    profileTitle.after(profileTooltip);
-  } else if (ellipsisExists && tooltipIsOpen) {
-    const profileTooltip = document.querySelector(".profile__tooltip-title");
-    profileTooltip.textContent = profileTitleInput.value;
-  } else if (!ellipsisExists && tooltipIsOpen) {
-    const profileTooltip = document.querySelector(".profile__tooltip-title");
-    profileTooltip.remove();
-  }
-}
-
-//manage a tooltip for profile__description that displays when text is long enough to cause ellipsis
-function createProfileDescriptionTooltip() {
-  const ellipsisExists =
-    profileDescription.scrollWidth > profileDescription.offsetWidth;
-  const tooltipIsOpen =
-    document.querySelector(".profile__tooltip-description") !== null;
-  if (ellipsisExists && !tooltipIsOpen) {
-    const profileTooltip = document.createElement("p");
-    profileTooltip.classList.add("profile__tooltip-description");
-    profileTooltip.textContent = profileDescription.textContent;
-    profileDescription.after(profileTooltip);
-  } else if (ellipsisExists && tooltipIsOpen) {
-    const profileTooltip = document.querySelector(
-      ".profile__tooltip-description"
-    );
-    profileTooltip.textContent = profileDescriptionInput.value;
-  } else if (!ellipsisExists && tooltipIsOpen) {
-    const profileTooltip = document.querySelector(
-      ".profile__tooltip-description"
-    );
-    profileTooltip.remove();
-  }
-}
-
 /* -------------------------------------------------------------------------- */
 /*                               Event Listeners                              */
 /* -------------------------------------------------------------------------- */
@@ -273,21 +224,6 @@ window.addEventListener("resize", () => {
 /* -------------------------------------------------------------------------- */
 /*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
-
-const cardTooltipHandler = new TooltipHandler(
-  ".card__title",
-  ".card__tooltip",
-  221,
-  false
-);
-const profileTitleTooltipHandler = new TooltipHandler(
-  "#profile-title",
-  ".profile__tooltip-title"
-);
-const profileDescriptionTooltipHandler = new TooltipHandler(
-  "#profile-description",
-  ".profile__tooltip-description"
-);
 
 //have initialCards render
 initialCards.forEach((cardData) => {

@@ -1,5 +1,5 @@
 export default class Card {
-  constructor(data, cardSelector, handleImageClick, handleTooltip) {
+  constructor(data, cardSelector, handleImageClick) {
     this._data = data;
     this._name = data.name;
     this._link = data.link;
@@ -11,7 +11,6 @@ export default class Card {
     this._deleteButton = this._cardElement.querySelector(
       ".card__delete-button"
     );
-    this._handleTooltip = handleTooltip;
   }
 
   //like-button functionality
@@ -26,7 +25,6 @@ export default class Card {
   _addDeleteFunctionality(button, element) {
     button.addEventListener("click", () => {
       element.remove();
-      this._handleTooltip(element);
     });
   }
 
