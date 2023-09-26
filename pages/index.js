@@ -1,4 +1,4 @@
-import Card from "../components/card.js";
+import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import TooltipHandler from "../components/TooltipHandler.js";
 
@@ -96,20 +96,6 @@ const profileEditFormValidator = new FormValidator(
   modalProfileForm
 );
 const addCardFormValidator = new FormValidator(configObject, modalAddCardForm);
-
-const cardTooltipHandler = new TooltipHandler(
-  ".card__title",
-  ".card__tooltip",
-  false
-);
-const profileTitleTooltipHandler = new TooltipHandler(
-  "#profile-title",
-  ".profile__tooltip-title"
-);
-const profileDescriptionTooltipHandler = new TooltipHandler(
-  "#profile-description",
-  ".profile__tooltip-description"
-);
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -288,6 +274,21 @@ window.addEventListener("resize", () => {
 /*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
 
+const cardTooltipHandler = new TooltipHandler(
+  ".card__title",
+  ".card__tooltip",
+  221,
+  false
+);
+const profileTitleTooltipHandler = new TooltipHandler(
+  "#profile-title",
+  ".profile__tooltip-title"
+);
+const profileDescriptionTooltipHandler = new TooltipHandler(
+  "#profile-description",
+  ".profile__tooltip-description"
+);
+
 //have initialCards render
 initialCards.forEach((cardData) => {
   const card = new Card(
@@ -302,7 +303,7 @@ initialCards.forEach((cardData) => {
 const forms = [...document.querySelectorAll(configObject.formSelector)];
 forms.forEach((form) => {
   const formValidator = new FormValidator(configObject, form);
-  formValidator._enableValidation();
+  formValidator.enableValidation();
 });
 
 //create initial tooltips on page load

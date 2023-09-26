@@ -70,17 +70,12 @@ export default class FormValidator {
   }
 
   //set an input-validation event listener on each input element within a specified form
-  _setValidationEventListeners() {
+  enableValidation() {
     this._inputs.forEach((input) => {
       input.addEventListener("input", (e) => {
         this._toggleSubmitButton();
         this._handleErrorVisibility(input);
       });
     });
-  }
-
-  //call the setValidationEventListeners function
-  _enableValidation() {
-    this._setValidationEventListeners();
   }
 }
