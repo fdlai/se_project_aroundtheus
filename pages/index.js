@@ -49,7 +49,7 @@ const profileTitleInput = document.querySelector("#profile-title-input");
 const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
-const modalProfileForm = modalEditProfile.querySelector("#modal-profile-form");
+const modalProfileForm = document.forms["modal-profile-form"];
 
 //card elements
 const cardsList = document.querySelector(".cards__list");
@@ -68,7 +68,7 @@ const addCardTitleInput = modalAddCard.querySelector("#add-card-title-input");
 const addCardImageLinkInput = modalAddCard.querySelector(
   "#add-card-image-link-input"
 );
-const modalAddCardForm = modalAddCard.querySelector("#modal-add-card-form");
+const modalAddCardForm = document.forms["modal-add-card-form"];
 
 //modal picture elements
 const modalPicture = document.querySelector("#modal-picture");
@@ -90,11 +90,9 @@ const configObject = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__error_visible",
 };
-const profileEditFormValidator = new FormValidator(
-  configObject,
-  modalProfileForm
-);
-const addCardFormValidator = new FormValidator(configObject, modalAddCardForm);
+
+const formValidators = {};
+
 const cardTooltipHandler = new TooltipHandler(
   ".card__title",
   ".card__tooltip",
@@ -113,17 +111,32 @@ const profileDescriptionTooltipHandler = new TooltipHandler(
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
 
-//click button to display image in picture-modal
-function addPictureModalFunctionality(button, image) {
+//display image in picture-modal
+function clickToOpenPictureModal(image) {
   //note: image parameter is an object with image.name and image.link
-  button.addEventListener("click", () => {
-    modalPictureImage.setAttribute("src", `${image.link}`);
-    modalPictureImage.setAttribute("alt", `${image.name}`);
-    modalPictureSubtitle.textContent = image.name;
-    //make sure image loads before opening modal
-    modalPictureImage.onload = () => {
-      openModal(modalPicture);
-    };
+  modalPictureImage.setAttribute("src", `${image.link}`);
+  modalPictureImage.setAttribute("alt", `${image.name}`);
+  modalPictureSubtitle.textContent = image.name;
+  //make sure image loads before opening modal
+  modalPictureImage.onload = () => {
+    openModal(modalPicture);
+  };
+}
+
+function createCard(cardData) {
+  const card = new Card(cardData, "#card-template", clickToOpenPictureModal);
+  return card.getCardElement();
+}
+
+//enable input validation for all forms
+function enableValidationOnAllForms(config) {
+  const forms = [...document.querySelectorAll(config.formSelector)];
+  forms.forEach((form) => {
+    const formValidator = new FormValidator(config, form);
+    const formName = form.getAttribute("name");
+    //add validators for all forms
+    formValidators[formName] = formValidator;
+    formValidator.enableValidation();
   });
 }
 
@@ -132,31 +145,30 @@ function addPictureModalFunctionality(button, image) {
 /* -------------------------------------------------------------------------- */
 
 function clickToCloseModal(event) {
-  const modal = document.querySelector(".modal_opened");
   if (
     event.target.classList.contains("modal_opened") ||
     event.target.classList.contains("modal__close-button")
   ) {
-    closeModal(modal);
+    closeModal(event.currentTarget);
   }
 }
 
-function escapeToCloseModal(event) {
-  const modal = document.querySelector(".modal_opened");
+function pressEscToCloseModal(event) {
   if (event.key === "Escape") {
+    const modal = document.querySelector(".modal_opened");
     closeModal(modal);
   }
 }
 
 function openModal(modal) {
   modal.addEventListener("mousedown", clickToCloseModal);
-  document.addEventListener("keydown", escapeToCloseModal);
+  document.addEventListener("keydown", pressEscToCloseModal);
   modal.classList.add("modal_opened");
 }
 
 function closeModal(modal) {
   modal.removeEventListener("mousedown", clickToCloseModal);
-  document.removeEventListener("keydown", escapeToCloseModal);
+  document.removeEventListener("keydown", pressEscToCloseModal);
   modal.classList.remove("modal_opened");
 }
 
@@ -173,12 +185,8 @@ function handleAddCardSubmit(e) {
     name: addCardTitleInput.value,
     link: addCardImageLinkInput.value,
   };
-  const card = new Card(
-    cardData,
-    "#card-template",
-    addPictureModalFunctionality
-  );
-  card.renderCard("prepend", cardsList);
+  const cardElement = createCard(cardData);
+  cardsList.prepend(cardElement);
   closeModal(modalAddCard);
 }
 
@@ -190,7 +198,7 @@ function handleAddCardSubmit(e) {
 profileEditButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent.trim();
   profileDescriptionInput.value = profileDescription.textContent.trim();
-  profileEditFormValidator.resetFormValidation(false);
+  formValidators["modal-profile-form"].resetFormValidation(false);
   openModal(modalEditProfile);
 });
 
@@ -211,7 +219,7 @@ modalProfileForm.addEventListener("submit", (e) => {
 modalAddCardForm.addEventListener("submit", (e) => {
   handleAddCardSubmit(e);
   cardTooltipHandler.handleTooltip();
-  addCardFormValidator.resetFormValidation(true);
+  formValidators["modal-add-card-form"].resetFormValidation(true);
 });
 
 //check if text ellipsis is there after resizing
@@ -227,20 +235,12 @@ window.addEventListener("resize", () => {
 
 //have initialCards render
 initialCards.forEach((cardData) => {
-  const card = new Card(
-    cardData,
-    "#card-template",
-    addPictureModalFunctionality
-  );
-  card.renderCard("append", cardsList);
+  const cardElement = createCard(cardData);
+  cardsList.append(cardElement);
 });
 
 //enable form validation
-const forms = [...document.querySelectorAll(configObject.formSelector)];
-forms.forEach((form) => {
-  const formValidator = new FormValidator(configObject, form);
-  formValidator.enableValidation();
-});
+enableValidationOnAllForms(configObject);
 
 //create initial tooltips on page load
 cardTooltipHandler.handleTooltip();

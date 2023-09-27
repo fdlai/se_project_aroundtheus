@@ -11,7 +11,7 @@ export default class FormValidator {
   }
 
   //returns true if all inputs in a specified form are valid
-  _allFormInputsAreValid() {
+  _checkAllFormInputsAreValid() {
     return this._inputs.every((input) => input.validity.valid);
   }
 
@@ -27,7 +27,7 @@ export default class FormValidator {
 
   //disables submit-button if any input is invalid
   _toggleSubmitButton() {
-    if (this._allFormInputsAreValid()) {
+    if (this._checkAllFormInputsAreValid()) {
       this.enableSubmitButton();
     } else {
       this.disableSubmitButton();
@@ -49,7 +49,7 @@ export default class FormValidator {
     inputElement.classList.remove(this._settings.inputErrorClass);
   }
 
-  //display or remove error messages from an input element
+  //display or remove error messages from an input element, whether the input is valid or not
   _handleErrorVisibility(inputElement) {
     if (inputElement.validity.valid) {
       this._hideErrorMessage(inputElement);
@@ -58,7 +58,7 @@ export default class FormValidator {
     }
   }
 
-  //reset validation of a specified form. If parameter 'emptyInputs' is true => then empty the form's inputs
+  //reset validation of the form. If parameter 'emptyInputs' is true => then empty the form's inputs
   resetFormValidation(emptyInputs = true) {
     if (emptyInputs) {
       this._form.reset();
@@ -69,7 +69,7 @@ export default class FormValidator {
     });
   }
 
-  //set an input-validation event listener on each input element within a specified form
+  //set an input-validation event listener on each input element within the form
   enableValidation() {
     this._inputs.forEach((input) => {
       input.addEventListener("input", (e) => {
