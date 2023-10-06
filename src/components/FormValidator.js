@@ -10,7 +10,7 @@ export default class FormValidator {
     );
   }
 
-  //returns true if all inputs in a specified form are valid
+  //returns true if all inputs in the form are valid
   _checkAllFormInputsAreValid() {
     return this._inputs.every((input) => input.validity.valid);
   }
@@ -25,7 +25,7 @@ export default class FormValidator {
     this._submitButton.disabled = false;
   }
 
-  //disables submit-button if any input is invalid
+  //disables or enables submit-button whether any input in the form is invalid or not
   _toggleSubmitButton() {
     if (this._checkAllFormInputsAreValid()) {
       this.enableSubmitButton();
@@ -34,7 +34,7 @@ export default class FormValidator {
     }
   }
 
-  //display error messages on a particular input element
+  //display error messages for a particular input element
   _showErrorMessage(inputElement) {
     const errorMessage = this._form.querySelector(`#${inputElement.id}-error`);
     errorMessage.textContent = inputElement.validationMessage;
@@ -42,7 +42,7 @@ export default class FormValidator {
     inputElement.classList.add(this._settings.inputErrorClass);
   }
 
-  //remove error messages on a particular input element
+  //remove error messages for a particular input element
   _hideErrorMessage(inputElement) {
     const errorMessage = this._form.querySelector(`#${inputElement.id}-error`);
     errorMessage.classList.remove(this._settings.errorClass);

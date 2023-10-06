@@ -1,10 +1,14 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import TooltipHandler from "../components/TooltipHandler.js";
+import "./index.css";
+import PopupWithImage from "../components/PopupWithImage.js";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Variables                                 */
 /* -------------------------------------------------------------------------- */
+
+console.log("hello world");
 
 const initialCards = [
   {
@@ -106,22 +110,25 @@ const profileDescriptionTooltipHandler = new TooltipHandler(
   "#profile-description",
   ".profile__tooltip-description"
 );
-
+const imagePopup = new PopupWithImage("#modal-picture");
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
 
-//display image in picture-modal
 function clickToOpenPictureModal(image) {
-  //note: image parameter is an object with image.name and image.link
-  modalPictureImage.setAttribute("src", `${image.link}`);
-  modalPictureImage.setAttribute("alt", `${image.name}`);
-  modalPictureSubtitle.textContent = image.name;
-  //make sure image loads before opening modal
-  modalPictureImage.onload = () => {
-    openModal(modalPicture);
-  };
+  imagePopup.open(image);
 }
+// //display image in picture-modal
+// function clickToOpenPictureModal(image) {
+//   //note: image parameter is an object with image.name and image.link
+//   modalPictureImage.setAttribute("src", `${image.link}`);
+//   modalPictureImage.setAttribute("alt", `${image.name}`);
+//   modalPictureSubtitle.textContent = image.name;
+//   //make sure image loads before opening modal
+//   modalPictureImage.onload = () => {
+//     openModal(modalPicture);
+//   };
+// }
 
 function createCard(cardData) {
   const card = new Card(cardData, "#card-template", clickToOpenPictureModal);
