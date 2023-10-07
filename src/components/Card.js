@@ -37,7 +37,8 @@ export default class Card {
   }
 
   //replaces card with error-card
-  _replaceWithErrorCard(errorMessage = "Error") {
+  _replaceWithErrorCard() {
+    this._errorMessage = "Image has failed to load";
     this._errorCardTemplate = document.querySelector(
       "#error-card-template"
     ).content.firstElementChild;
@@ -69,8 +70,7 @@ export default class Card {
     this._setEventListeners();
 
     //use error-card if the image fails to load
-    this._cardElementImage.onerror = () =>
-      this._replaceWithErrorCard("Image has failed to load");
+    this._cardElementImage.onerror = () => this._replaceWithErrorCard();
 
     return this._cardElement;
   }

@@ -5,8 +5,6 @@ export default class Popup {
     this._closeButton = this._popupElement.querySelector(
       ".modal__close-button"
     );
-    //set event listeners in the constructor
-    this.setEventListeners();
   }
   //opens popup
   open() {
@@ -28,11 +26,11 @@ export default class Popup {
     }
   }
   //close popup with Esc key
-  _handleEscClose(event) {
+  _handleEscClose = (event) => {
     if (event.key === "Escape") {
-      this.close;
+      this.close();
     }
-  }
+  };
   //set event listeners to close popup when clicking X or the overlay
   setEventListeners() {
     this._popupElement.addEventListener("mousedown", (e) => {

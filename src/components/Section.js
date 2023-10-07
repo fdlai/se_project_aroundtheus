@@ -7,10 +7,21 @@ export default class Section {
 
   renderItems() {
     this._items.forEach((item) => {
-      this._renderer(item);
+      const itemElement = this._renderer(item);
+      this.addItem(itemElement);
     });
   }
-  addItem(element) {
-    this._container.append(element);
+  //append or prepend element to container
+  addItem(element, placement = "append") {
+    switch (placement) {
+      case "append":
+        this._container.append(element);
+        break;
+      case "prepend":
+        this._container.prepend(element);
+        break;
+      default:
+        console.log("Error. Please use only 'append' or 'prepend'.");
+    }
   }
 }

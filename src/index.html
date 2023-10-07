@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Around the US</title>
+    <link rel="stylesheet" href="./pages/index.css" />
     <meta
       name="keywords"
       content="profile, pictures, avatar, images, like button"
@@ -20,7 +21,7 @@
       <header class="header">
         <img
           class="header__image"
-          src="<%=require('./images/around-the-us-logo.svg')%>"
+          src="./images/around-the-us-logo.svg"
           alt="Around the US logo"
         />
       </header>
@@ -28,7 +29,7 @@
       <main class="content">
         <section class="profile page__profile">
           <img
-            src="<%=require('./images/jacques-cousteau.png')%>"
+            src="./images/jacques-cousteau.png"
             alt="portrait photo of Jacques Cousteau"
             class="profile__image"
           />
@@ -140,7 +141,7 @@
             <input
               class="modal__input"
               type="url"
-              name="image-link"
+              name="imageLink"
               id="add-card-image-link-input"
               placeholder="Image link"
               required
@@ -207,5 +208,6 @@
         </div>
       </div>
     </template>
+    <script type="module" src="./pages/index.js"></script>
   </body>
 </html>

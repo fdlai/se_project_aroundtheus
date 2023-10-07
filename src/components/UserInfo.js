@@ -1,7 +1,4 @@
 export default class UserInfo {
-  static profileTitle = document.querySelector("#profile-title");
-  static profileDescription = document.querySelector("#profile-description");
-
   constructor(nameSelector, descriptionSelector) {
     this._nameElement = document.querySelector(nameSelector);
     this._descriptionElement = document.querySelector(descriptionSelector);
@@ -9,14 +6,13 @@ export default class UserInfo {
 
   getUserInfo() {
     return {
-      name: this._nameElement.value,
-      description: this._descriptionElement.value,
+      name: this._nameElement.textContent,
+      description: this._descriptionElement.textContent,
     };
   }
 
-  setUserInfo() {
-    const { name, description } = this.getUserInfo();
-    profileTitle.textContent = name;
-    profileDescription.textContent = description;
+  setUserInfo(userName, userDescription) {
+    this._nameElement.textContent = userName;
+    this._descriptionElement.textContent = userDescription;
   }
 }

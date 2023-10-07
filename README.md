@@ -19,6 +19,7 @@ Project name: SE_PROJECT_AROUNDTHEUS
 - Ability to enlarge photos and show original aspect ratio
 - Custom card with error message to account for images that fail to load
 - Form input validation
+- ES6 classes
 
 ## Plan on improving the project
 
