@@ -123,11 +123,15 @@ function enableValidationOnAllForms(config) {
 
 function handleProfileEditSubmit({ title, description }) {
   profileUserInfo.setUserInfo(title, description);
+  profileTitleTooltipHandler.handleTooltip();
+  profileDescriptionTooltipHandler.handleTooltip();
 }
 
 function handleAddCardSubmit({ title, imageLink }) {
   const cardElement = createCard({ name: title, link: imageLink });
   cardSection.addItem(cardElement, "prepend");
+  cardTooltipHandler.handleTooltip();
+  formValidators["modal-add-card-form"].resetFormValidation(true);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -150,20 +154,7 @@ profileAddButton.addEventListener("click", () => {
   addCardPopup.open();
 });
 
-//allow user input of profile name and description.
-//also check for text ellipsis after changing profile info
-modalProfileForm.addEventListener("submit", (e) => {
-  profileTitleTooltipHandler.handleTooltip();
-  profileDescriptionTooltipHandler.handleTooltip();
-});
-
-//create card and prepend it to card list
-modalAddCardForm.addEventListener("submit", (e) => {
-  cardTooltipHandler.handleTooltip();
-  formValidators["modal-add-card-form"].resetFormValidation(true);
-});
-
-//check if text ellipsis is there after resizing
+//check for text ellipsis after resizing
 window.addEventListener("resize", () => {
   cardTooltipHandler.handleTooltip();
   profileTitleTooltipHandler.handleTooltip();
