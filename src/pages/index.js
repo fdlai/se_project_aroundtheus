@@ -6,62 +6,18 @@ import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
-
-/* -------------------------------------------------------------------------- */
-/*                                  Variables                                 */
-/* -------------------------------------------------------------------------- */
-
-const initialCards = [
-  {
-    name: "El Capitan",
-    link: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-  },
-  {
-    name: "Wanaka, New Zealand",
-    link: "https://www.wallpaperup.com/uploads/wallpapers/2013/09/25/151365/348f3c49b5e5d78bae772578dc1e9d36.jpg",
-  },
-  {
-    name: "Lake Atitl\u00E1n",
-    link: "https://www.roadaffair.com/wp-content/uploads/2017/10/lake-atitlan-guatemala-shutterstock_189649244.jpg",
-  },
-  {
-    name: "Banff, Canada",
-    link: "https://i2.wp.com/www.erikastravels.com/wp-content/uploads/2015/11/P1170327.jpg",
-  },
-  {
-    name: "Grand Canyon",
-    link: "https://www.wallpaperflare.com/static/15/193/266/arches-national-park-utah-rock-nature-wallpaper.jpg",
-  },
-  {
-    name: "Amazon Rainforest",
-    link: "https://foundtheworld.com/wp-content/uploads/2015/12/Amazon-Rainforest-9.jpg",
-  },
-];
+import { initialCards, configObject } from "../utils/constants.js";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Elements                                  */
 /* -------------------------------------------------------------------------- */
 
-//modal profile elements
 const profileEditButton = document.querySelector("#profile-edit-button");
-const modalProfileForm = document.forms["modal-profile-form"];
-
-//modal add-card elements
 const profileAddButton = document.querySelector("#profile-add-button");
-const modalAddCardForm = document.forms["modal-add-card-form"];
 
 /* -------------------------------------------------------------------------- */
 /*                                   Objects                                  */
 /* -------------------------------------------------------------------------- */
-
-const configObject = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__submit-button",
-  inactiveButtonClass: "modal__submit-button_disabled",
-  inputErrorClass: "modal__input_type_error",
-  errorClass: "modal__error_visible",
-};
 
 const formValidators = {};
 
@@ -121,6 +77,7 @@ function enableValidationOnAllForms(config) {
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
+//handle form submits. Class interactions handled through loose coupling
 function handleProfileEditSubmit({ title, description }) {
   profileUserInfo.setUserInfo(title, description);
   profileTitleTooltipHandler.handleTooltip();
@@ -128,8 +85,7 @@ function handleProfileEditSubmit({ title, description }) {
 }
 
 function handleAddCardSubmit({ title, imageLink }) {
-  const cardElement = createCard({ name: title, link: imageLink });
-  cardSection.addItem(cardElement, "prepend");
+  cardSection.addItem({ name: title, link: imageLink }, "prepend");
   cardTooltipHandler.handleTooltip();
   formValidators["modal-add-card-form"].resetFormValidation(true);
 }
@@ -140,11 +96,8 @@ function handleAddCardSubmit({ title, imageLink }) {
 
 //edit profile button populates the inputs and brings up the modal.
 profileEditButton.addEventListener("click", () => {
-  const { name, description } = profileUserInfo.getUserInfo();
-  const [inputNameElement, inputDescriptionElement] =
-    profileEditPopup.inputElements;
-  inputNameElement.value = name.trim();
-  inputDescriptionElement.value = description.trim();
+  const { name: title, description } = profileUserInfo.getUserInfo();
+  profileEditPopup.setInputValues({ title, description });
   formValidators["modal-profile-form"].resetFormValidation(false);
   profileEditPopup.open();
 });
