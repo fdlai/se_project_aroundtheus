@@ -24,10 +24,19 @@ export default class PopupWithForm extends Popup {
     return this._inputObject;
   }
   //set the user-typed-in text content of the input elements
+  //data is an object with keynames equal to the name attribute on each input element
   setInputValues(data) {
     this._inputElements.forEach((input) => {
       input.value = data[input.name];
     });
+  }
+
+  getInputElementAttributeNames() {
+    const attributeNames = [];
+    this._inputElements.forEach((input) => {
+      attributeNames.push(input.name);
+    });
+    return attributeNames;
   }
 
   setEventListeners() {

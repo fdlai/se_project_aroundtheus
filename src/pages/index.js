@@ -1,4 +1,4 @@
-import "./index.css";
+//import "./index.css";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import TooltipHandler from "../components/TooltipHandler.js";
@@ -7,7 +7,9 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import { initialCards, configObject } from "../utils/constants.js";
-
+//import zipObject from "lodash/zipObject.js";
+//import zipObject from "../../node_modules/lodash/zipObject.js";
+//const zipObject = require("lodash/zipObject");
 /* -------------------------------------------------------------------------- */
 /*                                  Elements                                  */
 /* -------------------------------------------------------------------------- */
@@ -51,13 +53,10 @@ const profileUserInfo = new UserInfo("#profile-title", "#profile-description");
 /*                                  Functions                                 */
 /* -------------------------------------------------------------------------- */
 
-//display image in picture-modal
-function clickToOpenPictureModal(image) {
-  imagePopup.open(image);
-}
-
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", clickToOpenPictureModal);
+  const card = new Card(cardData, "#card-template", (cardData) =>
+    imagePopup.open(cardData)
+  );
   return card.getCardElement();
 }
 
@@ -96,10 +95,19 @@ function handleAddCardSubmit({ title, imageLink }) {
 
 //edit profile button populates the inputs and brings up the modal.
 profileEditButton.addEventListener("click", () => {
-  const { name: title, description } = profileUserInfo.getUserInfo();
-  profileEditPopup.setInputValues({ title, description });
+  //const { name: title, description } = profileUserInfo.getUserInfo();
+  //profileEditPopup.setInputValues({ title, description });
+  const infoFromUserClass = profileUserInfo.getUserInfo();
+  const infoForPopupClass = {
+    title: infoFromUserClass.name,
+    description: infoFromUserClass.description,
+  };
+  profileEditPopup.setInputValues(infoForPopupClass);
   formValidators["modal-profile-form"].resetFormValidation(false);
   profileEditPopup.open();
+
+  console.log(profileEditPopup.getInputElementAttributeNames());
+  console.log(addCardPopup.getInputElementAttributeNames());
 });
 
 //profile add button brings up modal
