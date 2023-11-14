@@ -1,4 +1,4 @@
-//import "./index.css";
+import "./index.css";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import TooltipHandler from "../components/TooltipHandler.js";
@@ -6,10 +6,10 @@ import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
-import { initialCards, configObject } from "../utils/constants.js";
-//import zipObject from "lodash/zipObject.js";
-//import zipObject from "../../node_modules/lodash/zipObject.js";
-//const zipObject = require("lodash/zipObject");
+import Api from "../components/Api.js";
+import { initialCards, configObject, apiSettings } from "../utils/constants.js";
+//import {zipObject} from "lodash";
+
 /* -------------------------------------------------------------------------- */
 /*                                  Elements                                  */
 /* -------------------------------------------------------------------------- */
@@ -47,7 +47,13 @@ const profileEditPopup = new PopupWithForm(
 );
 const addCardPopup = new PopupWithForm("#modal-add-card", handleAddCardSubmit);
 const imagePopup = new PopupWithImage("#modal-picture");
-const profileUserInfo = new UserInfo("#profile-title", "#profile-description");
+const profileUserInfo = new UserInfo(
+  "#profile-title",
+  "#profile-description",
+  ".profile__image"
+);
+
+const siteApi = new Api(apiSettings, handleSetUserInfo, handlePatchUserInfo);
 
 /* -------------------------------------------------------------------------- */
 /*                                  Functions                                 */
@@ -72,6 +78,20 @@ function enableValidationOnAllForms(config) {
   });
 }
 
+function handleSetUserInfo(apiUserInfo) {
+  profileUserInfo.setUserInfo(
+    apiUserInfo.name,
+    apiUserInfo.about,
+    apiUserInfo.avatar
+  );
+}
+
+function handlePatchUserInfo() {
+  const { name: userName, description: userAbout } =
+    profileUserInfo.getUserInfo();
+  return { userName, userAbout };
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
@@ -81,6 +101,7 @@ function handleProfileEditSubmit({ title, description }) {
   profileUserInfo.setUserInfo(title, description);
   profileTitleTooltipHandler.handleTooltip();
   profileDescriptionTooltipHandler.handleTooltip();
+  siteApi.patchUserInfo();
 }
 
 function handleAddCardSubmit({ title, imageLink }) {
@@ -106,8 +127,8 @@ profileEditButton.addEventListener("click", () => {
   formValidators["modal-profile-form"].resetFormValidation(false);
   profileEditPopup.open();
 
-  console.log(profileEditPopup.getInputElementAttributeNames());
-  console.log(addCardPopup.getInputElementAttributeNames());
+  // console.log(profileEditPopup.getInputElementAttributeNames());
+  // console.log(addCardPopup.getInputElementAttributeNames());
 });
 
 //profile add button brings up modal
@@ -136,3 +157,49 @@ enableValidationOnAllForms(configObject);
 cardTooltipHandler.handleTooltip();
 profileTitleTooltipHandler.handleTooltip();
 profileDescriptionTooltipHandler.handleTooltip();
+
+//fetch userInfo from API, and set it in the profile
+siteApi.setUserInfo();
+/* -------------------------------------------------------------------------- */
+/*                                   Testing                                  */
+/* -------------------------------------------------------------------------- */
+
+// fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
+//   headers: {
+//     authorization: "cb8f3768-1e1a-47c8-a0f6-f4754f9bab87",
+//   },
+// })
+//   .then((res) => {
+//     if (res.ok) {
+//       return res.json();
+//     }
+//     Promise.reject(res);
+//   })
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => {
+//     console.log("We have an error: ", err);
+//   });
+
+// async function fetchUserInfo() {
+//   try {
+//     const res = await fetch(
+//       "https://around-api.en.tripleten-services.com/v1/users/me",
+//       {
+//         headers: {
+//           authorization: "cb8f3768-1e1a-47c8-a0f6-f4754f9bab87",
+//         },
+//       }
+//     );
+//     if (!res.ok) {
+//       throw res;
+//     }
+//     const data = await res.json();
+//     console.log(data);
+//   } catch (err) {
+//     console.log("We have an error from async...await: ", err);
+//   }
+// }
+
+// fetchUserInfo();
