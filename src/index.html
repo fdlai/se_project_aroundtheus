@@ -173,6 +173,30 @@
         <p class="modal__subtitle"></p>
       </div>
     </div>
+    <!-- -------------------------- modal-card-delete -------------------------- -->
+    <div class="modal" id="modal-card-delete">
+      <div class="modal__container">
+        <button
+          class="modal__close-button"
+          type="button"
+          aria-label="close"
+        ></button>
+        <p class="modal__heading modal__heading_type_confirm">Are you sure?</p>
+        <form
+          class="modal__form"
+          id="modal-card-delete-form"
+          name="modal-card-delete-form"
+        >
+          <button
+            class="modal__submit-button modal__submit-button_type_confirm"
+            type="submit"
+            aria-label="delete"
+          >
+            Yes
+          </button>
+        </form>
+      </div>
+    </div>
     <!-- ---------------------------- card-template ---------------------------- -->
     <template id="card-template"
       ><li class="card">

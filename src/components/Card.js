@@ -1,10 +1,12 @@
 export default class Card {
-  constructor(data, cardSelector, handleImageClick) {
+  constructor(data, cardSelector, handleImageClick, handleTrashButtonClick) {
     this._data = data;
     this._name = data.name;
     this._link = data.link;
+    this.id = data._id;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
+    this._handleTrashButtonClick = handleTrashButtonClick;
     this._template = document.querySelector(this._cardSelector).content;
     this._cardTemplate = this._template.querySelector(".card");
     this._cardElement = this._cardTemplate.cloneNode(true);
@@ -23,14 +25,35 @@ export default class Card {
 
   //click button to delete element
   _addDeleteFunctionality(button, element) {
+    if (this.id) {
+      //(handleTrashButtonClick) cardDeletePopup.open(); open a popup.
+      this._handleTrashButtonClick(this.id);
+      //(popupWithForm)(submit handler function)when popup is clicked 'yes':
+      //(popupWithForm)start 'saving' animation
+      //(handleTrashButtonClick) siteApi.deleteCard(); send a delete request to API
+      //(handleTrashButtonClick) wait for delete request to complete
+      //(handleTrashButtonClick) card.delete(); delete card html
+      //(popupWithForm)close popup
+      //(popupWithForm)end saving animation
+    }
     button.addEventListener("click", () => {
       element.remove();
     });
   }
 
+  deleteCard() {
+    if (this._errorCard) {
+      this._errorCard.remove();
+    }
+    this._cardElement.remove();
+  }
+
   _setEventListeners() {
     this._addLikeFunctionality();
-    this._addDeleteFunctionality(this._deleteButton, this._cardElement);
+    //this._addDeleteFunctionality(this._deleteButton, this._cardElement);
+    this._deleteButton.addEventListener("click", () => {
+      this._handleTrashButtonClick(this);
+    });
     this._cardElementImage.addEventListener("click", () => {
       this._handleImageClick(this._data);
     });
@@ -54,7 +77,10 @@ export default class Card {
     this._errorCardTitle.textContent = this._cardElement.innerText
       ? this._cardElement.textContent
       : "...";
-    this._addDeleteFunctionality(this._errorDeleteButton, this._errorCard);
+    //this._addDeleteFunctionality(this._errorDeleteButton, this._errorCard);
+    this._errorDeleteButton.addEventListener("click", () => {
+      this._handleTrashButtonClick(this);
+    });
     this._cardElement.replaceWith(this._errorCard);
   }
 

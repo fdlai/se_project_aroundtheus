@@ -1,22 +1,104 @@
 export default class Api {
-  constructor(apiSettings, handleSetUserInfo, handlePatchUserInfo) {
+  constructor(apiSettings) {
     this._apiSettings = apiSettings;
-    this._baseUrl = apiSettings.baseUrl;
-    this._userInfoUrl = apiSettings.userInfoUrl;
     this._headers = apiSettings.headers;
-    this._handleSetUserInfo = handleSetUserInfo;
-    this._handlePatchUserInfo = handlePatchUserInfo;
+    this._baseUrl = apiSettings.baseUrl;
+    this._userInfoUrl = `${this._baseUrl}/users/me`;
+    this._cardsUrl = `${this._baseUrl}/cards`;
   }
 
-  getInitialCards() {
-    return fetch(this._baseUrl, {
-      headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
+  _checkResponse(response) {
+    if (!response.ok) {
+      throw response;
+    }
+  }
+
+  async getInitialCards() {
+    try {
+      const res = await fetch(this._cardsUrl, {
+        headers: this._headers,
+      });
+      this._checkResponse(res);
+      const cardsArray = await res.json();
+      console.log(cardsArray);
+      return cardsArray;
+    } catch (err) {
+      console.log("Failed to get cards: ", err);
+    }
+  }
+
+  // async getCard(cardId) {
+  //   try {
+  //     const res = await fetch(`${this._cardsUrl}/${cardId}`, {
+  //       headers: this._headers,
+  //     });
+  //     this._checkResponse(res);
+  //     const card = await res.json();
+  //     console.log(card);
+  //     return card;
+  //   } catch (err) {
+  //     console.log("Failed to get card: ", err);
+  //   }
+  // }
+
+  // getInitialCards() {
+  //   return fetch(this._baseUrl, {
+  //     headers: this._headers,
+  //   })
+  //     .then((res) => {
+  //       this._checkResponse(res);
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //       return data;
+  //     })
+  //     .catch((err) => {
+  //       console.log(`Failed to get user cards: `, err);
+  //     });
+  // }
+
+  //cardsArray is an array of cardata objects
+  async addArrayOfCards(cardsArray) {
+    cardsArray.forEach(async (cardData) => {
+      this.addCard(cardData);
     });
+  }
+
+  //cardData is an object with name and link properties
+  async addCard(cardData) {
+    try {
+      const res = await fetch(this._cardsUrl, {
+        method: "POST",
+        headers: this._headers,
+        body: JSON.stringify(cardData),
+      });
+      this._checkResponse(res);
+      const card = await res.json();
+      console.log(card);
+      return card;
+    } catch (err) {
+      console.log("Failed to upload card: ", err);
+      //if error is a 400, display message informing 'bad url link"
+      if (err.status === 400) {
+        alert("Could not add card, due to incorrect URL");
+      }
+    }
+  }
+
+  async deleteCard(cardId) {
+    try {
+      const res = await fetch(`${this._cardsUrl}/${cardId}`, {
+        method: "DELETE",
+        headers: this._headers,
+      });
+      this._checkResponse(res);
+      const data = await res.json();
+      console.log(data);
+      return res;
+    } catch (err) {
+      console.log("Failed to delete card: ", err);
+    }
   }
 
   async fetchUserInfo() {
@@ -24,9 +106,7 @@ export default class Api {
       const res = await fetch(this._userInfoUrl, {
         headers: this._headers,
       });
-      if (!res.ok) {
-        throw res;
-      }
+      this._checkResponse(res);
       const data = await res.json();
       console.log(data);
       return data;
@@ -35,14 +115,14 @@ export default class Api {
     }
   }
 
-  async setUserInfo() {
-    const userInfo = await this.fetchUserInfo();
-    this._handleSetUserInfo(userInfo);
-  }
+  //Setting a user's info does not really fall within the purview of an API class
+  // async setUserInfo() {
+  //   const userInfo = await this.fetchUserInfo();
+  //   this._handleSetUserInfo(userInfo);
+  // }
 
-  async patchUserInfo() {
+  async updateUserInfo(userName, userAbout) {
     try {
-      const { userName, userAbout } = this._handlePatchUserInfo();
       const res = await fetch(this._userInfoUrl, {
         method: "PATCH",
         headers: this._headers,
@@ -51,9 +131,7 @@ export default class Api {
           about: userAbout,
         }),
       });
-      if (!res.ok) {
-        throw res;
-      }
+      this._checkResponse(res);
       const data = await res.json();
       console.log(data);
       return data;

@@ -82,6 +82,10 @@
   height: 23px;
 }
 
+.modal__heading_type_confirm {
+  margin-bottom: 38px;
+}
+
 /*.modal__form {
 }*/
 
@@ -172,6 +176,10 @@
   pointer-events: none;
 }
 
+.modal__submit-button_type_confirm {
+  margin-top: 0;
+}
+
 @media screen and (max-width: 620px) {
   .modal__container {
     width: 282px;
@@ -201,5 +209,11 @@
   .modal__submit-button {
     margin-top: 45px;
     font-size: 14px;
+  }
+  .modal__heading_type_confirm {
+    margin-bottom: 38px;
+  }
+  .modal__submit-button_type_confirm {
+    margin-top: 0;
   }
 }
