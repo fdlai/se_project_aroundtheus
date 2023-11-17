@@ -27,22 +27,19 @@
       <!-- -------------------------------- main --------------------------------- -->
       <main class="content">
         <section class="profile page__profile">
-          <img
-            src="<%=require('./images/jacques-cousteau.png')%>"
-            alt="portrait photo of Jacques Cousteau"
-            class="profile__image"
-          />
+          <div class="profile__image-container">
+            <img src="" alt="avatar photo" class="profile__image" />
+            <div class="profile__pencil-icon"></div>
+          </div>
           <div class="profile__info">
-            <h1 class="profile__title" id="profile-title">Jacques Cousteau</h1>
+            <h1 class="profile__title" id="profile-title"></h1>
             <button
               class="profile__edit-button"
               id="profile-edit-button"
               type="button"
               aria-label="Edit"
             ></button>
-            <p class="profile__description" id="profile-description">
-              Explorer
-            </p>
+            <p class="profile__description" id="profile-description"></p>
           </div>
           <button
             class="profile__add-button"
@@ -193,6 +190,45 @@
             aria-label="delete"
           >
             Yes
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- -------------------- change profile picture modal --------------------- -->
+    <div class="modal" id="modal-profile-picture">
+      <div class="modal__container">
+        <button
+          class="modal__close-button"
+          type="button"
+          aria-label="close"
+        ></button>
+        <p class="modal__heading">Change profile picture</p>
+        <form
+          class="modal__form"
+          id="modal-profile-picture-form"
+          name="modal-profile-picture-form"
+        >
+          <label class="modal__label">
+            <input
+              class="modal__input"
+              type="url"
+              name="imageLink"
+              id="profile-picture-image-link-input"
+              placeholder="Image link"
+              required
+            />
+            <span
+              class="modal__span"
+              id="profile-picture-image-link-input-error"
+            ></span>
+          </label>
+          <button
+            class="modal__submit-button modal__submit-button_disabled"
+            type="submit"
+            aria-label="save"
+            disabled
+          >
+            Save
           </button>
         </form>
       </div>

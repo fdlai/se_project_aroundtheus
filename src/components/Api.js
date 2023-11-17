@@ -5,6 +5,7 @@ export default class Api {
     this._baseUrl = apiSettings.baseUrl;
     this._userInfoUrl = `${this._baseUrl}/users/me`;
     this._cardsUrl = `${this._baseUrl}/cards`;
+    this._avatarUrl = `${this._userInfoUrl}/avatar`;
   }
 
   _checkResponse(response) {
@@ -67,23 +68,15 @@ export default class Api {
 
   //cardData is an object with name and link properties
   async addCard(cardData) {
-    try {
-      const res = await fetch(this._cardsUrl, {
-        method: "POST",
-        headers: this._headers,
-        body: JSON.stringify(cardData),
-      });
-      this._checkResponse(res);
-      const card = await res.json();
-      console.log(card);
-      return card;
-    } catch (err) {
-      console.log("Failed to upload card: ", err);
-      //if error is a 400, display message informing 'bad url link"
-      if (err.status === 400) {
-        alert("Could not add card, due to incorrect URL");
-      }
-    }
+    const res = await fetch(this._cardsUrl, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify(cardData),
+    });
+    this._checkResponse(res);
+    const card = await res.json();
+    console.log(card);
+    return card;
   }
 
   async deleteCard(cardId) {
@@ -99,6 +92,28 @@ export default class Api {
     } catch (err) {
       console.log("Failed to delete card: ", err);
     }
+  }
+
+  async likeCard(cardId) {
+    const res = await fetch(`${this._cardsUrl}/${cardId}/likes`, {
+      method: "PUT",
+      headers: this._headers,
+    });
+    this._checkResponse(res);
+    const data = await res.json();
+    console.log(data);
+    return res;
+  }
+
+  async unlikeCard(cardId) {
+    const res = await fetch(`${this._cardsUrl}/${cardId}/likes`, {
+      method: "DELETE",
+      headers: this._headers,
+    });
+    this._checkResponse(res);
+    const data = await res.json();
+    console.log(data);
+    return res;
   }
 
   async fetchUserInfo() {
@@ -139,6 +154,21 @@ export default class Api {
       console.log("Failed to update user info: ", err);
     }
   }
+
+  async changeAvatar(userLink) {
+    const res = await fetch(this._avatarUrl, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: userLink,
+      }),
+    });
+    this._checkResponse(res);
+    const data = await res.json();
+    console.log(data);
+    return data;
+  }
 }
 
 // {"user":{"name":"Jacques Cousteau","about":"Sailor, researcher","avatar":"https://practicum-content.s3.us-west-1.amazonaws.com/frontend-developer/common/avatar.jpg","_id":"b5c73fd59c3b2a3d8b73e94e"},"token":"cb8f3768-1e1a-47c8-a0f6-f4754f9bab87"}
+//https://practicum-content.s3.us-west-1.amazonaws.com/frontend-developer/common/avatar.jpg

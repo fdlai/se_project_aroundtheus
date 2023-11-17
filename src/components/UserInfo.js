@@ -15,11 +15,20 @@ export default class UserInfo {
     };
   }
   //set the 2 element's textContent to passed-in arguments, and the url for the image
-  setUserInfo(userName, userDescription, userImageUrl = null) {
-    this._nameElement.textContent = userName;
-    this._descriptionElement.textContent = userDescription;
+  setUserInfo({ userName, userDescription, userImageUrl }) {
+    if (userName) {
+      this._nameElement.textContent = userName;
+    }
+    if (userDescription) {
+      this._descriptionElement.textContent = userDescription;
+    }
     if (userImageUrl) {
       this._imageElement.src = userImageUrl;
     }
+    //handle errors if image can't load
+    this._imageElement.onerror = () => {
+      this._imageElement.src = "./8b4523932e498ee19285.png";
+      alert("Invalid URL. Could not change image!");
+    };
   }
 }

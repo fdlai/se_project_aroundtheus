@@ -17,6 +17,7 @@ import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
 const profileEditButton = document.querySelector("#profile-edit-button");
 const profileAddButton = document.querySelector("#profile-add-button");
+const profileImage = document.querySelector(".profile__image");
 
 /* -------------------------------------------------------------------------- */
 /*                                   Objects                                  */
@@ -49,6 +50,10 @@ const profileEditPopup = new PopupWithForm(
 const addCardPopup = new PopupWithForm("#modal-add-card", handleAddCardSubmit);
 const imagePopup = new PopupWithImage("#modal-picture");
 const confirmCardDeletePopup = new PopupWithConfirmation("#modal-card-delete");
+const profilePicturePopup = new PopupWithForm(
+  "#modal-profile-picture",
+  handleProfilePictureSubmit
+);
 const profileUserInfo = new UserInfo(
   "#profile-title",
   "#profile-description",
@@ -64,7 +69,8 @@ function createCard(cardData) {
     cardData,
     "#card-template",
     (cardData) => imagePopup.open(cardData),
-    handleTrashButtonClick
+    handleTrashButtonClick,
+    handleLikeButtonClick
   );
   return card.getCardElement();
 }
@@ -83,11 +89,11 @@ function enableValidationOnAllForms(config) {
 
 async function setUserInfoFromApi() {
   const apiUserInfo = await siteApi.fetchUserInfo();
-  profileUserInfo.setUserInfo(
-    apiUserInfo.name,
-    apiUserInfo.about,
-    apiUserInfo.avatar
-  );
+  profileUserInfo.setUserInfo({
+    userName: apiUserInfo.name,
+    userDescription: apiUserInfo.about,
+    userImageUrl: apiUserInfo.avatar,
+  });
 }
 
 async function updateApiUserInfo() {
@@ -105,7 +111,7 @@ async function initializeCards() {
   cardSection.renderItems();
 }
 
-function handleTrashButtonClick(card) {
+async function handleTrashButtonClick(card) {
   confirmCardDeletePopup.open();
   confirmCardDeletePopup.setSubmitHandler(async () => {
     const res = await siteApi.deleteCard(card.id);
@@ -117,28 +123,57 @@ function handleTrashButtonClick(card) {
   });
 }
 
+async function handleLikeButtonClick(card, likeButtonStateActive) {
+  try {
+    if (likeButtonStateActive) {
+      const updatedCard = await siteApi.unlikeCard(card.id);
+    } else {
+      const updatedCard = await siteApi.likeCard(card.id);
+    }
+  } catch (err) {
+    console.log("Error! Failed to alter like button: ", err);
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               Event Handlers                               */
 /* -------------------------------------------------------------------------- */
 
 //handle form submits. Class interactions handled through loose coupling
 function handleProfileEditSubmit({ title, description }) {
-  profileUserInfo.setUserInfo(title, description);
+  profileUserInfo.setUserInfo({
+    userName: title,
+    userDescription: description,
+  });
   profileTitleTooltipHandler.handleTooltip();
   profileDescriptionTooltipHandler.handleTooltip();
   updateApiUserInfo();
 }
 
 async function handleAddCardSubmit({ title, imageLink }) {
-  const cardData = { name: title, link: imageLink };
-  const card = await siteApi.addCard(cardData);
-  // if (!res.ok) {
-  //   console.log("Could not add card");
-  //   return;
-  // }
-  cardSection.addItem(card, "prepend");
-  cardTooltipHandler.handleTooltip();
-  formValidators["modal-add-card-form"].resetFormValidation(true);
+  try {
+    const cardData = { name: title, link: imageLink };
+    const card = await siteApi.addCard(cardData);
+    // if (card === "error!") {
+    //   console.log("Could not add card");
+    //   return;
+    // }
+    cardSection.addItem(card, "prepend");
+    cardTooltipHandler.handleTooltip();
+    formValidators["modal-add-card-form"].resetFormValidation(true);
+  } catch (err) {
+    console.log("Error! Could not add card: ", err);
+  }
+}
+
+async function handleProfilePictureSubmit(inputValues) {
+  try {
+    await siteApi.changeAvatar(inputValues.imageLink);
+    profileUserInfo.setUserInfo({ userImageUrl: inputValues.imageLink });
+    formValidators["modal-profile-picture-form"].resetFormValidation(true);
+  } catch (err) {
+    console.log("Error! Could not change profile picture: ", err);
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -167,6 +202,11 @@ window.addEventListener("resize", () => {
   cardTooltipHandler.handleTooltip();
   profileTitleTooltipHandler.handleTooltip();
   profileDescriptionTooltipHandler.handleTooltip();
+});
+
+//profile picture modal
+profileImage.addEventListener("click", () => {
+  profilePicturePopup.open();
 });
 
 /* -------------------------------------------------------------------------- */

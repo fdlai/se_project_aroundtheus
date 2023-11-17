@@ -1,5 +1,11 @@
 export default class Card {
-  constructor(data, cardSelector, handleImageClick, handleTrashButtonClick) {
+  constructor(
+    data,
+    cardSelector,
+    handleImageClick,
+    handleTrashButtonClick,
+    handleLikeButtonClick
+  ) {
     this._data = data;
     this._name = data.name;
     this._link = data.link;
@@ -7,6 +13,7 @@ export default class Card {
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
     this._handleTrashButtonClick = handleTrashButtonClick;
+    this._handleLikeButtonClick = handleLikeButtonClick;
     this._template = document.querySelector(this._cardSelector).content;
     this._cardTemplate = this._template.querySelector(".card");
     this._cardElement = this._cardTemplate.cloneNode(true);
@@ -14,13 +21,28 @@ export default class Card {
     this._deleteButton = this._cardElement.querySelector(
       ".card__delete-button"
     );
+    this._likeButtonStateActive = data.isLiked;
+    this._setLikeButtonState();
   }
 
   //like-button functionality
   _addLikeFunctionality() {
     this._likeButton.addEventListener("click", () => {
-      this._likeButton.classList.toggle("card__like-button_active");
+      this._handleLikeButtonClick(this, this._likeButtonStateActive);
+      //flip the state of the like button
+      this._likeButtonStateActive = !this._likeButtonStateActive;
+
+      this._setLikeButtonState();
     });
+  }
+
+  //maintain the state of the like button
+  _setLikeButtonState() {
+    if (this._likeButtonStateActive) {
+      this._likeButton.classList.add("card__like-button_active");
+    } else {
+      this._likeButton.classList.remove("card__like-button_active");
+    }
   }
 
   //click button to delete element
