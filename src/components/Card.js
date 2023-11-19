@@ -45,24 +45,6 @@ export default class Card {
     }
   }
 
-  //click button to delete element
-  _addDeleteFunctionality(button, element) {
-    if (this.id) {
-      //(handleTrashButtonClick) cardDeletePopup.open(); open a popup.
-      this._handleTrashButtonClick(this.id);
-      //(popupWithForm)(submit handler function)when popup is clicked 'yes':
-      //(popupWithForm)start 'saving' animation
-      //(handleTrashButtonClick) siteApi.deleteCard(); send a delete request to API
-      //(handleTrashButtonClick) wait for delete request to complete
-      //(handleTrashButtonClick) card.delete(); delete card html
-      //(popupWithForm)close popup
-      //(popupWithForm)end saving animation
-    }
-    button.addEventListener("click", () => {
-      element.remove();
-    });
-  }
-
   deleteCard() {
     if (this._errorCard) {
       this._errorCard.remove();
@@ -72,7 +54,6 @@ export default class Card {
 
   _setEventListeners() {
     this._addLikeFunctionality();
-    //this._addDeleteFunctionality(this._deleteButton, this._cardElement);
     this._deleteButton.addEventListener("click", () => {
       this._handleTrashButtonClick(this);
     });

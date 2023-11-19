@@ -7,8 +7,9 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
-import { initialCards, configObject, apiSettings } from "../utils/constants.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
+import PopupWithMessage from "../components/PopupWithMessage.js";
+import { initialCards, configObject, apiSettings } from "../utils/constants.js";
 //import {zipObject} from "lodash";
 
 /* -------------------------------------------------------------------------- */
@@ -54,6 +55,7 @@ const profilePicturePopup = new PopupWithForm(
   "#modal-profile-picture",
   handleProfilePictureSubmit
 );
+const errorMessagePopup = new PopupWithMessage("#modal-message");
 const profileUserInfo = new UserInfo(
   "#profile-title",
   "#profile-description",
@@ -88,50 +90,60 @@ function enableValidationOnAllForms(config) {
 }
 
 async function setUserInfoFromApi() {
-  const apiUserInfo = await siteApi.fetchUserInfo();
-  profileUserInfo.setUserInfo({
-    userName: apiUserInfo.name,
-    userDescription: apiUserInfo.about,
-    userImageUrl: apiUserInfo.avatar,
-  });
-}
-
-async function updateApiUserInfo() {
-  const { name: userName, description: userAbout } =
-    profileUserInfo.getUserInfo();
-  await siteApi.updateUserInfo(userName, userAbout);
+  try {
+    const apiUserInfo = await siteApi.fetchUserInfo();
+    profileUserInfo.setUserInfo({
+      userName: apiUserInfo.name,
+      userDescription: apiUserInfo.about,
+      userImageUrl: apiUserInfo.avatar,
+    });
+  } catch (err) {
+    errorMessagePopup.setMessage(`${err}. Could not retrieve user info.`);
+    errorMessagePopup.open();
+  }
 }
 
 async function initializeCards() {
-  const initialCards = await siteApi.getInitialCards();
-  cardSection = new Section(
-    { items: initialCards, renderer: createCard },
-    ".cards__list"
-  );
-  cardSection.renderItems();
+  try {
+    const initialCards = await siteApi.getInitialCards();
+    cardSection = new Section(
+      { items: initialCards, renderer: createCard },
+      ".cards__list"
+    );
+    cardSection.renderItems();
+  } catch (err) {
+    errorMessagePopup.setMessage(`${err}. Could not retrieve cards.`);
+    errorMessagePopup.open();
+  }
 }
 
 async function handleTrashButtonClick(card) {
-  confirmCardDeletePopup.open();
-  confirmCardDeletePopup.setSubmitHandler(async () => {
-    const res = await siteApi.deleteCard(card.id);
-    if (!res.ok) {
-      console.log("Could not delete card");
-      return;
-    }
-    card.deleteCard();
-  });
+  try {
+    confirmCardDeletePopup.open();
+    confirmCardDeletePopup.setSubmitHandler(async () => {
+      const res = await siteApi.deleteCard(card.id);
+      if (!res.ok) {
+        console.log("Could not delete card");
+        return;
+      }
+      card.deleteCard();
+    });
+  } catch (err) {
+    errorMessagePopup.setMessage(`${err}. Could not delete card.`);
+    errorMessagePopup.open();
+  }
 }
 
 async function handleLikeButtonClick(card, likeButtonStateActive) {
   try {
     if (likeButtonStateActive) {
-      const updatedCard = await siteApi.unlikeCard(card.id);
+      siteApi.unlikeCard(card.id);
     } else {
-      const updatedCard = await siteApi.likeCard(card.id);
+      siteApi.likeCard(card.id);
     }
   } catch (err) {
-    console.log("Error! Failed to alter like button: ", err);
+    errorMessagePopup.setMessage(`${err}. Could not like/unlike card.`);
+    errorMessagePopup.open();
   }
 }
 
@@ -140,39 +152,54 @@ async function handleLikeButtonClick(card, likeButtonStateActive) {
 /* -------------------------------------------------------------------------- */
 
 //handle form submits. Class interactions handled through loose coupling
-function handleProfileEditSubmit({ title, description }) {
-  profileUserInfo.setUserInfo({
-    userName: title,
-    userDescription: description,
-  });
-  profileTitleTooltipHandler.handleTooltip();
-  profileDescriptionTooltipHandler.handleTooltip();
-  updateApiUserInfo();
+async function handleProfileEditSubmit({ title, description }) {
+  try {
+    await Promise.all([
+      siteApi.updateUserInfo(title, description),
+      profileEditPopup.applySavingAnimation(),
+    ]);
+    profileUserInfo.setUserInfo({
+      userName: title,
+      userDescription: description,
+    });
+    profileTitleTooltipHandler.handleTooltip();
+    profileDescriptionTooltipHandler.handleTooltip();
+  } catch (err) {
+    errorMessagePopup.setMessage(`${err}. Error setting user info.`);
+    errorMessagePopup.open();
+  }
 }
 
-async function handleAddCardSubmit({ title, imageLink }) {
-  try {
-    const cardData = { name: title, link: imageLink };
-    const card = await siteApi.addCard(cardData);
-    // if (card === "error!") {
-    //   console.log("Could not add card");
-    //   return;
-    // }
-    cardSection.addItem(card, "prepend");
-    cardTooltipHandler.handleTooltip();
-    formValidators["modal-add-card-form"].resetFormValidation(true);
-  } catch (err) {
-    console.log("Error! Could not add card: ", err);
-  }
+function handleAddCardSubmit({ title, imageLink }) {
+  //using promises and .then
+  const cardData = { name: title, link: imageLink };
+  return Promise.all([
+    siteApi.addCard(cardData),
+    addCardPopup.applySavingAnimation(),
+  ])
+    .then((arr) => {
+      const [card, _] = arr;
+      cardSection.addItem(card, "prepend");
+      cardTooltipHandler.handleTooltip();
+      formValidators["modal-add-card-form"].resetFormValidation(true);
+    })
+    .catch((err) => {
+      errorMessagePopup.setMessage(`${err}. Could not add card.`);
+      errorMessagePopup.open();
+    });
 }
 
 async function handleProfilePictureSubmit(inputValues) {
   try {
-    await siteApi.changeAvatar(inputValues.imageLink);
+    await Promise.all([
+      siteApi.changeAvatar(inputValues.imageLink),
+      profilePicturePopup.applySavingAnimation(),
+    ]);
     profileUserInfo.setUserInfo({ userImageUrl: inputValues.imageLink });
     formValidators["modal-profile-picture-form"].resetFormValidation(true);
   } catch (err) {
-    console.log("Error! Could not change profile picture: ", err);
+    errorMessagePopup.setMessage(`${err}. Could not change profile picture.`);
+    errorMessagePopup.open();
   }
 }
 
@@ -183,10 +210,12 @@ async function handleProfilePictureSubmit(inputValues) {
 //edit profile button populates the inputs and brings up the modal.
 profileEditButton.addEventListener("click", () => {
   const infoFromUserClass = profileUserInfo.getUserInfo();
+
   const infoForPopupClass = {
     title: infoFromUserClass.name,
     description: infoFromUserClass.description,
   };
+
   profileEditPopup.setInputValues(infoForPopupClass);
   formValidators["modal-profile-form"].resetFormValidation(false);
   profileEditPopup.open();
@@ -213,63 +242,15 @@ profileImage.addEventListener("click", () => {
 /*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
 
-//have initialCards render
-initializeCards();
-
-//enable form validation
-enableValidationOnAllForms(configObject);
-
-//create initial tooltips on page load
-cardTooltipHandler.handleTooltip();
-profileTitleTooltipHandler.handleTooltip();
-profileDescriptionTooltipHandler.handleTooltip();
-
-//fetch userInfo from API, and set it in the profile
-setUserInfoFromApi();
-
-//siteApi.addArrayOfCards(initialCards);
-//siteApi.getCard("65547f31597573001993451a");
-
-/* -------------------------------------------------------------------------- */
-/*                                   Testing                                  */
-/* -------------------------------------------------------------------------- */
-
-// fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
-//   headers: {
-//     authorization: "cb8f3768-1e1a-47c8-a0f6-f4754f9bab87",
-//   },
-// })
-//   .then((res) => {
-//     if (res.ok) {
-//       return res.json();
-//     }
-//     Promise.reject(res);
-//   })
-//   .then((data) => {
-//     console.log(data);
-//   })
-//   .catch((err) => {
-//     console.log("We have an error: ", err);
-//   });
-
-// async function fetchUserInfo() {
-//   try {
-//     const res = await fetch(
-//       "https://around-api.en.tripleten-services.com/v1/users/me",
-//       {
-//         headers: {
-//           authorization: "cb8f3768-1e1a-47c8-a0f6-f4754f9bab87",
-//         },
-//       }
-//     );
-//     if (!res.ok) {
-//       throw res;
-//     }
-//     const data = await res.json();
-//     console.log(data);
-//   } catch (err) {
-//     console.log("We have an error from async...await: ", err);
-//   }
-// }
-
-// fetchUserInfo();
+(async () => {
+  //have initialCards render
+  //and
+  //fetch userInfo from API, to set it in the profile
+  await Promise.all([initializeCards(), setUserInfoFromApi()]);
+  //create initial tooltips on page load
+  cardTooltipHandler.handleTooltip();
+  profileTitleTooltipHandler.handleTooltip();
+  profileDescriptionTooltipHandler.handleTooltip();
+  //enable form validation
+  enableValidationOnAllForms(configObject);
+})();

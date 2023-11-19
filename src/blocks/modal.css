@@ -217,3 +217,47 @@
     margin-top: 0;
   }
 }
+
+/* Define the keyframes for text fade-in and fade-out */
+@keyframes textFadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Hide the original text content */
+.modal__submit-button_animation_active {
+  color: transparent;
+  position: relative;
+}
+
+/* Ensure the button is still clickable */
+.modal__submit-button_animation_active::before {
+  content: attr(data-saving-text);
+  animation: textFadeInOut 1.7s linear infinite;
+  color: white;
+  position: absolute;
+  top: 26%;
+  font-size: 18px;
+  left: 42%;
+}
+
+.modal__submit-button_saved {
+  color: transparent;
+  position: relative;
+}
+
+.modal__submit-button_saved::before {
+  content: attr(data-saved-text);
+  color: white;
+  position: absolute;
+  top: 26%;
+  font-size: 18px;
+  left: 42%;
+}
