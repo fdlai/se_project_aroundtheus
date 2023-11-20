@@ -47,22 +47,21 @@ export default class PopupWithForm extends Popup {
     this._submitButton.textContent = text;
   }
 
-  async applySavingAnimation() {
+  //takes a promise 'fetchRequest', and runs a saving animation on the submit button, which runs a minimum time, and doesn't complete until fetchRequest completes
+  async applySavingAnimation(fetchRequest) {
+    function delay(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+    this._submitButton.classList.add("modal__submit-button_hover_disabled");
     this._submitButton.classList.add("modal__submit-button_animation_active");
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this._submitButton.classList.remove(
-          "modal__submit-button_animation_active"
-        );
-        this._submitButton.classList.add("modal__submit-button_saved");
-        resolve();
-      }, 1700);
-    });
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, 200);
-    });
+    const [fetchResult, _] = await Promise.all([fetchRequest, delay(1200)]);
+    this._submitButton.classList.remove(
+      "modal__submit-button_animation_active"
+    );
+    this._submitButton.classList.add("modal__submit-button_saved");
+    await delay(180);
+    this._submitButton.classList.remove("modal__submit-button_hover_disabled");
+    return fetchResult;
   }
 
   open() {
@@ -80,7 +79,8 @@ export default class PopupWithForm extends Popup {
     this._formElement.addEventListener("submit", async (e) => {
       //this._changeSubmitButtonText("Saving...");
       e.preventDefault();
-      await this._handleFormSubmit(this._getInputValues()), this.close();
+      await this._handleFormSubmit(this._getInputValues());
+      this.close();
     });
     super.setEventListeners();
   }

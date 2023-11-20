@@ -121,11 +121,7 @@ async function handleTrashButtonClick(card) {
   try {
     confirmCardDeletePopup.open();
     confirmCardDeletePopup.setSubmitHandler(async () => {
-      const res = await siteApi.deleteCard(card.id);
-      if (!res.ok) {
-        console.log("Could not delete card");
-        return;
-      }
+      await siteApi.deleteCard(card.id);
       card.deleteCard();
     });
   } catch (err) {
@@ -154,10 +150,8 @@ async function handleLikeButtonClick(card, likeButtonStateActive) {
 //handle form submits. Class interactions handled through loose coupling
 async function handleProfileEditSubmit({ title, description }) {
   try {
-    await Promise.all([
-      siteApi.updateUserInfo(title, description),
-      profileEditPopup.applySavingAnimation(),
-    ]);
+    const fetchRequest = siteApi.updateUserInfo(title, description);
+    await profileEditPopup.applySavingAnimation(fetchRequest);
     profileUserInfo.setUserInfo({
       userName: title,
       userDescription: description,
@@ -170,31 +164,24 @@ async function handleProfileEditSubmit({ title, description }) {
   }
 }
 
-function handleAddCardSubmit({ title, imageLink }) {
-  //using promises and .then
-  const cardData = { name: title, link: imageLink };
-  return Promise.all([
-    siteApi.addCard(cardData),
-    addCardPopup.applySavingAnimation(),
-  ])
-    .then((arr) => {
-      const [card, _] = arr;
-      cardSection.addItem(card, "prepend");
-      cardTooltipHandler.handleTooltip();
-      formValidators["modal-add-card-form"].resetFormValidation(true);
-    })
-    .catch((err) => {
-      errorMessagePopup.setMessage(`${err}. Could not add card.`);
-      errorMessagePopup.open();
-    });
+async function handleAddCardSubmit({ title, imageLink }) {
+  try {
+    const cardData = { name: title, link: imageLink };
+    const fetchRequest = siteApi.addCard(cardData);
+    const card = await addCardPopup.applySavingAnimation(fetchRequest);
+    cardSection.addItem(card, "prepend");
+    cardTooltipHandler.handleTooltip();
+    formValidators["modal-add-card-form"].resetFormValidation(true);
+  } catch (err) {
+    errorMessagePopup.setMessage(`${err}. Could not add card.`);
+    errorMessagePopup.open();
+  }
 }
 
 async function handleProfilePictureSubmit(inputValues) {
   try {
-    await Promise.all([
-      siteApi.changeAvatar(inputValues.imageLink),
-      profilePicturePopup.applySavingAnimation(),
-    ]);
+    const fetchRequest = siteApi.changeAvatar(inputValues.imageLink);
+    await profilePicturePopup.applySavingAnimation(fetchRequest);
     profileUserInfo.setUserInfo({ userImageUrl: inputValues.imageLink });
     formValidators["modal-profile-picture-form"].resetFormValidation(true);
   } catch (err) {
@@ -242,15 +229,12 @@ profileImage.addEventListener("click", () => {
 /*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
 
-(async () => {
-  //have initialCards render
-  //and
-  //fetch userInfo from API, to set it in the profile
-  await Promise.all([initializeCards(), setUserInfoFromApi()]);
+//have initialCards render and fetch userInfo from API, to set it in the profile
+Promise.all([initializeCards(), setUserInfoFromApi()]).then(() => {
   //create initial tooltips on page load
   cardTooltipHandler.handleTooltip();
   profileTitleTooltipHandler.handleTooltip();
   profileDescriptionTooltipHandler.handleTooltip();
   //enable form validation
   enableValidationOnAllForms(configObject);
-})();
+});

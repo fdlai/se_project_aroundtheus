@@ -2,6 +2,10 @@
 
 Project name: SE_PROJECT_AROUNDTHEUS
 
+## Project Description
+
+The Around The U.S. project is an immersive platform featuring a grid of cards that combines aesthetic appeal with functional interactivity. Each card is equipped with features such as the ability to display images, and users can seamlessly add or delete cards. Users can create personalized profiles in which they can enter a name, a description, and an avatar. The project incorporates input validation, which ensures that users are guided when entering information, providing clear feedback on what is permissible and preventing unintended errors. The platform ensures persistence in changes through its integration with an API, guaranteeing that user modifications, such as adding or removing cards, are consistently saved and retrievable. Users can express their appreciation for specific cards by liking them, fostering a sense of community engagement. Additionally, custom tooltips display truncated text and custom error cards are displayed on an image load error.
+
 ## Project features
 
 - Semantic HTML5
@@ -20,6 +24,7 @@ Project name: SE_PROJECT_AROUNDTHEUS
 - Custom card with error message to account for images that fail to load
 - Form input validation
 - ES6 classes
+- Persistant changes (due to fetch requests to an API)
 
 ## Plan on improving the project
 
