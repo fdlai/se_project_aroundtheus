@@ -23,7 +23,7 @@ export default class PopupWithConfirmation extends Popup {
       } else {
         console.log("submitHandler has not been set");
       }
-      this.close();
+      //this.close();
     });
   }
 }

@@ -9,151 +9,112 @@ export default class Api {
   }
 
   _checkResponse(response) {
-    if (!response.ok) {
-      throw response;
+    if (response.ok) {
+      return response.json();
     }
+    return Promise.reject(response);
   }
+
+  // async _request(url, methodType, options) {
+  //   if (options) {
+  //     return await fetch(url, {
+  //       method: methodType,
+  //       headers: this._headers,
+  //       body: JSON.stringify(options),
+  //     });
+  //   } else {
+  //     return await fetch(url, {
+  //       method: methodType,
+  //       headers: this._headers,
+  //     });
+  //   }
+  // }
 
   async getInitialCards() {
-    try {
-      const res = await fetch(this._cardsUrl, {
-        headers: this._headers,
-      });
-      this._checkResponse(res);
-      const cardsArray = await res.json();
-      console.log(cardsArray);
-      return cardsArray;
-    } catch (err) {
-      console.log("Failed to get cards: ", err);
-      throw new Error(err.status);
-    }
-  }
-
-  //cardsArray is an array of cardata objects
-  async addArrayOfCards(cardsArray) {
-    cardsArray.forEach(async (cardData) => {
-      this.addCard(cardData);
+    const res = await fetch(this._cardsUrl, {
+      headers: this._headers,
     });
+    const cardsArray = await this._checkResponse(res);
+    console.log(cardsArray);
+    return cardsArray;
   }
 
   //cardData is an object with name and link properties
   async addCard(cardData) {
-    try {
-      const res = await fetch(this._cardsUrl, {
-        method: "POST",
-        headers: this._headers,
-        body: JSON.stringify(cardData),
-      });
-      this._checkResponse(res);
-      const card = await res.json();
-      console.log(card);
-      return card;
-    } catch (err) {
-      console.error("Error! Could not add a card: ", err, cardData);
-      throw new Error(err.status);
-    }
+    const res = await fetch(this._cardsUrl, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify(cardData),
+    });
+    const card = await this._checkResponse(res);
+    console.log(card);
+    return card;
   }
 
   async deleteCard(cardId) {
-    try {
-      const res = await fetch(`${this._cardsUrl}/${cardId}`, {
-        method: "DELETE",
-        headers: this._headers,
-      });
-      this._checkResponse(res);
-      const data = await res.json();
-      console.log(data);
-      return res;
-    } catch (err) {
-      console.log("Failed to delete card: ", err, cardId);
-      throw new Error(err.status);
-    }
+    const res = await fetch(`${this._cardsUrl}/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    });
+    const data = await this._checkResponse(res);
+    console.log(data);
+    return res;
   }
 
   async likeCard(cardId) {
-    try {
-      const res = await fetch(`${this._cardsUrl}/${cardId}/likes`, {
-        method: "PUT",
-        headers: this._headers,
-      });
-      this._checkResponse(res);
-      const data = await res.json();
-      console.log(data);
-      return res;
-    } catch (err) {
-      console.log("Error! Failed to like button: ", err, cardId);
-      throw new Error(err.status);
-    }
+    const res = await fetch(`${this._cardsUrl}/${cardId}/likes`, {
+      method: "PUT",
+      headers: this._headers,
+    });
+    const data = await this._checkResponse(res);
+    console.log(data);
+    return res;
   }
 
   async unlikeCard(cardId) {
-    try {
-      const res = await fetch(`${this._cardsUrl}/${cardId}/likes`, {
-        method: "DELETE",
-        headers: this._headers,
-      });
-      this._checkResponse(res);
-      const data = await res.json();
-      console.log(data);
-      return res;
-    } catch (err) {
-      console.log("Error! Failed to unlike button: ", err, cardId);
-      throw new Error(err.status);
-    }
+    const res = await fetch(`${this._cardsUrl}/${cardId}/likes`, {
+      method: "DELETE",
+      headers: this._headers,
+    });
+    const data = await this._checkResponse(res);
+    console.log(data);
+    return res;
   }
 
   async fetchUserInfo() {
-    try {
-      const res = await fetch(this._userInfoUrl, {
-        headers: this._headers,
-      });
-      this._checkResponse(res);
-      const data = await res.json();
-      console.log(data);
-      return data;
-    } catch (err) {
-      console.log("Failed to get user info: ", err);
-      throw new Error(err.status);
-    }
+    const res = await fetch(this._userInfoUrl, {
+      headers: this._headers,
+    });
+    const data = await this._checkResponse(res);
+    console.log(data);
+    return data;
   }
 
   async updateUserInfo(userName, userAbout) {
-    try {
-      const res = await fetch(this._userInfoUrl, {
-        method: "PATCH",
-        headers: this._headers,
-        body: JSON.stringify({
-          name: userName,
-          about: userAbout,
-        }),
-      });
-      this._checkResponse(res);
-      const data = await res.json();
-      console.log(data);
-      return data;
-    } catch (err) {
-      console.log("Failed to update user info: ", err, userName, userAbout);
-      throw new Error(err.status);
-    }
+    const res = await fetch(this._userInfoUrl, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: userName,
+        about: userAbout,
+      }),
+    });
+    const data = await this._checkResponse(res);
+    console.log(data);
+    return data;
   }
 
   async changeAvatar(userLink) {
-    try {
-      const res = await fetch(this._avatarUrl, {
-        method: "PATCH",
-        headers: this._headers,
-        body: JSON.stringify({
-          avatar: userLink,
-        }),
-      });
-      this._checkResponse(res);
-      const data = await res.json();
-      console.log(data);
-      return data;
-    } catch (err) {
-      console.log("Could not change avatar image: ", err, userLink);
-      throw new Error(err.status);
-    }
+    const res = await fetch(this._avatarUrl, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: userLink,
+      }),
+    });
+    const data = await this._checkResponse(res);
+    console.log(data);
+    return data;
   }
 }
 

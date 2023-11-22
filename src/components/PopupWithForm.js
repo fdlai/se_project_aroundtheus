@@ -52,16 +52,30 @@ export default class PopupWithForm extends Popup {
     function delay(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
-    this._submitButton.classList.add("modal__submit-button_hover_disabled");
-    this._submitButton.classList.add("modal__submit-button_animation_active");
-    const [fetchResult, _] = await Promise.all([fetchRequest, delay(1200)]);
-    this._submitButton.classList.remove(
-      "modal__submit-button_animation_active"
-    );
-    this._submitButton.classList.add("modal__submit-button_saved");
-    await delay(180);
-    this._submitButton.classList.remove("modal__submit-button_hover_disabled");
-    return fetchResult;
+    try {
+      this._submitButton.classList.add("modal__submit-button_hover_disabled");
+      this._submitButton.classList.add("modal__submit-button_animation_active");
+      const [fetchResult, _] = await Promise.all([fetchRequest, delay(1200)]);
+      this._submitButton.classList.remove(
+        "modal__submit-button_animation_active"
+      );
+      this._submitButton.classList.add("modal__submit-button_saved");
+      await delay(180);
+      this._submitButton.classList.remove(
+        "modal__submit-button_hover_disabled"
+      );
+      return fetchResult;
+    } catch (err) {
+      this._submitButton.classList.remove(
+        "modal__submit-button_animation_active"
+      );
+      this._submitButton.classList.add("modal__submit-button_failed");
+      await delay(180);
+      this._submitButton.classList.remove(
+        "modal__submit-button_hover_disabled"
+      );
+      throw err;
+    }
   }
 
   open() {
@@ -71,13 +85,15 @@ export default class PopupWithForm extends Popup {
     if (this._submitButton.classList.contains("modal__submit-button_saved")) {
       this._submitButton.classList.remove("modal__submit-button_saved");
     }
+    if (this._submitButton.classList.contains("modal__submit-button_failed")) {
+      this._submitButton.classList.remove("modal__submit-button_failed");
+    }
     super.open();
   }
 
   setEventListeners() {
     //add the submit event handler to the form
     this._formElement.addEventListener("submit", async (e) => {
-      //this._changeSubmitButtonText("Saving...");
       e.preventDefault();
       await this._handleFormSubmit(this._getInputValues());
       this.close();

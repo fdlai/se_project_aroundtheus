@@ -27,8 +27,8 @@ export default class Card {
 
   //like-button functionality
   _addLikeFunctionality() {
-    this._likeButton.addEventListener("click", () => {
-      this._handleLikeButtonClick(this, this._likeButtonStateActive);
+    this._likeButton.addEventListener("click", async () => {
+      await this._handleLikeButtonClick(this, this._likeButtonStateActive);
       //flip the state of the like button
       this._likeButtonStateActive = !this._likeButtonStateActive;
 

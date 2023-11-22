@@ -98,7 +98,10 @@ async function setUserInfoFromApi() {
       userImageUrl: apiUserInfo.avatar,
     });
   } catch (err) {
-    errorMessagePopup.setMessage(`${err}. Could not retrieve user info.`);
+    console.log("Failed to get user info: ", err);
+    errorMessagePopup.setMessage(
+      `Error ${err.status}. Could not retrieve user info.`
+    );
     errorMessagePopup.open();
   }
 }
@@ -112,34 +115,48 @@ async function initializeCards() {
     );
     cardSection.renderItems();
   } catch (err) {
-    errorMessagePopup.setMessage(`${err}. Could not retrieve cards.`);
+    console.log("Failed to get cards: ", err);
+    errorMessagePopup.setMessage(
+      `Error ${err.status}. Could not retrieve cards.`
+    );
     errorMessagePopup.open();
   }
 }
 
 async function handleTrashButtonClick(card) {
-  try {
-    confirmCardDeletePopup.open();
-    confirmCardDeletePopup.setSubmitHandler(async () => {
+  confirmCardDeletePopup.open();
+  confirmCardDeletePopup.setSubmitHandler(async () => {
+    try {
       await siteApi.deleteCard(card.id);
       card.deleteCard();
-    });
-  } catch (err) {
-    errorMessagePopup.setMessage(`${err}. Could not delete card.`);
-    errorMessagePopup.open();
-  }
+      confirmCardDeletePopup.close();
+    } catch (err) {
+      console.log("Failed to delete card: ", err);
+      errorMessagePopup.setMessage(
+        `Error ${err.status}. Could not delete card.`
+      );
+      errorMessagePopup.open();
+    }
+  });
 }
 
 async function handleLikeButtonClick(card, likeButtonStateActive) {
-  try {
-    if (likeButtonStateActive) {
-      siteApi.unlikeCard(card.id);
-    } else {
-      siteApi.likeCard(card.id);
-    }
-  } catch (err) {
-    errorMessagePopup.setMessage(`${err}. Could not like/unlike card.`);
-    errorMessagePopup.open();
+  if (likeButtonStateActive) {
+    return siteApi.unlikeCard(card.id).catch((err) => {
+      console.log("Error! Failed to unlike button: ", err);
+      errorMessagePopup.setMessage(
+        `Error ${err.status}. Could not unlike card.`
+      );
+      errorMessagePopup.open();
+      throw err;
+    });
+  } else {
+    return siteApi.likeCard(card.id).catch((err) => {
+      console.log("Error! Failed to like button: ", err);
+      errorMessagePopup.setMessage(`Error ${err.status}. Could not like card.`);
+      errorMessagePopup.open();
+      throw err;
+    });
   }
 }
 
@@ -159,8 +176,12 @@ async function handleProfileEditSubmit({ title, description }) {
     profileTitleTooltipHandler.handleTooltip();
     profileDescriptionTooltipHandler.handleTooltip();
   } catch (err) {
-    errorMessagePopup.setMessage(`${err}. Error setting user info.`);
+    console.log("Failed to update user info: ", err);
+    errorMessagePopup.setMessage(
+      `Error ${err.status}. Error setting user info.`
+    );
     errorMessagePopup.open();
+    throw err;
   }
 }
 
@@ -173,8 +194,10 @@ async function handleAddCardSubmit({ title, imageLink }) {
     cardTooltipHandler.handleTooltip();
     formValidators["modal-add-card-form"].resetFormValidation(true);
   } catch (err) {
-    errorMessagePopup.setMessage(`${err}. Could not add card.`);
+    console.error("Error! Could not add a card: ", err);
+    errorMessagePopup.setMessage(`Error ${err.status}. Could not add card.`);
     errorMessagePopup.open();
+    throw err;
   }
 }
 
@@ -185,8 +208,12 @@ async function handleProfilePictureSubmit(inputValues) {
     profileUserInfo.setUserInfo({ userImageUrl: inputValues.imageLink });
     formValidators["modal-profile-picture-form"].resetFormValidation(true);
   } catch (err) {
-    errorMessagePopup.setMessage(`${err}. Could not change profile picture.`);
+    console.log("Could not change avatar image: ", err);
+    errorMessagePopup.setMessage(
+      `Error ${err.status}. Could not change profile picture.`
+    );
     errorMessagePopup.open();
+    throw err;
   }
 }
 
@@ -230,11 +257,15 @@ profileImage.addEventListener("click", () => {
 /* -------------------------------------------------------------------------- */
 
 //have initialCards render and fetch userInfo from API, to set it in the profile
-Promise.all([initializeCards(), setUserInfoFromApi()]).then(() => {
-  //create initial tooltips on page load
-  cardTooltipHandler.handleTooltip();
-  profileTitleTooltipHandler.handleTooltip();
-  profileDescriptionTooltipHandler.handleTooltip();
-  //enable form validation
-  enableValidationOnAllForms(configObject);
-});
+Promise.all([initializeCards(), setUserInfoFromApi()])
+  .then(() => {
+    //create initial tooltips on page load
+    cardTooltipHandler.handleTooltip();
+    profileTitleTooltipHandler.handleTooltip();
+    profileDescriptionTooltipHandler.handleTooltip();
+    //enable form validation
+    enableValidationOnAllForms(configObject);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
