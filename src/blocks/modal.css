@@ -1,3 +1,15 @@
+@keyframes textFadeInOut {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .modal {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -9,12 +21,13 @@
   display: flex;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease-out;
+  transition: opacity 0.3s ease-out;
 }
 
 .modal_opened {
   opacity: 1;
   pointer-events: auto;
+  transition: opacity 0.3s ease-out;
 }
 
 .modal__container {
@@ -79,6 +92,19 @@
   font-weight: 900;
   line-height: normal;
   height: 23px;
+}
+
+.modal__heading_type_confirm {
+  margin-bottom: 38px;
+}
+
+.modal__heading_type_message {
+  color: #000;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  margin: 0;
 }
 
 /*.modal__form {
@@ -164,11 +190,74 @@
   opacity: 0.8;
 }
 
+.modal__submit-button_hover_disabled {
+  transition: opacity 0.7s ease-in;
+}
+
+.modal__submit-button_hover_disabled:hover {
+  transition: opacity 0.7s ease-in;
+  opacity: 1;
+  cursor: default;
+}
+
 .modal__submit-button_disabled {
   color: rgba(0, 0, 0, 0.2);
   background-color: #f6f6f6;
   border: 1px solid rgba(0, 0, 0, 0.2);
   pointer-events: none;
+}
+
+.modal__submit-button_type_confirm {
+  margin-top: 0;
+}
+
+/* Hide the original submit button text content */
+.modal__submit-button_animation_active {
+  color: transparent;
+  position: relative;
+}
+
+/* Apply to the text: Saving... */
+.modal__submit-button_animation_active::before {
+  content: attr(data-saving-text);
+  animation: textFadeInOut 1.3s linear infinite;
+  color: white;
+  position: absolute;
+  top: 26%;
+  font-size: 18px;
+  left: 42%;
+}
+
+/* Hide the original submit button text content */
+.modal__submit-button_saved {
+  color: transparent;
+  position: relative;
+}
+
+/* Apply to the text: Saved */
+.modal__submit-button_saved::before {
+  content: attr(data-saved-text);
+  color: white;
+  position: absolute;
+  top: 26%;
+  font-size: 18px;
+  left: 43%;
+}
+
+/* Hide the original submit button text content */
+.modal__submit-button_failed {
+  color: transparent;
+  position: relative;
+}
+
+/* Apply to the text: Saved */
+.modal__submit-button_failed::before {
+  content: attr(data-failed-text);
+  color: white;
+  position: absolute;
+  top: 26%;
+  font-size: 18px;
+  left: 43%;
 }
 
 @media screen and (max-width: 620px) {
@@ -194,11 +283,37 @@
     margin: 0 0 75px 0;
     height: 18px;
   }
+  .modal__heading_type_message {
+    font-size: 18px;
+  }
   .modal__span {
     max-width: 250px;
   }
   .modal__submit-button {
     margin-top: 45px;
     font-size: 14px;
+  }
+  .modal__submit-button_animation_active::before {
+    content: attr(data-saving-text);
+    animation: textFadeInOut 1.7s linear infinite;
+    color: white;
+    position: absolute;
+    top: 32%;
+    font-size: 14px;
+    left: 41%;
+  }
+  .modal__submit-button_saved::before {
+    content: attr(data-saved-text);
+    color: white;
+    position: absolute;
+    top: 32%;
+    font-size: 14px;
+    left: 42%;
+  }
+  .modal__heading_type_confirm {
+    margin-bottom: 38px;
+  }
+  .modal__submit-button_type_confirm {
+    margin-top: 0;
   }
 }

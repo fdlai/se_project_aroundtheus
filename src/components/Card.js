@@ -1,10 +1,19 @@
 export default class Card {
-  constructor(data, cardSelector, handleImageClick) {
+  constructor(
+    data,
+    cardSelector,
+    handleImageClick,
+    handleTrashButtonClick,
+    handleLikeButtonClick
+  ) {
     this._data = data;
     this._name = data.name;
     this._link = data.link;
+    this.id = data._id;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
+    this._handleTrashButtonClick = handleTrashButtonClick;
+    this._handleLikeButtonClick = handleLikeButtonClick;
     this._template = document.querySelector(this._cardSelector).content;
     this._cardTemplate = this._template.querySelector(".card");
     this._cardElement = this._cardTemplate.cloneNode(true);
@@ -12,25 +21,42 @@ export default class Card {
     this._deleteButton = this._cardElement.querySelector(
       ".card__delete-button"
     );
+    this._likeButtonStateActive = data.isLiked;
+    this._setLikeButtonState();
   }
 
   //like-button functionality
   _addLikeFunctionality() {
-    this._likeButton.addEventListener("click", () => {
-      this._likeButton.classList.toggle("card__like-button_active");
+    this._likeButton.addEventListener("click", async () => {
+      await this._handleLikeButtonClick(this, this._likeButtonStateActive);
+      //flip the state of the like button
+      this._likeButtonStateActive = !this._likeButtonStateActive;
+
+      this._setLikeButtonState();
     });
   }
 
-  //click button to delete element
-  _addDeleteFunctionality(button, element) {
-    button.addEventListener("click", () => {
-      element.remove();
-    });
+  //maintain the state of the like button
+  _setLikeButtonState() {
+    if (this._likeButtonStateActive) {
+      this._likeButton.classList.add("card__like-button_active");
+    } else {
+      this._likeButton.classList.remove("card__like-button_active");
+    }
+  }
+
+  deleteCard() {
+    if (this._errorCard) {
+      this._errorCard.remove();
+    }
+    this._cardElement.remove();
   }
 
   _setEventListeners() {
     this._addLikeFunctionality();
-    this._addDeleteFunctionality(this._deleteButton, this._cardElement);
+    this._deleteButton.addEventListener("click", () => {
+      this._handleTrashButtonClick(this);
+    });
     this._cardElementImage.addEventListener("click", () => {
       this._handleImageClick(this._data);
     });
@@ -54,7 +80,10 @@ export default class Card {
     this._errorCardTitle.textContent = this._cardElement.innerText
       ? this._cardElement.textContent
       : "...";
-    this._addDeleteFunctionality(this._errorDeleteButton, this._errorCard);
+    //this._addDeleteFunctionality(this._errorDeleteButton, this._errorCard);
+    this._errorDeleteButton.addEventListener("click", () => {
+      this._handleTrashButtonClick(this);
+    });
     this._cardElement.replaceWith(this._errorCard);
   }
 

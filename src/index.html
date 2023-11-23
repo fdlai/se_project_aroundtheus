@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Around the US</title>
-    <link rel="stylesheet" href="./pages/index.css" />
     <meta
       name="keywords"
       content="profile, pictures, avatar, images, like button"
@@ -21,29 +20,26 @@
       <header class="header">
         <img
           class="header__image"
-          src="./images/around-the-us-logo.svg"
+          src="<%=require('./images/around-the-us-logo.svg')%>"
           alt="Around the US logo"
         />
       </header>
       <!-- -------------------------------- main --------------------------------- -->
       <main class="content">
         <section class="profile page__profile">
-          <img
-            src="./images/jacques-cousteau.png"
-            alt="portrait photo of Jacques Cousteau"
-            class="profile__image"
-          />
+          <div class="profile__image-container">
+            <img src="" alt="avatar photo" class="profile__image" />
+            <div class="profile__pencil-icon"></div>
+          </div>
           <div class="profile__info">
-            <h1 class="profile__title" id="profile-title">Jacques Cousteau</h1>
+            <h1 class="profile__title" id="profile-title"></h1>
             <button
               class="profile__edit-button"
               id="profile-edit-button"
               type="button"
               aria-label="Edit"
             ></button>
-            <p class="profile__description" id="profile-description">
-              Explorer
-            </p>
+            <p class="profile__description" id="profile-description"></p>
           </div>
           <button
             class="profile__add-button"
@@ -104,7 +100,14 @@
               id="profile-description-input-error"
             ></span>
           </label>
-          <button class="modal__submit-button" type="submit" aria-label="save">
+          <button
+            class="modal__submit-button"
+            type="submit"
+            aria-label="save"
+            data-saving-text="Saving..."
+            data-saved-text="Saved"
+            data-failed-text="Failed"
+          >
             Save
           </button>
         </form>
@@ -156,6 +159,9 @@
             type="submit"
             aria-label="save"
             disabled
+            data-saving-text="Saving..."
+            data-saved-text="Saved"
+            data-failed-text="Failed"
           >
             Create
           </button>
@@ -172,6 +178,83 @@
         ></button>
         <img src="#" alt="" class="modal__image" />
         <p class="modal__subtitle"></p>
+      </div>
+    </div>
+    <!-- -------------------------- modal-card-delete -------------------------- -->
+    <div class="modal" id="modal-card-delete">
+      <div class="modal__container">
+        <button
+          class="modal__close-button"
+          type="button"
+          aria-label="close"
+        ></button>
+        <p class="modal__heading modal__heading_type_confirm">Are you sure?</p>
+        <form
+          class="modal__form"
+          id="modal-card-delete-form"
+          name="modal-card-delete-form"
+        >
+          <button
+            class="modal__submit-button modal__submit-button_type_confirm"
+            type="submit"
+            aria-label="delete"
+          >
+            Yes
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- -------------------- change profile picture modal --------------------- -->
+    <div class="modal" id="modal-profile-picture">
+      <div class="modal__container">
+        <button
+          class="modal__close-button"
+          type="button"
+          aria-label="close"
+        ></button>
+        <p class="modal__heading">Change profile picture</p>
+        <form
+          class="modal__form"
+          id="modal-profile-picture-form"
+          name="modal-profile-picture-form"
+        >
+          <label class="modal__label">
+            <input
+              class="modal__input"
+              type="url"
+              name="imageLink"
+              id="profile-picture-image-link-input"
+              placeholder="Image link"
+              required
+            />
+            <span
+              class="modal__span"
+              id="profile-picture-image-link-input-error"
+            ></span>
+          </label>
+          <button
+            class="modal__submit-button modal__submit-button_disabled"
+            type="submit"
+            aria-label="save"
+            disabled
+            data-saving-text="Saving..."
+            data-saved-text="Saved"
+            data-failed-text="Failed"
+          >
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- ---------------------------- modal-message ---------------------------- -->
+    <div class="modal" id="modal-message">
+      <div class="modal__container">
+        <button
+          class="modal__close-button"
+          type="button"
+          aria-label="close"
+        ></button>
+        <p class="modal__heading_type_message"></p>
       </div>
     </div>
     <!-- ---------------------------- card-template ---------------------------- -->
@@ -208,6 +291,5 @@
         </div>
       </div>
     </template>
-    <script type="module" src="./pages/index.js"></script>
   </body>
 </html>
