@@ -42,7 +42,10 @@ const profileDescriptionTooltipHandler = new TooltipHandler(
   ".profile__tooltip-description"
 );
 
-let cardSection;
+const cardSection = new Section(
+  { items: [], renderer: createCard },
+  ".cards__list"
+);
 
 const profileEditPopup = new PopupWithForm(
   "#modal-edit-profile",
@@ -109,10 +112,11 @@ async function setUserInfoFromApi() {
 async function initializeCards() {
   try {
     const initialCards = await siteApi.getInitialCards();
-    cardSection = new Section(
-      { items: initialCards, renderer: createCard },
-      ".cards__list"
-    );
+    // cardSection = new Section(
+    //   { items: initialCards, renderer: createCard },
+    //   ".cards__list"
+    // );
+    cardSection.setItems(initialCards);
     cardSection.renderItems();
   } catch (err) {
     console.log("Failed to get cards: ", err);
@@ -257,15 +261,11 @@ profileImage.addEventListener("click", () => {
 /* -------------------------------------------------------------------------- */
 
 //have initialCards render and fetch userInfo from API, to set it in the profile
-Promise.all([initializeCards(), setUserInfoFromApi()])
-  .then(() => {
-    //create initial tooltips on page load
-    cardTooltipHandler.handleTooltip();
-    profileTitleTooltipHandler.handleTooltip();
-    profileDescriptionTooltipHandler.handleTooltip();
-    //enable form validation
-    enableValidationOnAllForms(configObject);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+Promise.all([initializeCards(), setUserInfoFromApi()]).then(() => {
+  //create initial tooltips on page load
+  cardTooltipHandler.handleTooltip();
+  profileTitleTooltipHandler.handleTooltip();
+  profileDescriptionTooltipHandler.handleTooltip();
+  //enable form validation
+  enableValidationOnAllForms(configObject);
+});

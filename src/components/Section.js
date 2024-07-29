@@ -25,4 +25,8 @@ export default class Section {
         console.log("Error. Please use only 'append' or 'prepend'.");
     }
   }
+
+  setItems(items) {
+    this._items = items;
+  }
 }
